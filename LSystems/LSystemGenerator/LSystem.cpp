@@ -1,112 +1,120 @@
 
 #include "LSystem.h"
 
-LSystem::LSystem() { }
-
-LSystem::~LSystem() { }
-
-int LSystem::getCurrentLevel() const
+namespace lsys
 {
-	return produced.size();
-}
 
-void LSystem::addSymbolToAxiom(LSystemSymbol *sym)
-{
-	axiom.push_back(sym);
-}
+	LSystem::LSystem() { }
 
-void LSystem::addRule(LSystemProdRule *rule)
-{
-	rules.push_back(rule);
-}
+	LSystem::~LSystem() { }
 
-float LSystem::getParam(char param)
-{
-	return params[param];
-}
-
-void LSystem::setParam(char param, float value)
-{
-	params[param] = value;
-}
-
-void LSystem::derive(unsigned char level)
-{
-	while (level-- > 0)
-		derive();
-}
-
-std::vector<LSystemSymbol *> LSystem::derive()
-{
-	if (!produced.size())
-		produced.push_back(axiom);
-
-	std::vector<LSystemSymbol *>& currentLevel = produced[produced.size() - 1];
-	std::vector<LSystemSymbol *> newLevel;
-
-	for (LSystemSymbol *sym : currentLevel)
+	int LSystem::getCurrentLevel() const
 	{
-		LSystemProdRule *rule = pickRule(sym);
+		return products.size();
+	}
 
-		if (rule == nullptr)
+	void LSystem::addSymbolToAxiom(LSystemSymbol *sym)
+	{
+		axiom.push_back(sym);
+	}
+
+	void LSystem::addRule(LSystemProdRule *rule)
+	{
+		rules.push_back(rule);
+	}
+
+	float LSystem::getParam(char param)
+	{
+		if (params.find(param) != params.end())
+			return params[param];
+		return NAN;
+	}
+
+	void LSystem::setParam(char param, float value)
+	{
+		params[param] = value;
+	}
+
+	void LSystem::derive(unsigned char level)
+	{
+		while (level-- > 0)
+			derive();
+	}
+
+	std::vector<LSystemSymbol *>& LSystem::derive()
+	{
+		if (!products.size())
+			products.push_back(axiom);
+
+		std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1];
+		std::vector<LSystemSymbol *> newLevel;
+
+		for (LSystemSymbol *sym : currentLevel)
 		{
-			newLevel.push_back(sym);
-			continue;
+			LSystemProdRule *rule = pickRule(sym);
+
+			if (rule == nullptr)
+			{
+				newLevel.push_back(sym);
+				continue;
+			}
+			else
+				rule->rewriteSymbol(sym, newLevel);
 		}
+
+		products.push_back(newLevel);
+		return newLevel;
+	}
+
+	LSystemProdRule* LSystem::pickRule(LSystemSymbol *sym) const
+	{
+		std::vector<LSystemProdRule *> candidates;
+
+		for (LSystemProdRule *rule : rules)
+		{
+			if (*rule->getSymbol() == *sym && rule->condition())
+				candidates.push_back(rule);
+		}
+
+		if (candidates.size() == 1)
+			return candidates[0];
 		else
-			rule->rewriteSymbol(sym, newLevel);
+		{
+			float prob = (float)rand() / RAND_MAX, totalProb = 0.0f;
+
+			for (LSystemProdRule *rule : candidates)
+				if (prob <= (totalProb += rule->getProbability()))
+					return rule;
+		}
+
+		return nullptr;
 	}
 
-	produced.push_back(newLevel);
-	return newLevel;
-}
-
-LSystemProdRule* LSystem::pickRule(LSystemSymbol *sym)
-{
-	std::vector<LSystemProdRule *> candidates;
-
-	for (LSystemProdRule *rule : rules)
+	std::vector<LSystemSymbol *>& LSystem::operator[](unsigned char level)
 	{
-		if (rule->matchSymbol(sym) && rule->condition())
-			candidates.push_back(rule);
+		try { return products.at(level); }
+		catch (std::range_error& err) { return products[0]; }
 	}
 
-	if (candidates.size() == 1)
-		return candidates[0];
-	else
+	std::string LSystem::toString() const
 	{
-		float prob = (float)rand() / RAND_MAX;
-		for (LSystemProdRule *rule : candidates)
-			if (prob <= rule->getProbability())
-				return rule;
+		std::string ret = "A: ";
+		for (LSystemSymbol *s : axiom)
+			ret += s->toString();
+		ret += '\n';
+		unsigned short no = 1;
+		for (LSystemProdRule *pr : rules)
+		{
+			ret += 'P';	ret += no; ret += ": ";
+			ret += pr->toString();
+		}
+		return ret;
 	}
 
-	return nullptr;
-}
-
-std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
-{
-	try	{ return produced.at(level); }
-	catch (std::range_error& err) {	return produced[0];	}
-}
-
-std::string LSystem::toString() const
-{
-	std::string ret = "A: ";
-	for (LSystemSymbol *s : axiom)
-		ret += s->toString();
-	ret += '\n';
-	unsigned short no = 1;
-	for (LSystemProdRule *pr : rules)
+	std::ostream& operator<<(std::ostream& out, const LSystem& lSys)
 	{
-		ret += 'P';	ret += no; ret += ": ";
-		ret += pr->toString();
+		out << lSys.toString();
+		return out;
 	}
-	return ret;
-}
 
-std::ostream& operator<<(std::ostream& out, const LSystem& lSys)
-{
-	out << lSys.toString();
-	return out;
 }

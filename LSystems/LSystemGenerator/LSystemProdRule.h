@@ -4,27 +4,35 @@
 #include "LSystemSymbol.h"
 #include <vector>
 
-class LSystemProdRule
+// difoltni konstruktor?
+// konstruktor koji od pointera pravi drugi objekat, za rewriteSymbol i slicno
+// rewriteSymbol mesto?
+// destruktor, copy, move?
+
+namespace lsys
 {
-protected:
-	LSystemSymbol *word;
-	std::vector<LSystemSymbol *> possibleResult;
-	float probability;
 
-public:
+	class LSystemProdRule
+	{
+	protected:
+		LSystemSymbol *symbol;
+		std::vector<LSystemSymbol *> product;
+		float probability;
 
-	LSystemProdRule(LSystemSymbol *w, std::vector<LSystemSymbol *> pRes, float p = 1.0f);
-	virtual ~LSystemProdRule();
-	void addSymbolToResult(LSystemSymbol *sym);
-	float getProbability() const;
-	void setProbability(float prob);
-	virtual bool condition();
-	virtual void rewriteSymbol(const LSystemSymbol* lSym, std::vector<LSystemSymbol *>& res);
-	
-	bool matchSymbol(LSystemSymbol *sym);
+	public:
+		LSystemProdRule(LSystemSymbol *w, std::vector<LSystemSymbol *> pRes, float p = 1.0f);
+		virtual ~LSystemProdRule();
+		void addSymbolToProduct(LSystemSymbol *sym);
+		const LSystemSymbol* getSymbol() const;
+		float getProbability() const;
+		void setProbability(float prob);
+		virtual bool condition() const;
+		virtual void rewriteSymbol(const LSystemSymbol* lSym, std::vector<LSystemSymbol *>& res) const;
 
-	virtual std::string toString() const;
-	friend std::ostream& operator<<(std::ostream& out, const LSystemProdRule& rule);
-};
+		virtual std::string toString() const;
+		friend std::ostream& operator<<(std::ostream& out, const LSystemProdRule& rule);
+	};
+
+}
 
 #endif

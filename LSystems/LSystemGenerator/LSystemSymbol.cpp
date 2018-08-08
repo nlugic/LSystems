@@ -6,6 +6,27 @@ namespace lsys
 
 	LSystemSymbol::LSystemSymbol(char k) :key(k) { }
 
+
+	LSystemSymbol::LSystemSymbol(char k, const char *params)
+		:key(k)
+	{
+		for (const char *c = params; *c != '\0'; ++c)
+			createParam(*c);
+	}
+		
+	LSystemSymbol::LSystemSymbol(const LSystemSymbol& sym)
+		:key(sym.key), params(sym.params) { }
+
+	LSystemSymbol& LSystemSymbol::operator=(const LSystemSymbol& sym)
+	{
+		if (this != &sym)
+		{
+			key = sym.key;
+			params = sym.params;
+		}
+		return *this;
+	}
+
 	LSystemSymbol::~LSystemSymbol() { }
 
 	float LSystemSymbol::getParam(char param)
@@ -42,7 +63,7 @@ namespace lsys
 
 		if (params.size() > 0)
 			ret += '(';
-		for (std::map<char, float>::const_iterator iter = params.begin(); iter != params.end(); ++iter)
+		for (std::map<char, float>::const_iterator& iter = params.begin(); iter != params.end(); ++iter)
 			ret += (!std::isnan(iter->second) ? iter->second : iter->first) + (std::distance(iter, params.end()) == 1) ? ", " : ")";
 
 		return ret;

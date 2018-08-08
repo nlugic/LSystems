@@ -6,7 +6,70 @@ namespace lsys
 
 	LSystem::LSystem() { }
 
-	LSystem::~LSystem() { }
+	LSystem::LSystem(const char *params)
+	{
+		for (const char *c = params; *c != '\0'; ++c)
+			createParam(*c);
+	}
+
+	LSystem::LSystem(const LSystem& lSys)
+		:params(lSys.params), actions(lSys.actions)
+	{
+		for (const LSystemSymbol *sym : lSys.axiom)
+			axiom.push_back(new LSystemSymbol(*sym));
+		for (const LSystemProdRule *rule : lSys.rules)
+			rules.push_back(new LSystemProdRule(*rule));
+		for (const std::vector<LSystemSymbol *>& product : lSys.products)
+		{
+			std::vector<LSystemSymbol *> prod;
+			for (LSystemSymbol *sym : product)
+				prod.push_back(new LSystemSymbol(*sym));
+			products.push_back(prod);
+		}
+	}
+
+	LSystem& LSystem::operator=(const LSystem& lSys)
+	{
+		if (this != &lSys)
+		{
+			for (LSystemSymbol *sym : axiom)
+				delete sym;
+			for (LSystemProdRule *rule : rules)
+				delete rule;
+			for (std::vector<LSystemSymbol *>& product : products)
+				for (LSystemSymbol *sym : product)
+					delete sym;
+			axiom.clear();
+			rules.clear();
+			products.clear();
+
+			for (const LSystemSymbol *sym : lSys.axiom)
+				axiom.push_back(new LSystemSymbol(*sym));
+			for (const LSystemProdRule *rule : lSys.rules)
+				rules.push_back(new LSystemProdRule(*rule));
+			params = lSys.params;
+			actions = lSys.actions;
+			for (const std::vector<LSystemSymbol *>& product : lSys.products)
+			{
+				std::vector<LSystemSymbol *> prod;
+				for (LSystemSymbol *sym : product)
+					prod.push_back(new LSystemSymbol(*sym));
+				products.push_back(prod);
+			}
+		}
+		return *this;
+	}
+
+	LSystem::~LSystem()
+	{
+		for (LSystemSymbol *sym : axiom)
+			delete sym;
+		for (LSystemProdRule *rule : rules)
+			delete rule;
+		for (std::vector<LSystemSymbol *>& product : products)
+			for (LSystemSymbol *sym : product)
+				delete sym;
+	}
 
 	int LSystem::getCurrentLevel() const
 	{
@@ -33,6 +96,11 @@ namespace lsys
 	void LSystem::setParam(char param, float value)
 	{
 		params[param] = value;
+	}
+
+	void LSystem::createParam(char param)
+	{
+		params[param] = NAN;
 	}
 
 	void LSystem::derive(unsigned char level)
@@ -80,7 +148,7 @@ namespace lsys
 			return candidates[0];
 		else
 		{
-			float prob = (float)rand() / RAND_MAX, totalProb = 0.0f;
+			float prob = (float)std::rand() / RAND_MAX, totalProb = 0.0f;
 
 			for (LSystemProdRule *rule : candidates)
 				if (prob <= (totalProb += rule->getProbability()))
@@ -93,7 +161,11 @@ namespace lsys
 	std::vector<LSystemSymbol *>& LSystem::operator[](unsigned char level)
 	{
 		try { return products.at(level); }
-		catch (std::range_error& err) { return products[0]; }
+		catch (std::range_error& err)
+		{
+			std::cerr << err.what() << std::endl;
+			return products[0];
+		}
 	}
 
 	std::string LSystem::toString() const

@@ -4,7 +4,7 @@
 #include "LSystemProdRule.h"
 #include <functional>
 
-// destruktor, copy, move?
+// move?
 // akcije i njihovo mesto?
 // random seed i odredjivanje pravila?
 
@@ -17,17 +17,22 @@ namespace lsys
 		std::vector<LSystemSymbol *> axiom;
 		std::vector<LSystemProdRule *> rules;
 		std::map<char, float> params;
-		std::map<LSystemSymbol *, std::function<void(float)>> actions;
+		std::map<char, std::function<void(float)>> actions;
 		std::vector<std::vector<LSystemSymbol *>> products;
 
 	public:
 		LSystem();
+		LSystem(const char *params);
+		LSystem(const LSystem& lSys);
+		LSystem& operator=(const LSystem& lSys);
 		virtual ~LSystem();
+
 		int getCurrentLevel() const;
 		void addSymbolToAxiom(LSystemSymbol *sym);
 		void addRule(LSystemProdRule *rule);
 		float getParam(char param);
 		void setParam(char param, float value);
+		void createParam(char param);
 		std::vector<LSystemSymbol *>& operator[](unsigned char level);
 
 		void derive(unsigned char level);

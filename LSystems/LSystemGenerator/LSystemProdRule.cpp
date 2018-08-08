@@ -4,10 +4,48 @@
 namespace lsys
 {
 
-	LSystemProdRule::LSystemProdRule(LSystemSymbol *sym, std::vector<LSystemSymbol *> pRes, float p = 1.0f)
-		:symbol(sym), product(pRes), probability(p) { }
+	LSystemProdRule::LSystemProdRule(LSystemSymbol *sym, std::vector<LSystemSymbol *> prod, float p)
+		:symbol(sym), product(prod), probability(p) { }
 
-	LSystemProdRule::~LSystemProdRule() { }
+	LSystemProdRule::LSystemProdRule(LSystemSymbol *sym, float p)
+		:symbol(sym), probability(p) { }
+
+	LSystemProdRule::LSystemProdRule(char sym, std::vector<LSystemSymbol *> prod, float p)
+		:symbol(new LSystemSymbol(sym)), product(prod), probability(p) { }
+
+	LSystemProdRule::LSystemProdRule(char sym, float p)
+		:symbol(new LSystemSymbol(sym)), probability(p) { }
+
+	LSystemProdRule::LSystemProdRule(const LSystemProdRule& rule)
+		:symbol(new LSystemSymbol(*rule.symbol)), probability(rule.probability)
+	{
+		for (const LSystemSymbol *sym : rule.product)
+			product.push_back(new LSystemSymbol(*sym));
+	}
+
+	LSystemProdRule& LSystemProdRule::operator=(const LSystemProdRule& rule)
+	{
+		if (this != &rule)
+		{
+			delete symbol;
+			for (LSystemSymbol *sym : product)
+				delete sym;
+			product.clear();
+
+			symbol = new LSystemSymbol(*rule.symbol);
+			for (const LSystemSymbol* sym : rule.product)
+				product.push_back(new LSystemSymbol(*sym));
+			probability = rule.probability;
+		}
+		return *this;
+	}
+
+	LSystemProdRule::~LSystemProdRule()
+	{
+		delete symbol;
+		for (LSystemSymbol *sym : product)
+			delete sym;
+	}
 
 	void LSystemProdRule::addSymbolToProduct(LSystemSymbol *sym)
 	{
@@ -55,7 +93,7 @@ namespace lsys
 			ret += ']';
 		}
 		ret += "-> ";
-		for (LSystemSymbol *sym : product)
+		for (const LSystemSymbol *sym : product)
 			ret += sym->toString();
 		ret += '\n';
 

@@ -4,10 +4,8 @@
 #include "LSystemSymbol.h"
 #include <vector>
 
-// difoltni konstruktor?
-// konstruktor koji od pointera pravi drugi objekat, za rewriteSymbol i slicno
-// rewriteSymbol mesto?
-// destruktor, copy, move?
+// rewriteSymbol mesto i funkcija?
+// move?
 
 namespace lsys
 {
@@ -20,8 +18,14 @@ namespace lsys
 		float probability;
 
 	public:
-		LSystemProdRule(LSystemSymbol *w, std::vector<LSystemSymbol *> pRes, float p = 1.0f);
+		LSystemProdRule(LSystemSymbol *sym, std::vector<LSystemSymbol *> prod, float p = 1.0f);
+		LSystemProdRule(LSystemSymbol *sym, float p = 1.0f);
+		LSystemProdRule(char sym, std::vector<LSystemSymbol *> prod, float p = 1.0f);
+		LSystemProdRule(char sym, float p = 1.0f);
+		LSystemProdRule(const LSystemProdRule& rule);
+		LSystemProdRule& operator=(const LSystemProdRule& rule);
 		virtual ~LSystemProdRule();
+
 		void addSymbolToProduct(LSystemSymbol *sym);
 		const LSystemSymbol* getSymbol() const;
 		float getProbability() const;

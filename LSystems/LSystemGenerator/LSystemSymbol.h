@@ -5,10 +5,7 @@
 #include <string>
 #include <map>
 
-// difoltni konstruktor?
-// konstruktor sa const char * koji automatski radi createParam()?
-// konstruktor koji od pointera pravi novi objekat
-// destruktor, copy, move?
+// move?
 
 namespace lsys
 {
@@ -21,7 +18,11 @@ namespace lsys
 
 	public:
 		LSystemSymbol(char k);
+		LSystemSymbol(char k, const char *params);
+		LSystemSymbol(const LSystemSymbol& sym);
+		LSystemSymbol& operator=(const LSystemSymbol& sym);
 		virtual ~LSystemSymbol();
+
 		float getParam(char param);
 		void setParam(char param, float value);
 		void createParam(char param);

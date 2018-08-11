@@ -13,6 +13,11 @@ namespace lsys
 
 	class LSystem
 	{
+	private:
+		void clearSymbols();
+		void copySymbols(const LSystem& lSys);
+		void produceAxiom();
+
 	protected:
 		std::vector<LSystemSymbol *> axiom;
 		std::vector<LSystemProdRule *> rules;
@@ -35,7 +40,7 @@ namespace lsys
 		void createParam(char param);
 		std::vector<LSystemSymbol *>& operator[](unsigned char level);
 
-		void derive(unsigned char level);
+		std::vector<LSystemSymbol *>& derive(unsigned char level);
 		std::vector<LSystemSymbol *>& derive();
 		LSystemProdRule* pickRule(LSystemSymbol *sym) const;
 

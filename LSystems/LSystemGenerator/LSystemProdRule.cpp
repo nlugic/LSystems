@@ -79,17 +79,17 @@ namespace lsys
 			return;
 		else
 			for (LSystemSymbol *sym : product)
-				res.push_back(sym);
+				res.push_back(new LSystemSymbol(*sym));
 	}
 
 	std::string LSystemProdRule::toString() const
 	{
 		std::string ret = symbol->toString();
-		ret += " --";
+		ret += " -";
 		if (probability < 1.0f)
 		{
 			ret += '[';
-			ret += std::round(probability * 100);
+			ret += std::to_string(std::round(probability * 100));
 			ret += ']';
 		}
 		ret += "-> ";

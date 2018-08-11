@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LSystemGenerator", "LSystem
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LSystemTest", "LSystemTest\LSystemTest.vcxproj", "{1A0AD9F1-E047-44D6-99B3-4D2287459242}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LSystemRenderer", "LSystemRenderer\LSystemRenderer.vcxproj", "{DF77EB4C-18DE-475B-8C24-5B69311B28AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{1A0AD9F1-E047-44D6-99B3-4D2287459242}.Release|x64.Build.0 = Release|x64
 		{1A0AD9F1-E047-44D6-99B3-4D2287459242}.Release|x86.ActiveCfg = Release|Win32
 		{1A0AD9F1-E047-44D6-99B3-4D2287459242}.Release|x86.Build.0 = Release|Win32
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Debug|x64.ActiveCfg = Debug|x64
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Debug|x64.Build.0 = Debug|x64
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Debug|x86.ActiveCfg = Debug|Win32
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Debug|x86.Build.0 = Debug|Win32
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Release|x64.ActiveCfg = Release|x64
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Release|x64.Build.0 = Release|x64
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Release|x86.ActiveCfg = Release|Win32
+		{DF77EB4C-18DE-475B-8C24-5B69311B28AF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,7 @@
 
 namespace LSystemGeneratorAPI
 {
+
 	void LSystemGenerator::test()
 	{
 		lsys::LSystem ls1;
@@ -81,4 +82,5 @@ namespace LSystemGeneratorAPI
 			std::cout << *sym;
 		std::cout << std::endl << std::endl;
 	}
+
 }

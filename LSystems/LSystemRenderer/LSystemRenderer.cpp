@@ -1,8 +1,18 @@
 
 #include "LSystemRenderer.h"
 
-namespace LSystemRendererAPI
+namespace lrend
 {
+
+	LSystemRenderer::LSystemRenderer(lsys::LSystem *lSys)
+	{
+
+	}
+
+	LSystemRenderer::~LSystemRenderer()
+	{
+
+	}
 
 	void LSystemRenderer::test()
 	{

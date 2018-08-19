@@ -18,6 +18,21 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="LSystemRenderer.cpp" />
+    <ClCompile Include="OGLCamera.cpp" />
+    <ClCompile Include="OGLRenderer.cpp" />
+    <ClCompile Include="OGLShader.cpp" />
+    <ClCompile Include="OGLTexture.cpp" />
+    <ClCompile Include="OGLTexture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LSystemRenderer.h" />
+    <ClInclude Include="OGLCamera.h" />
+    <ClInclude Include="OGLRenderer.h" />
+    <ClInclude Include="OGLShader.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3CB67474-CDA8-424C-A39A-011EC3552E58}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -141,12 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="LSystemRenderer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="LSystemRenderer.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -142,12 +142,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GraphicsTurtle.h" />
     <ClInclude Include="LSystem.h" />
     <ClInclude Include="LSystemGenerator.h" />
     <ClInclude Include="LSystemProdRule.h" />
     <ClInclude Include="LSystemSymbol.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GraphicsTurtle.cpp" />
     <ClCompile Include="LSystem.cpp" />
     <ClCompile Include="LSystemGenerator.cpp" />
     <ClCompile Include="LSystemProdRule.cpp" />

@@ -50,7 +50,7 @@ namespace lsys
 	}
 
 	LSystem::LSystem(const LSystem& lSys)
-		:params(lSys.params), actions(lSys.actions)
+		:params(lSys.params)
 	{
 		copySymbols(lSys);
 	}
@@ -63,7 +63,6 @@ namespace lsys
 			copySymbols(lSys);
 
 			params = lSys.params;
-			actions = lSys.actions;
 		}
 		return *this;
 	}

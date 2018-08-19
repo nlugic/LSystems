@@ -2,11 +2,9 @@
 #define LSYSTEM_H
 
 #include "LSystemProdRule.h"
-#include <functional>
+#include "GraphicsTurtle.h"
 
 // move?
-// akcije i njihovo mesto?
-// random seed i odredjivanje pravila?
 
 namespace lsys
 {
@@ -22,8 +20,8 @@ namespace lsys
 		std::vector<LSystemSymbol *> axiom;
 		std::vector<LSystemProdRule *> rules;
 		std::map<char, float> params;
-		std::map<char, std::function<void(float)>> actions;
 		std::vector<std::vector<LSystemSymbol *>> products;
+		GraphicsTurtle turtle;
 
 	public:
 		LSystem();

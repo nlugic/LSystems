@@ -4,6 +4,14 @@
 namespace lsys
 {
 
+	GraphicsTurtle::GraphicsTurtle()
+	{
 
+	}
+
+	GraphicsTurtle::~GraphicsTurtle()
+	{
+
+	}
 
 }

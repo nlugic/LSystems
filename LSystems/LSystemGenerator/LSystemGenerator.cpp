@@ -66,15 +66,14 @@ namespace LSystemGeneratorAPI
 		ls2 = ls3;
 		ls3 = ls1;
 
-		std::cout << ls2 << std::endl;
+		std::vector<lsys::LSystemSymbol *> level3 = ls2[3];
+		std::vector<lsys::LSystemSymbol *> level4 = ls3[8];
 
-		std::vector<lsys::LSystemSymbol *> level3 = ls3[8];
+		std::cout << ls2 << std::endl;
 
 		for (lsys::LSystemSymbol *sym : level3)
 			std::cout << *sym;
 		std::cout << std::endl << std::endl;
-
-		std::vector<lsys::LSystemSymbol *> level4 = ls2[3];
 
 		std::cout << ls3 << std::endl;
 

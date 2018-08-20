@@ -17,8 +17,8 @@ namespace lsys
 
 	public:
 		GraphicsTurtle();
-		GraphicsTurtle(const GraphicsTurtle& trt);
-		GraphicsTurtle& operator=(const GraphicsTurtle& trt);
+		GraphicsTurtle(const GraphicsTurtle& trt) = delete;
+		GraphicsTurtle& operator=(const GraphicsTurtle& trt) = delete;
 		virtual ~GraphicsTurtle();
 
 	};

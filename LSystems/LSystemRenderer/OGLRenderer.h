@@ -14,13 +14,17 @@ namespace lrend
 
 	class OGLRenderer
 	{
-	protected:
-		unsigned width, height;
+	private:
 		GLFWwindow *glWindow;
 		unsigned vao, vbo;
 		OGLShader *shaderProgram;
 		std::vector<OGLTexture *> textures;
-		OGLCamera camera;
+
+		static unsigned width, height;
+		static bool mouseMoved;
+		static unsigned lastXPos, lastYPos;
+		static float deltaTime, lastFrame;
+		static OGLCamera camera;
 
 		GLFWwindow* initGLWindow(const char *caption);
 
@@ -35,6 +39,11 @@ namespace lrend
 		void initArrays(float *data, size_t size);
 		void writeVBO(float *data, size_t size);
 		void render();
+
+		void processInput(GLFWwindow *wnd);
+		static void onWindowResize(GLFWwindow *wnd, int w, int h);
+		static void onMouseMove(GLFWwindow *wnd, double xPos, double yPos);
+		static void onMouseScroll(GLFWwindow *wnd, double xOff, double yOff);
 	};
 
 }

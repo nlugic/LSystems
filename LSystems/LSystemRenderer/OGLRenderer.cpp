@@ -5,6 +5,15 @@
 
 namespace lrend
 {
+	
+	unsigned OGLRenderer::width = 800;
+	unsigned OGLRenderer::height = 600;
+	bool OGLRenderer::mouseMoved = false;
+	unsigned OGLRenderer::lastXPos = 400;
+	unsigned OGLRenderer::lastYPos = 300;
+	float OGLRenderer::deltaTime = 0.0f;
+	float OGLRenderer::lastFrame = 0.0f;
+	OGLCamera OGLRenderer::camera = OGLCamera(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	GLFWwindow* OGLRenderer::initGLWindow(const char *caption)
 	{
@@ -18,15 +27,24 @@ namespace lrend
 
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-		glfwSetInputMode(tWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 		glViewport(0, 0, width, height);
+
+		glfwSetInputMode(tWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetWindowSizeCallback(tWnd, (GLFWwindowsizefun)onWindowResize);
+		glfwSetCursorPosCallback(tWnd, (GLFWcursorposfun)onMouseMove);
+		glfwSetScrollCallback(tWnd, (GLFWscrollfun)onMouseScroll);
 
 		return tWnd;
 	}
 
 	OGLRenderer::OGLRenderer(unsigned w, unsigned h, const char *caption)
-		:width(w), height(h), glWindow(initGLWindow(caption)), camera(glm::vec3(0.0f, 0.0f, 0.0f)) { }
+		:glWindow(OGLRenderer::initGLWindow(caption)), shaderProgram(nullptr)
+	{
+		OGLRenderer::width = w;
+		OGLRenderer::height = h;
+		OGLRenderer::lastXPos = w / 2;
+		OGLRenderer::lastYPos = h / 2;
+	}
 
 	OGLRenderer::~OGLRenderer()
 	{
@@ -39,6 +57,8 @@ namespace lrend
 
 	void OGLRenderer::createShader(const char *vertexPath, const char *fragmentPath)
 	{
+		if (shaderProgram != nullptr)
+			delete shaderProgram;
 		shaderProgram = new OGLShader(vertexPath, fragmentPath);
 	}
 
@@ -78,6 +98,49 @@ namespace lrend
 			glfwSwapBuffers(glWindow);
 			glfwPollEvents();
 		}
+	}
+
+	void OGLRenderer::processInput(GLFWwindow *wnd)
+	{
+		if (glfwGetKey(wnd, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			glfwSetWindowShouldClose(wnd, true);
+
+		if (glfwGetKey(wnd, GLFW_KEY_W) == GLFW_PRESS)
+			OGLRenderer::camera.move(FORWARD, deltaTime);
+		if (glfwGetKey(wnd, GLFW_KEY_S) == GLFW_PRESS)
+			OGLRenderer::camera.move(BACKWARDS, deltaTime);
+		if (glfwGetKey(wnd, GLFW_KEY_A) == GLFW_PRESS)
+			OGLRenderer::camera.move(LEFT, deltaTime);
+		if (glfwGetKey(wnd, GLFW_KEY_D) == GLFW_PRESS)
+			OGLRenderer::camera.move(RIGHT, deltaTime);
+	}
+
+	void OGLRenderer::onWindowResize(GLFWwindow *wnd, int w, int h)
+	{
+		OGLRenderer::width = w;
+		OGLRenderer::height = h;
+
+		glViewport(0, 0, w, h);
+	}
+
+	void OGLRenderer::onMouseMove(GLFWwindow *wnd, double xPos, double yPos)
+	{
+		if (!OGLRenderer::mouseMoved)
+		{
+			OGLRenderer::lastXPos = xPos;
+			OGLRenderer::lastYPos = yPos;
+			OGLRenderer::mouseMoved = true;
+		}
+
+		OGLRenderer::camera.look(xPos - lastXPos, lastYPos - yPos);
+
+		OGLRenderer::lastXPos = xPos;
+		OGLRenderer::lastYPos = yPos;
+	}
+
+	void OGLRenderer::onMouseScroll(GLFWwindow *wnd, double xOff, double yOff)
+	{
+		OGLRenderer::camera.zoom(yOff);
 	}
 
 }

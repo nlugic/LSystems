@@ -8,13 +8,13 @@ namespace lrend
 
 	OGLCamera::OGLCamera(glm::vec3 pos, glm::vec3 up, float y, float p)
 		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f),
-		zoom(45.0f), position(pos), worldUp(up), yaw(y), pitch(p)
+		fov(45.0f), position(pos), worldUp(up), yaw(y), pitch(p)
 	{
 		updateCameraVectors();
 	}
 
 	OGLCamera::OGLCamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float y, float p)
-		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f), zoom(45.0f),
+		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f), fov(45.0f),
 		position(glm::vec3(posX, posY, posZ)), worldUp(glm::vec3(upX, upY, upZ)), yaw(y), pitch(p)
 	{
 		updateCameraVectors();
@@ -25,20 +25,24 @@ namespace lrend
 		return glm::lookAt(position, position + front, up);
 	}
 
-	void OGLCamera::processKeyboard(MovementDirection direction, float deltaTime)
+	void OGLCamera::move(MovementDirection direction, float deltaTime)
 	{
 		float velocity = speed * deltaTime;
-		if (direction == FORWARD)
-			position += front * velocity;
-		if (direction == BACKWARD)
-			position -= front * velocity;
-		if (direction == LEFT)
-			position -= right * velocity;
-		if (direction == RIGHT)
-			position += right * velocity;
+
+		switch (direction)
+		{
+			case FORWARD: position += front * velocity;
+				break;
+			case BACKWARDS: position -= front * velocity;
+				break;
+			case LEFT: position -= right * velocity;
+				break;
+			case RIGHT: position += right * velocity;
+				break;
+		}
 	}
 
-	void OGLCamera::processMouseMovement(float xOffset, float yOffset, bool constrainPitch)
+	void OGLCamera::look(float xOffset, float yOffset, bool constrainPitch)
 	{
 		xOffset *= sensitivity;
 		yOffset *= sensitivity;
@@ -57,14 +61,14 @@ namespace lrend
 		updateCameraVectors();
 	}
 
-	void OGLCamera::processMouseScroll(float yOffset)
+	void OGLCamera::zoom(float yOffset)
 	{
-		if (zoom >= 1.0f && zoom <= 45.0f)
-			zoom -= yOffset;
-		if (zoom <= 1.0f)
-			zoom = 1.0f;
-		if (zoom >= 45.0f)
-			zoom = 45.0f;
+		if (fov >= 1.0f && fov <= 45.0f)
+			fov -= yOffset;
+		if (fov <= 1.0f)
+			fov = 1.0f;
+		if (fov >= 45.0f)
+			fov = 45.0f;
 	}
 
 	void OGLCamera::updateCameraVectors()

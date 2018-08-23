@@ -148,6 +148,9 @@
     <ProjectReference Include="..\LSystemGenerator\LSystemGenerator.vcxproj">
       <Project>{6a4fb46b-21aa-4fa7-a155-57a0d220b5bb}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\LSystemRenderer\LSystemRenderer.vcxproj">
+      <Project>{3cb67474-cda8-424c-a39a-011ec3552e58}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

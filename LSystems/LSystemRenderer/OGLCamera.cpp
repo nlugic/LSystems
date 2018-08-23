@@ -13,11 +13,9 @@ namespace lrend
 		updateCameraVectors();
 	}
 
-	OGLCamera::OGLCamera(float posX, float posY, float posZ, float upX, float upY, float upZ, float y, float p)
-		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f), fov(45.0f),
-		position(glm::vec3(posX, posY, posZ)), worldUp(glm::vec3(upX, upY, upZ)), yaw(y), pitch(p)
+	float OGLCamera::getFOV()
 	{
-		updateCameraVectors();
+		return fov;
 	}
 
 	glm::mat4 OGLCamera::getViewMatrix()
@@ -29,17 +27,14 @@ namespace lrend
 	{
 		float velocity = speed * deltaTime;
 
-		switch (direction)
-		{
-			case FORWARD: position += front * velocity;
-				break;
-			case BACKWARDS: position -= front * velocity;
-				break;
-			case LEFT: position -= right * velocity;
-				break;
-			case RIGHT: position += right * velocity;
-				break;
-		}
+		if (direction == FORWARD)
+			position += front * velocity;
+		if (direction == BACKWARDS)
+			position -= front * velocity;
+		if (direction == LEFT)
+			position -= right * velocity;
+		if (direction == RIGHT)
+			position += right * velocity;
 	}
 
 	void OGLCamera::look(float xOffset, float yOffset, bool constrainPitch)
@@ -52,9 +47,9 @@ namespace lrend
 
 		if (constrainPitch)
 		{
-			if (pitch >= 89.0f)
+			if (pitch > 89.0f)
 				pitch = 89.0f;
-			if (pitch <= -89.0f)
+			if (pitch < -89.0f)
 				pitch = -89.0f;
 		}
 

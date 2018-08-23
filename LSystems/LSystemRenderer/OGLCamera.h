@@ -27,6 +27,7 @@ namespace lrend
 			float y = -90.0f, float p = 0.0f);
 		~OGLCamera() = default;
 
+		float getFOV();
 		glm::mat4 getViewMatrix();
 		void move(MovementDirection direction, float deltaTime);
 		void look(float xOffset, float yOffset, bool constrainPitch = true);

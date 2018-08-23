@@ -6,7 +6,7 @@
 namespace lrend
 {
 
-	enum { MSG_BUF_SIZE = 512 };
+	const size_t msg_buf_size = 512;
 
 	class OGLShader
 	{

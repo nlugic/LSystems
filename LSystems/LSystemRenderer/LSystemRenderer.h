@@ -16,14 +16,13 @@ namespace lrend
 	class LSystemRenderer
 	{
 	protected:
-		lsys::LSystem *current; // vector?
-		OGLRenderer renderer;
+		lsys::LSystem *current;
 
 	public:
 		LSystemRenderer(lsys::LSystem *lSys);
 		LSystemRenderer(const LSystemRenderer& lRnd) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer& lRnd) = delete;
-		virtual ~LSystemRenderer();
+		~LSystemRenderer();
 
 		static LSYSTEMRENDERER_API void test();
 	};

@@ -40,9 +40,10 @@ namespace lrend
 
 		unsigned vertexId, fragmentId;
 		int success;
-		char errorMsg[MSG_BUF_SIZE];
+		char errorMsg[msg_buf_size];
 
-		const char *vCode = vertexCode.str().c_str();
+		std::string vCodeStr = vertexCode.str();
+		const char *vCode = vCodeStr.c_str();
 		vertexId = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertexId, 1, &vCode, nullptr);
 		glCompileShader(vertexId);
@@ -50,12 +51,13 @@ namespace lrend
 		glGetShaderiv(vertexId, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(vertexId, MSG_BUF_SIZE, nullptr, errorMsg);
+			glGetShaderInfoLog(vertexId, msg_buf_size, nullptr, errorMsg);
 			std::cout << "An error ocurred while compiling the vertex shader." << std::endl
 				<< errorMsg << std::endl;
 		}
 
-		const char *fCode = fragmentCode.str().c_str();
+		std::string fCodeStr = fragmentCode.str();
+		const char *fCode = fCodeStr.c_str();
 		fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fragmentId, 1, &fCode, nullptr);
 		glCompileShader(fragmentId);
@@ -63,8 +65,9 @@ namespace lrend
 		glGetShaderiv(fragmentId, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(fragmentId, MSG_BUF_SIZE, nullptr, errorMsg);
-			std::cout << "An error ocurred while compiling the fragment shader." << std::endl << errorMsg << std::endl;
+			glGetShaderInfoLog(fragmentId, msg_buf_size, nullptr, errorMsg);
+			std::cout << "An error ocurred while compiling the fragment shader." << std::endl
+				<< errorMsg << std::endl;
 		}
 
 		glAttachShader(shaderId, vertexId);
@@ -74,7 +77,7 @@ namespace lrend
 		glGetProgramiv(shaderId, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetProgramInfoLog(shaderId, MSG_BUF_SIZE, nullptr, errorMsg);
+			glGetProgramInfoLog(shaderId, msg_buf_size, nullptr, errorMsg);
 			std::cout << "An error ocurred while linking the shader program." << std::endl
 				<< errorMsg << std::endl;
 		}

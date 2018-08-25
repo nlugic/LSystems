@@ -20,18 +20,18 @@ namespace lrend
 	class OGLRenderer
 	{
 	private:
-		static unsigned width, height;
+		static int width, height;
 		static GLFWwindow *glWindow;
 
 		static bool mouseMoved;
-		static unsigned lastXPos, lastYPos;
+		static int lastXPos, lastYPos;
 		static float deltaTime, lastFrame;
 		static OGLCamera *camera;
 
 		static unsigned vao, vbo;
 		static std::vector<float> vertexBuffer;
 		static OGLShader *shaderProgram;
-		static std::vector<unsigned char *> textures;
+		static std::vector<OGLTexture *> textures;
 
 		OGLRenderer() = default;
 		OGLRenderer(const OGLRenderer&) = delete;
@@ -51,7 +51,7 @@ namespace lrend
 	public:
 		~OGLRenderer() = default;
 
-		static void renderScene(const std::vector<float>& vBuf, const std::vector<unsigned char *>& texData,
+		static void renderScene(const std::vector<float>& vBuf, const std::vector<OGLTexture *>& texData,
 			unsigned w = defaultWidth, unsigned h = defaultHeight, const glm::vec3& cPos = defaultCamPos,
 			const char *vSh = "../LSystemRenderer/shader.vert", const char *fSh = "../LSystemRenderer/shader.frag", const char *cap = "L-Systems Renderer");
 	};

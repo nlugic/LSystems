@@ -39,11 +39,8 @@ namespace lrend
 
 	void OGLCamera::look(float xOffset, float yOffset, bool constrainPitch)
 	{
-		xOffset *= sensitivity;
-		yOffset *= sensitivity;
-
-		yaw += xOffset;
-		pitch += yOffset;
+		yaw += xOffset * sensitivity;
+		pitch += yOffset * sensitivity;
 
 		if (constrainPitch)
 		{
@@ -68,11 +65,11 @@ namespace lrend
 
 	void OGLCamera::updateCameraVectors()
 	{
-		glm::vec3 fr;
-		fr.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		fr.y = sin(glm::radians(pitch));
-		fr.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-		front = glm::normalize(fr);
+		glm::vec3 newFront;
+		newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+		newFront.y = sin(glm::radians(pitch));
+		newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+		front = glm::normalize(newFront);
 
 		right = glm::normalize(glm::cross(front, worldUp));
 		up = glm::normalize(glm::cross(right, front));

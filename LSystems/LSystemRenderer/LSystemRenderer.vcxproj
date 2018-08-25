@@ -26,16 +26,21 @@
     <ClCompile Include="OGLShader.cpp" />
     <ClCompile Include="OGLTexture.cpp" />
     <ClCompile Include="OGLTexture.h" />
+    <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LSystemRenderer.h" />
     <ClInclude Include="OGLCamera.h" />
     <ClInclude Include="OGLRenderer.h" />
     <ClInclude Include="OGLShader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
     <None Include="shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3CB67474-CDA8-424C-A39A-011EC3552E58}</ProjectGuid>

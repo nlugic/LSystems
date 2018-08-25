@@ -11,73 +11,63 @@
 namespace lrend
 {
 
-	OGLShader::OGLShader(const char *vertexPath, const char *fragmentPath)
-		:shaderId(glCreateProgram())
+	unsigned OGLShader::createShader(const char *path, unsigned short type) const
 	{
-		std::ifstream vertexIn, fragmentIn;
-		vertexIn.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-		fragmentIn.exceptions(std::ifstream::badbit | std::ifstream::failbit);
+		std::ifstream in;
+		in.exceptions(std::ifstream::badbit | std::ifstream::failbit);
 
-		std::stringstream vertexCode;
-		std::stringstream fragmentCode;
+		std::stringstream codeStream;
 
 		try
 		{
-			vertexIn.open(vertexPath);
-			fragmentIn.open(fragmentPath);
-
-			vertexCode << vertexIn.rdbuf();
-			fragmentCode << fragmentIn.rdbuf();
-
-			vertexIn.close();
-			fragmentIn.close();
+			in.open(path);
+			codeStream << in.rdbuf();
+			in.close();
 		}
-		catch (std::ifstream::failure& e)
+		catch (const std::ifstream::failure& e)
 		{
 			std::cout << "An error ocurred while reading shader code." << std::endl
 				<< e.what() << std::endl;
 		}
 
-		unsigned vertexId, fragmentId;
+		unsigned id;
 		int success;
 		char errorMsg[msg_buf_size];
 
-		std::string vCodeStr = vertexCode.str();
-		const char *vCode = vCodeStr.c_str();
-		vertexId = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexId, 1, &vCode, nullptr);
-		glCompileShader(vertexId);
+		std::string codeStr = codeStream.str();
+		const char *code = codeStr.c_str();
+		id = glCreateShader(type);
+		glShaderSource(id, 1, &code, nullptr);
+		glCompileShader(id);
 
-		glGetShaderiv(vertexId, GL_COMPILE_STATUS, &success);
+		glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(vertexId, msg_buf_size, nullptr, errorMsg);
-			std::cout << "An error ocurred while compiling the vertex shader." << std::endl
-				<< errorMsg << std::endl;
+			glGetShaderInfoLog(id, msg_buf_size, nullptr, errorMsg);
+			std::cout << "An error ocurred while compiling the " << ((type == GL_VERTEX_SHADER) ? "vertex" : "fragment")
+				<< " shader." << std::endl << errorMsg << std::endl;
 		}
 
-		std::string fCodeStr = fragmentCode.str();
-		const char *fCode = fCodeStr.c_str();
-		fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentId, 1, &fCode, nullptr);
-		glCompileShader(fragmentId);
+		return id;
+	}
 
-		glGetShaderiv(fragmentId, GL_COMPILE_STATUS, &success);
+	OGLShader::OGLShader(const char *vertexPath, const char *fragmentPath)
+		:programId(glCreateProgram())
+	{
+		unsigned vertexId = createShader(vertexPath, GL_VERTEX_SHADER);
+		unsigned fragmentId = createShader(fragmentPath, GL_FRAGMENT_SHADER);
+
+		int success;
+		char errorMsg[msg_buf_size];
+
+		glAttachShader(programId, vertexId);
+		glAttachShader(programId, fragmentId);
+		glLinkProgram(programId);
+
+		glGetProgramiv(programId, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(fragmentId, msg_buf_size, nullptr, errorMsg);
-			std::cout << "An error ocurred while compiling the fragment shader." << std::endl
-				<< errorMsg << std::endl;
-		}
-
-		glAttachShader(shaderId, vertexId);
-		glAttachShader(shaderId, fragmentId);
-		glLinkProgram(shaderId);
-
-		glGetProgramiv(shaderId, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{
-			glGetProgramInfoLog(shaderId, msg_buf_size, nullptr, errorMsg);
+			glGetProgramInfoLog(programId, msg_buf_size, nullptr, errorMsg);
 			std::cout << "An error ocurred while linking the shader program." << std::endl
 				<< errorMsg << std::endl;
 		}
@@ -88,22 +78,42 @@ namespace lrend
 
 	OGLShader::~OGLShader()
 	{
-		glDeleteProgram(shaderId);
+		glDeleteProgram(programId);
 	}
 
 	void OGLShader::use() const
 	{
-		glUseProgram(shaderId);
+		glUseProgram(programId);
 	}
 
 	void OGLShader::setInt(const char *name, int value) const
 	{
-		glUniform1i(glGetUniformLocation(shaderId, name), value);
+		glUniform1i(glGetUniformLocation(programId, name), value);
 	}
 
-	void OGLShader::setFloatMX4(const char *name, const glm::mat4& value) const
+	void OGLShader::setFloat(const char *name, float value) const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(shaderId, name), 1, GL_FALSE, glm::value_ptr(value));
+		glUniform1f(glGetUniformLocation(programId, name), value);
+	}
+
+	void OGLShader::setFloatVx3(const char *name, const glm::vec3& value) const
+	{
+		glUniform3fv(glGetUniformLocation(programId, name), 1, glm::value_ptr(value));
+	}
+
+	void OGLShader::setFloatVx4(const char *name, const glm::vec4& value) const
+	{
+		glUniform4fv(glGetUniformLocation(programId, name), 1, glm::value_ptr(value));
+	}
+
+	void OGLShader::setFloatMx3(const char *name, const glm::mat3& value) const
+	{
+		glUniformMatrix3fv(glGetUniformLocation(programId, name), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void OGLShader::setFloatMx4(const char *name, const glm::mat4& value) const
+	{
+		glUniformMatrix4fv(glGetUniformLocation(programId, name), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
 }

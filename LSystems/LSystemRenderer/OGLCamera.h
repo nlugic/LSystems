@@ -25,6 +25,8 @@ namespace lrend
 	public:
 		OGLCamera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
 			float y = -90.0f, float p = 0.0f);
+		OGLCamera(const OGLCamera&) = delete;
+		OGLCamera& operator=(const OGLCamera&) = delete;
 		~OGLCamera() = default;
 
 		float getFOV();

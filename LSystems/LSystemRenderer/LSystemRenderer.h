@@ -20,8 +20,8 @@ namespace lrend
 
 	public:
 		LSystemRenderer(lsys::LSystem *lSys);
-		LSystemRenderer(const LSystemRenderer& lRnd) = delete;
-		LSystemRenderer& operator=(const LSystemRenderer& lRnd) = delete;
+		LSystemRenderer(const LSystemRenderer&) = delete;
+		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 
 		static LSYSTEMRENDERER_API void test();

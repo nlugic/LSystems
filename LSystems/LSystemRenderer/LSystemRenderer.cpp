@@ -67,7 +67,7 @@ namespace lrend
 		};
 
 		std::vector<float> vert(temena, temena + sizeof(temena) / sizeof(temena[0]));
-		std::vector<unsigned char *> tex;
+		std::vector<OGLTexture *> tex;
 
 		OGLRenderer::renderScene(vert, tex);
 	}

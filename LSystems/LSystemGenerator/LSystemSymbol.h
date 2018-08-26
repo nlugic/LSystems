@@ -21,8 +21,9 @@ namespace lsys
 		LSystemSymbol(char k, const char *params);
 		LSystemSymbol(const LSystemSymbol& sym);
 		LSystemSymbol& operator=(const LSystemSymbol& sym);
-		virtual ~LSystemSymbol();
+		virtual ~LSystemSymbol() = default;
 
+		char getKey() const;
 		float getParam(char param);
 		void setParam(char param, float value);
 		void createParam(char param);

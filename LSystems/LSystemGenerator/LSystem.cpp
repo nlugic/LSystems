@@ -41,7 +41,23 @@ namespace lsys
 		products.push_back(prod);
 	}
 
-	LSystem::LSystem() { }
+	void LSystem::initTurtleFunctions()
+	{
+		turtle.setFunction('[', saveTurtleState);
+		turtle.setFunction(']', restoreTurtleState);
+		turtle.setFunction('+', turnTurtleLeft);
+		turtle.setFunction('-', turnTurtleRight);
+		turtle.setFunction('^', pitchTurtleUp);
+		turtle.setFunction('&', pitchTurtleDown);
+		turtle.setFunction('\\', rollTurtleLeft);
+		turtle.setFunction('/', rollTurtleRight);
+		turtle.setFunction('|', turnTurtleAround);
+	}
+
+	LSystem::LSystem()
+	{
+		initTurtleFunctions();
+	}
 
 	LSystem::LSystem(const char *params)
 	{

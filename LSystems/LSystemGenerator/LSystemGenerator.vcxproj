@@ -147,6 +147,7 @@
     <ClInclude Include="LSystemGenerator.h" />
     <ClInclude Include="LSystemProdRule.h" />
     <ClInclude Include="LSystemSymbol.h" />
+    <ClInclude Include="TurtleDrawingFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsTurtle.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="LSystemGenerator.cpp" />
     <ClCompile Include="LSystemProdRule.cpp" />
     <ClCompile Include="LSystemSymbol.cpp" />
+    <ClCompile Include="TurtleDrawingFunctions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

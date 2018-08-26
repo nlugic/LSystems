@@ -240,7 +240,7 @@ namespace lrend
 			OGLRenderer::lastFrame = currentFrame;
 			
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
 			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 			shaderProgram->setFloatMx4("model", model);
 

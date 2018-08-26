@@ -4,7 +4,8 @@
 namespace lsys
 {
 
-	LSystemSymbol::LSystemSymbol(char k) :key(k) { }
+	LSystemSymbol::LSystemSymbol(char k)
+		:key(k) { }
 
 
 	LSystemSymbol::LSystemSymbol(char k, const char *params)
@@ -27,7 +28,10 @@ namespace lsys
 		return *this;
 	}
 
-	LSystemSymbol::~LSystemSymbol() { }
+	char LSystemSymbol::getKey() const
+	{
+		return key;
+	}
 
 	float LSystemSymbol::getParam(char param)
 	{

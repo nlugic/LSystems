@@ -2,7 +2,7 @@
 #define LSYSTEM_H
 
 #include "LSystemProdRule.h"
-#include "GraphicsTurtle.h"
+#include "TurtleDrawingFunctions.h"
 
 // move?
 
@@ -15,6 +15,7 @@ namespace lsys
 		void clearSymbols();
 		void copySymbols(const LSystem& lSys);
 		void produceAxiom();
+		void initTurtleFunctions();
 
 	protected:
 		std::vector<LSystemSymbol *> axiom;

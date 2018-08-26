@@ -1,14 +1,13 @@
 
 #include "OGLCamera.h"
-
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
 namespace lrend
 {
 
-	OGLCamera::OGLCamera(glm::vec3 pos, glm::vec3 up, float y, float p)
+	OGLCamera::OGLCamera(glm::vec3 pos, glm::vec3 up, float yw, float pch)
 		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f),
-		fov(45.0f), position(pos), worldUp(up), yaw(y), pitch(p)
+		fov(45.0f), position(pos), worldUp(up), yaw(yw), pitch(pch)
 	{
 		updateCameraVectors();
 	}
@@ -37,18 +36,15 @@ namespace lrend
 			position += right * velocity;
 	}
 
-	void OGLCamera::look(float xOffset, float yOffset, bool constrainPitch)
+	void OGLCamera::look(float xOffset, float yOffset)
 	{
 		yaw += xOffset * sensitivity;
 		pitch += yOffset * sensitivity;
 
-		if (constrainPitch)
-		{
-			if (pitch > 89.0f)
-				pitch = 89.0f;
-			if (pitch < -89.0f)
-				pitch = -89.0f;
-		}
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
 
 		updateCameraVectors();
 	}

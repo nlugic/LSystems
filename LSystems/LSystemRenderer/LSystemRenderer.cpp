@@ -14,60 +14,54 @@ namespace lrend
 
 	void LSystemRenderer::test()
 	{
-
-		/*
-		vert.push_back(-0.5f);
-		vert.push_back(-0.5f);
-		vert.push_back(-1.0f);
-		vert.push_back(0.5f);
-		vert.push_back(-0.5f);
-		vert.push_back(-1.0f);
-		vert.push_back(0.0f);
-		vert.push_back(0.5f);
-		vert.push_back(-1.0f);
-		*/
-
-		float temena[] = {
-			-0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f, 0.5f, -0.5f,
-			0.5f, 0.5f, -0.5f,
-			-0.5f, 0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f, 0.5f,
-			0.5f, -0.5f, 0.5f,
-			0.5f, 0.5f, 0.5f,
-			0.5f, 0.5f, 0.5f,
-			-0.5f, 0.5f, 0.5f,
-			-0.5f, -0.5f, 0.5f,
-			-0.5f, 0.5f, 0.5f,
-			-0.5f, 0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, -0.5f, 0.5f,
-			-0.5f, 0.5f, 0.5f,
-			0.5f, 0.5f, 0.5f,
-			0.5f, 0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, 0.5f,
-			0.5f, 0.5f, 0.5f,
-			-0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, -0.5f,
-			0.5f, -0.5f, 0.5f,
-			0.5f, -0.5f, 0.5f,
-			-0.5f, -0.5f, 0.5f,
-			-0.5f, -0.5f, -0.5f,
-			-0.5f, 0.5f, -0.5f,
-			0.5f, 0.5f, -0.5f,
-			0.5f, 0.5f, 0.5f,
-			0.5f, 0.5f, 0.5f,
-			-0.5f, 0.5f, 0.5f,
-			-0.5f, 0.5f, -0.5f
+		float vertices[] = {
+			// back
+			-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			// front
+			-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+			// left
+			-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+			-0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+			// right
+			0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			// bottom
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+			0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+			-0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			// top
+			0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
+			0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f
 		};
 
-		std::vector<float> vert(temena, temena + sizeof(temena) / sizeof(temena[0]));
-		std::vector<OGLTexture *> tex;
+		std::vector<float> vert(vertices, vertices + sizeof(vertices) / sizeof(vertices[0]));
+		std::vector<const char *> tex;
+		tex.push_back("../LSystemRenderer/test.png");
 
 		OGLRenderer::renderScene(vert, tex);
 	}

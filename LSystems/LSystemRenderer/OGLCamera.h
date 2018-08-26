@@ -24,7 +24,7 @@ namespace lrend
 
 	public:
 		OGLCamera(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
-			float y = -90.0f, float p = 0.0f);
+			float yw = -90.0f, float pch = 0.0f);
 		OGLCamera(const OGLCamera&) = delete;
 		OGLCamera& operator=(const OGLCamera&) = delete;
 		~OGLCamera() = default;
@@ -32,7 +32,7 @@ namespace lrend
 		float getFOV();
 		glm::mat4 getViewMatrix();
 		void move(MovementDirection direction, float deltaTime);
-		void look(float xOffset, float yOffset, bool constrainPitch = true);
+		void look(float xOffset, float yOffset);
 		void zoom(float yOffset);
 	};
 

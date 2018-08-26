@@ -1,10 +1,13 @@
 #version 450 core
 
+in float texPointer;
+in vec2 texCoordinate;
+
 out vec4 frColor;
 
-uniform sampler2D tex;
+uniform sampler2D tex[16];
 
 void main()
 {
-	frColor = vec4(0.7f, 0.6f, 0.2f, 1.0f);
+	frColor = texture(tex[int(texPointer)], texCoordinate);
 }

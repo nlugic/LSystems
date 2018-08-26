@@ -13,14 +13,13 @@ namespace lrend
 		void createTexture();
 
 	public:
-		static unsigned nextTexture;
+		static unsigned char texPointer;
 
 		OGLTexture(const char *path);
-		OGLTexture(unsigned char *data, unsigned w, unsigned h);
+		OGLTexture(unsigned char *data, int w, int h);
 		OGLTexture(const OGLTexture&) = delete;
 		OGLTexture& operator=(const OGLTexture&) = delete;
 		~OGLTexture();
-
 	};
 
 }

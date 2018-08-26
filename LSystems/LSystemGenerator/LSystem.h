@@ -30,7 +30,7 @@ namespace lsys
 		LSystem& operator=(const LSystem& lSys);
 		virtual ~LSystem();
 
-		int getCurrentLevel() const;
+		size_t getCurrentLevel() const;
 		void addSymbolToAxiom(LSystemSymbol *sym);
 		void addRule(LSystemProdRule *rule);
 		float getParam(char param);

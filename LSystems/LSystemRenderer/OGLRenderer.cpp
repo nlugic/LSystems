@@ -1,8 +1,6 @@
 
 #include "OGLRenderer.h"
-
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
-
 #include <iostream>
 
 #pragma comment (lib, "..\\..\\lib\\glfw3d.lib")
@@ -14,8 +12,8 @@ namespace lrend
 	int OGLRenderer::height = defaultHeight;
 	GLFWwindow *OGLRenderer::glWindow = nullptr;
 	bool OGLRenderer::mouseMoved = false;
-	int OGLRenderer::lastXPos = defaultWidth / 2;
-	int OGLRenderer::lastYPos = defaultHeight / 2;
+	double OGLRenderer::lastXPos = defaultWidth / 2.0;
+	double OGLRenderer::lastYPos = defaultHeight / 2.0;
 	float OGLRenderer::deltaTime = 0.0f;
 	float OGLRenderer::lastFrame = 0.0f;
 	OGLCamera *OGLRenderer::camera = nullptr;
@@ -62,10 +60,17 @@ namespace lrend
 
 	void OGLRenderer::destroyGLWindow()
 	{
+		OGLRenderer::vertexBuffer.clear();
+
 		if (OGLRenderer::camera)
 			delete OGLRenderer::camera;
 		if (OGLRenderer::shaderProgram)
 			delete OGLRenderer::shaderProgram;
+
+		for (OGLTexture *tex : OGLRenderer::textures)
+			delete tex;
+		OGLRenderer::textures.clear();
+		OGLTexture::texPointer = 0U;
 
 		glDeleteVertexArrays(1, &OGLRenderer::vbo);
 		glDeleteVertexArrays(1, &OGLRenderer::vao);
@@ -75,8 +80,8 @@ namespace lrend
 		OGLRenderer::height = defaultHeight;
 		OGLRenderer::glWindow = nullptr;
 		OGLRenderer::mouseMoved = false;
-		OGLRenderer::lastXPos = defaultWidth / 2;
-		OGLRenderer::lastYPos = defaultHeight / 2;
+		OGLRenderer::lastXPos = defaultWidth / 2U;
+		OGLRenderer::lastYPos = defaultHeight / 2U;
 		OGLRenderer::deltaTime = 0.0f;
 		OGLRenderer::lastFrame = 0.0f;
 		OGLRenderer::camera = nullptr;
@@ -95,8 +100,12 @@ namespace lrend
 		glBindBuffer(GL_ARRAY_BUFFER, OGLRenderer::vbo);
 		glBufferData(GL_ARRAY_BUFFER, OGLRenderer::vertexBuffer.size() * sizeof(float), OGLRenderer::vertexBuffer.data(), GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
 		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void *)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void *)(5 * sizeof(float)));
+		glEnableVertexAttribArray(2);
 	}
 
 	void OGLRenderer::initCamera(const glm::vec3& cameraPosition)
@@ -111,6 +120,27 @@ namespace lrend
 		if (OGLRenderer::shaderProgram)
 			delete OGLRenderer::shaderProgram;
 		OGLRenderer::shaderProgram = new OGLShader(vertexPath, fragmentPath);
+	}
+
+	void OGLRenderer::initTextures(const std::vector<const char *>& texturePaths)
+	{
+		if (OGLRenderer::textures.size() > 0)
+		{
+			for (OGLTexture *tex : OGLRenderer::textures)
+				delete tex;
+			OGLRenderer::textures.clear();
+		}
+
+		for (const char *path : texturePaths)
+			OGLRenderer::textures.push_back(new OGLTexture(path));
+
+		for (unsigned char i = 0; i < 16; ++i)
+		{
+			std::string name = "tex[";
+			name += std::to_string(i);
+			name += ']';
+			OGLRenderer::shaderProgram->setInt(name.c_str(), i);
+		}
 	}
 
 	void OGLRenderer::processInput(GLFWwindow *wnd)
@@ -145,35 +175,44 @@ namespace lrend
 			OGLRenderer::mouseMoved = true;
 		}
 
-		float xOff = xPos - OGLRenderer::lastXPos;
-		float yOff = OGLRenderer::lastYPos - yPos;
+		double xOff = xPos - OGLRenderer::lastXPos;
+		double yOff = OGLRenderer::lastYPos - yPos;
 
 		OGLRenderer::lastXPos = xPos;
 		OGLRenderer::lastYPos = yPos;
 
-		OGLRenderer::camera->look(xOff, yOff);
+		OGLRenderer::camera->look(static_cast<float>(xOff), static_cast<float>(yOff));
 	}
 
 	void OGLRenderer::onMouseScroll(GLFWwindow *wnd, double xOff, double yOff)
 	{
-		OGLRenderer::camera->zoom(yOff);
+		OGLRenderer::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<OGLTexture *>& texData,
+	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
 		unsigned w, unsigned h, const glm::vec3& cPos, const char *vSh, const char *fSh, const char *cap)
 	{
-		OGLRenderer::textures = texData;
 		OGLRenderer::width = w;
 		OGLRenderer::height = h;
+		OGLRenderer::lastXPos = w / 2.0;
+		OGLRenderer::lastYPos = h / 2.0;
 		OGLRenderer::initGLWindow(cap);
+
 		OGLRenderer::initVertexArrays(vBuf);
+		glBindVertexArray(OGLRenderer::vao);
+
 		OGLRenderer::initCamera(cPos);
+
 		OGLRenderer::initShader(vSh, fSh);
+		OGLRenderer::shaderProgram->use();
+
+		OGLRenderer::initTextures(texPaths);
 
 		glEnable(GL_DEPTH_TEST);
-
-		glBindVertexArray(OGLRenderer::vao);
-		OGLRenderer::shaderProgram->use();
+		glFrontFace(GL_CCW);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glPolygonMode(GL_FRONT, GL_FILL);
 
 		glm::mat4 projection = glm::perspective(glm::radians(OGLRenderer::camera->getFOV()),
 			(float)OGLRenderer::width / OGLRenderer::height, 0.1f, 100.0f);
@@ -202,9 +241,10 @@ namespace lrend
 			
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 			shaderProgram->setFloatMx4("model", model);
 
-			glDrawArrays(GL_TRIANGLES, 0, OGLRenderer::vertexBuffer.size() / 3);
+			glDrawArrays(GL_TRIANGLES, 0, OGLRenderer::vertexBuffer.size() / 6);
 
 			glfwSwapBuffers(OGLRenderer::glWindow);
 			glfwPollEvents();

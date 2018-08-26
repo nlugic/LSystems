@@ -72,7 +72,7 @@ namespace lsys
 		clearSymbols();
 	}
 
-	int LSystem::getCurrentLevel() const
+	size_t LSystem::getCurrentLevel() const
 	{
 		return products.size();
 	}

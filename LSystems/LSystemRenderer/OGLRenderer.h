@@ -1,13 +1,12 @@
 #ifndef OGLRENDERER_H
 #define OGLRENDERER_H
 
+#include "OGLCamera.h"
 #include "OGLShader.h"
 #include "OGLTexture.h"
-#include "OGLCamera.h"
-
 #include "..\..\include\glad\glad.h"
 #include "..\..\include\GLFW\glfw3.h"
-
+#include <string>
 #include <vector>
 
 namespace lrend
@@ -24,7 +23,7 @@ namespace lrend
 		static GLFWwindow *glWindow;
 
 		static bool mouseMoved;
-		static int lastXPos, lastYPos;
+		static double lastXPos, lastYPos;
 		static float deltaTime, lastFrame;
 		static OGLCamera *camera;
 
@@ -42,7 +41,8 @@ namespace lrend
 		static void initVertexArrays(const std::vector<float>& data);
 		static void initCamera(const glm::vec3& cameraPosition);
 		static void initShader(const char *vertexPath, const char *fragmentPath);
-		
+		static void initTextures(const std::vector<const char *>& texturePaths);
+
 		static void processInput(GLFWwindow *wnd);
 		static void onWindowResize(GLFWwindow *wnd, int w, int h);
 		static void onMouseMove(GLFWwindow *wnd, double xPos, double yPos);
@@ -51,7 +51,7 @@ namespace lrend
 	public:
 		~OGLRenderer() = default;
 
-		static void renderScene(const std::vector<float>& vBuf, const std::vector<OGLTexture *>& texData,
+		static void renderScene(const std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
 			unsigned w = defaultWidth, unsigned h = defaultHeight, const glm::vec3& cPos = defaultCamPos,
 			const char *vSh = "../LSystemRenderer/shader.vert", const char *fSh = "../LSystemRenderer/shader.frag", const char *cap = "L-Systems Renderer");
 	};

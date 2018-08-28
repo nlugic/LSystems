@@ -30,10 +30,11 @@ namespace lrend
 		int channels;
 		stbi_set_flip_vertically_on_load(true);
 		unsigned char *image = stbi_load(path, &width, &height, &channels, 0);
+		unsigned short format = (channels == 3) ? GL_RGB : GL_RGBA;
 
 		if (image)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else

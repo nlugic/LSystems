@@ -69,5 +69,8 @@
     <Image Include="test.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="tree.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

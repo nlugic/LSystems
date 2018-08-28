@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="test.png" />
+    <Image Include="tree.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3CB67474-CDA8-424C-A39A-011EC3552E58}</ProjectGuid>

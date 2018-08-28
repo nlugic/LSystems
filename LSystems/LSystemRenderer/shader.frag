@@ -1,13 +1,14 @@
 #version 450 core
 
-in float texPointer;
+in vec3 vertNormal;
 in vec2 texCoordinate;
+in float texPointer;
 
-out vec4 frColor;
+out vec4 gl_FragColor;
 
 uniform sampler2D tex[16];
 
 void main()
 {
-	frColor = texture(tex[int(texPointer)], texCoordinate);
+	gl_FragColor = texture(tex[int(texPointer)], texCoordinate);
 }

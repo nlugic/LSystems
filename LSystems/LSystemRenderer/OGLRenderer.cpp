@@ -19,7 +19,9 @@ namespace lrend
 	OGLCamera *OGLRenderer::camera = nullptr;
 	unsigned OGLRenderer::vao = 0U;
 	unsigned OGLRenderer::vbo = 0U;
-	std::vector<float> OGLRenderer::vertexBuffer;
+	unsigned OGLRenderer::ebo = 0U;
+	size_t OGLRenderer::vertexBufSize = 0ULL;
+	size_t OGLRenderer::elementBufSize = 0ULL;
 	OGLShader *OGLRenderer::shaderProgram = nullptr;
 	std::vector<OGLTexture *> OGLRenderer::textures;
 
@@ -60,8 +62,6 @@ namespace lrend
 
 	void OGLRenderer::destroyGLWindow()
 	{
-		OGLRenderer::vertexBuffer.clear();
-
 		if (OGLRenderer::camera)
 			delete OGLRenderer::camera;
 		if (OGLRenderer::shaderProgram)
@@ -72,6 +72,7 @@ namespace lrend
 		OGLRenderer::textures.clear();
 		OGLTexture::texPointer = 0U;
 
+		glDeleteVertexArrays(1, &OGLRenderer::ebo);
 		glDeleteVertexArrays(1, &OGLRenderer::vbo);
 		glDeleteVertexArrays(1, &OGLRenderer::vao);
 		glfwTerminate();
@@ -87,25 +88,39 @@ namespace lrend
 		OGLRenderer::camera = nullptr;
 		OGLRenderer::vao = 0U;
 		OGLRenderer::vbo = 0U;
+		OGLRenderer::ebo = 0U;
+		OGLRenderer::vertexBufSize = 0ULL;
+		OGLRenderer::elementBufSize = 0ULL;
 		OGLRenderer::shaderProgram = nullptr;
 	}
 
-	void OGLRenderer::initVertexArrays(const std::vector<float>& data)
+	void OGLRenderer::initVertexArrays(const std::vector<float>& vertData, const std::vector<unsigned>& elemData)
 	{
-		OGLRenderer::vertexBuffer = data;
+		OGLRenderer::vertexBufSize = vertData.size();
+		OGLRenderer::elementBufSize = elemData.size();
 
 		glGenVertexArrays(1, &OGLRenderer::vao);
 		glBindVertexArray(OGLRenderer::vao);
+
 		glGenBuffers(1, &OGLRenderer::vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, OGLRenderer::vbo);
-		glBufferData(GL_ARRAY_BUFFER, OGLRenderer::vertexBuffer.size() * sizeof(float), OGLRenderer::vertexBuffer.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, OGLRenderer::vertexBufSize * sizeof(float), vertData.data(), GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
+		glGenBuffers(1, &OGLRenderer::ebo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, OGLRenderer::elementBufSize * sizeof(float), elemData.data(), GL_STATIC_DRAW);
+
+		glEnable(GL_PRIMITIVE_RESTART);
+		glPrimitiveRestartIndex(UINT_MAX);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void *)(3 * sizeof(float)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void *)(5 * sizeof(float)));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(8 * sizeof(float)));
+		glEnableVertexAttribArray(3);
 	}
 
 	void OGLRenderer::initCamera(const glm::vec3& cameraPosition)
@@ -189,8 +204,9 @@ namespace lrend
 		OGLRenderer::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
-		unsigned w, unsigned h, const glm::vec3& cPos, const char *vSh, const char *fSh, const char *cap)
+	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf, 
+		const std::vector<const char *>& texPaths, unsigned w, unsigned h, const glm::vec3& cPos,
+		const char *vSh, const char *fSh, const char *cap)
 	{
 		OGLRenderer::width = w;
 		OGLRenderer::height = h;
@@ -198,7 +214,7 @@ namespace lrend
 		OGLRenderer::lastYPos = h / 2.0;
 		OGLRenderer::initGLWindow(cap);
 
-		OGLRenderer::initVertexArrays(vBuf);
+		OGLRenderer::initVertexArrays(vBuf, eBuf);
 		glBindVertexArray(OGLRenderer::vao);
 
 		OGLRenderer::initCamera(cPos);
@@ -241,10 +257,10 @@ namespace lrend
 			
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
-			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, (float)glfwGetTime() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			shaderProgram->setFloatMx4("model", model);
 
-			glDrawArrays(GL_TRIANGLES, 0, OGLRenderer::vertexBuffer.size() / 6);
+			glDrawElements(GL_TRIANGLE_STRIP, OGLRenderer::elementBufSize, GL_UNSIGNED_INT, nullptr);
 
 			glfwSwapBuffers(OGLRenderer::glWindow);
 			glfwPollEvents();

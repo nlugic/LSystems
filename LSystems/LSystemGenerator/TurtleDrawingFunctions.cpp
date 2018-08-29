@@ -1,6 +1,5 @@
 
 #include "TurtleDrawingFunctions.h"
-#include "..\..\include\glm\gtc\matrix_transform.hpp"
 
 namespace lsys
 {
@@ -15,6 +14,43 @@ namespace lsys
 		int n = static_cast<int>(sym->getParam('n'));
 		float t = sym->getParam('t');
 		float w = sym->getParam('w');
+
+		float ang = pix2 / n;
+		float phi = 0.0f;
+		float sf = std::sin(phi), cf = std::cos(phi);
+		float p = std::sqrt(h * h + (R - r) * (R - r));
+		float s = w, ds = w / (n + 1);
+
+		glm::mat4 mat = turtle->getCurrentTransform();
+
+		glm::vec4 nm(h / p * cf, (R - r) / p, h / p * sf, 1.0f);
+		nm = mat * nm;
+
+		glm::vec4 v1(R * cf, 0.0f, R * sf, 1.0f);
+		v1 = mat * v1;
+		glm::vec4 v2(r * cf, h, r * sf, 1.0f);
+		v2 = mat * v2;
+
+		for (unsigned short i = 0U; i <= n; ++i)
+		{
+			vertices.push_back({ v1.x, v1.y, v1.z, nm.x, nm.y, nm.z, s, 0.0f, t });
+			vertices.push_back({ v2.x, v2.y, v2.z, nm.x, nm.y, nm.z, s, 1.0f, t });
+			
+			phi += ang; s -= ds;
+			sf = std::sin(phi); cf = std::cos(phi);
+
+			v1.x = R * cf; v1.y = 0.0f; v1.z = R * sf;
+			v1 = mat * v1;
+			v2.x = r * cf; v2.y = h; v2.z = r * sf;
+			v2 = mat * v2;
+		}
+
+		glm::vec3 trans = v2 - v1;
+		turtle->translateState(trans);
+
+		vertices.push_back({ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NAN });
+
+		/*
 
 		float ang = pix2 / n;
 		float phi = 0.0f;
@@ -46,7 +82,7 @@ namespace lsys
 			vertices.push_back(s);
 			vertices.push_back(1.0f);
 			vertices.push_back(0.0f);
-			*/
+			/
 
 			vertices.push_back({ R * cf, 0.0f, R * sf, nx, sa, nz, s, 0.0f, t });
 			vertices.push_back({ r * cf, h, r * sf, nx, sa, nz, s, 1.0f, t });
@@ -54,6 +90,7 @@ namespace lsys
 			phi += ang; s -= ds;
 			sf = std::sin(phi); cf = std::cos(phi);
 		}
+		*/
 
 		turtle->addVertices(vertices);
 	}
@@ -70,77 +107,42 @@ namespace lsys
 
 	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(sym->getParam('y')), state.up);
-		state.heading = mat * glm::vec4(state.heading, 1.0f);
-		state.left = mat * glm::vec4(state.left, 1.0f);
+		turtle->rotateStateAroundUp(sym->getParam('y'));
 	}
 
 	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(-sym->getParam('y')), state.up);
-		state.heading = mat * glm::vec4(state.heading, 1.0f);
-		state.left = mat * glm::vec4(state.left, 1.0f);
+		turtle->rotateStateAroundUp(-sym->getParam('y'));
 	}
 
 	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(-sym->getParam('p')), state.left);
-		state.heading = mat * glm::vec4(state.heading, 1.0f);
-		state.up = mat * glm::vec4(state.up, 1.0f);
+		turtle->rotateStateAroundLeft(-sym->getParam('p'));
 	}
 
 	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(sym->getParam('p')), state.left);
-		state.heading = mat * glm::vec4(state.heading, 1.0f);
-		state.up = mat * glm::vec4(state.up, 1.0f);
+		turtle->rotateStateAroundLeft(sym->getParam('p'));
 	}
 
 	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(-sym->getParam('r')), state.heading);
-		state.left = mat * glm::vec4(state.left, 1.0f);
-		state.up = mat * glm::vec4(state.up, 1.0f);
+		turtle->rotateStateAroundHeading(-sym->getParam('r'));
 	}
 
 	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(sym->getParam('r')), state.heading);
-		state.left = mat * glm::vec4(state.left, 1.0f);
-		state.up = mat * glm::vec4(state.up, 1.0f);
+		turtle->rotateStateAroundHeading(sym->getParam('r'));
 	}
 
 	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(180.0f), state.up);
-		state.heading = mat * glm::vec4(state.heading, 1.0f);
-		state.left = mat * glm::vec4(state.left, 1.0f);
+		turtle->rotateStateAroundUp(180.0f);
 	}
 
 	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *sym)
 	{
-		TurtleState& state = turtle->getCurrentState();
-		glm::vec3 axis = glm::cross(state.heading, glm::vec3(0.0f, 1.0f, 0.0f));
-		float sine = glm::length(axis);
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::asin(sine), axis);
-		state.heading = mat * glm::vec4(state.heading, 1.0f);
-		state.left = mat * glm::vec4(state.left, 1.0f);
-		state.up = mat * glm::vec4(state.up, 1.0f);
+		turtle->rotateStateToVector(glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 }

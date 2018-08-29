@@ -90,7 +90,7 @@ namespace lsys
 
 	size_t LSystem::getCurrentLevel() const
 	{
-		return products.size();
+		return products.size() - 1;
 	}
 
 	void LSystem::addSymbolToAxiom(LSystemSymbol *sym)
@@ -120,6 +120,29 @@ namespace lsys
 		params[param] = NAN;
 	}
 
+	std::vector<LSystemSymbol *>& LSystem::operator[](unsigned char level)
+	{
+		try { return products.at(level); }
+		catch (std::out_of_range& err)
+		{
+			std::cerr << err.what() << std::endl;
+			if (products.empty())
+				produceAxiom();
+
+			return products[0];
+		}
+	}
+
+	const std::vector<float>& LSystem::getCurrentVertexBuffer() const
+	{
+		return turtle.getVertices();
+	}
+
+	const std::vector<unsigned>& LSystem::getCurrentElementBuffer() const
+	{
+		return turtle.getElements();
+	}
+
 	std::vector<LSystemSymbol *>& LSystem::derive(unsigned char level)
 	{
 		while (level-- > 1)
@@ -129,7 +152,7 @@ namespace lsys
 
 	std::vector<LSystemSymbol *>& LSystem::derive()
 	{
-		if (!products.size())
+		if (products.empty())
 			produceAxiom();
 		
 		std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1];
@@ -176,17 +199,13 @@ namespace lsys
 		return nullptr;
 	}
 
-	std::vector<LSystemSymbol *>& LSystem::operator[](unsigned char level)
+	void LSystem::drawLevel(unsigned char level)
 	{
-		try { return products.at(level); }
-		catch (std::out_of_range& err)
-		{
-			std::cerr << err.what() << std::endl;
-			if (!products.size())
-				produceAxiom();
+		size_t curr = getCurrentLevel();
+		if (level > curr)
+			derive(level - curr);
 
-			return products[0];
-		}
+		turtle.interpretSymbols(products[level]);
 	}
 
 	std::string LSystem::toString() const

@@ -19,7 +19,6 @@ namespace lsys
 
 	struct TurtleState
 	{
-	public:
 		glm::vec3 position;
 		glm::vec3 heading, left, up;
 	};
@@ -51,15 +50,21 @@ namespace lsys
 		~GraphicsTurtle() = default;
 
 		TurtleState& getCurrentState();
+		glm::mat4& getCurrentTransform();
 		std::function<void(GraphicsTurtle *, LSystemSymbol *)> getFunction(char key);
 		void setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *)>& func);
-		void interpretSymbol(LSystemSymbol *sym);
+		std::vector<float> getVertices() const;
+		const std::vector<unsigned>& getElements() const;
 		void pushState();
 		void popState();
+		void translateState(const glm::vec3& offset);
+		void rotateStateAroundUp(float angle);
+		void rotateStateAroundLeft(float angle);
+		void rotateStateAroundHeading(float angle);
+		void rotateStateToVector(glm::vec3& target);
+		void interpretSymbols(const std::vector<LSystemSymbol *>& symbols);
 		void addVertices(const std::vector<Vertex>& vertices);
 		void updateTransform();
-		std::vector<float> getVertexBuffer() const;
-		const std::vector<unsigned>& getElementBuffer() const;
 	};
 
 }

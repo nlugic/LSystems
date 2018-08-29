@@ -4,12 +4,11 @@
 #include "LSystemSymbol.h"
 #include "GraphicsTurtle.h"
 
-// redosled transforamcija i premestanje u turtle klasu
-// translate trenutnog stanja pri crtanju u bilo kojoj od funkcija
-// redosled funkcija u graphicsturtle
-// jedan konkretan l sistem sa do sad dostupnim simbolima radi testa
-// svetlo, materijali itd
+// move konstruktori i copy&swap
+// redosled i constness funkcija i parametara, imena parametara
 // shvatanje turnLeft/Right itd, u odnosu na heading ili sta?
+// svetlo, materijali itd
+// jedan konkretan l sistem sa do sad dostupnim simbolima radi testa
 
 namespace lsys
 {

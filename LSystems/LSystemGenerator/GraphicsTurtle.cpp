@@ -8,7 +8,7 @@ namespace lsys
 	GraphicsTurtle::GraphicsTurtle(const TurtleState& state)
 		:initialState(state), currentState(initialState), elemPointer(0U)
 	{
-		updateTransform;
+		updateTransform();
 	}
 
 	TurtleState& GraphicsTurtle::getCurrentState()
@@ -118,15 +118,6 @@ namespace lsys
 	{
 		for (Vertex vert : vertices)
 		{
-			/*
-			glm::vec4 vertVec(vert.x, vert.y, vert.z, 1.0f);
-			vertVec = currentTransform * vertVec;
-			glm::vec4 normVec(vert.nx, vert.ny, vert.nz, 1.0f);
-			normVec = currentTransform * normVec;
-			vert.x = vertVec.x; vert.y = vertVec.y; vert.z = vertVec.z;
-			vert.nx = normVec.x; vert.ny = normVec.y; vert.nz = normVec.z;
-			*/
-
 			if (vert.id == NAN)
 				elementBuffer.push_back(UINT_MAX);
 			else

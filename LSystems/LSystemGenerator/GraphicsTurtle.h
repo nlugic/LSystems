@@ -15,6 +15,13 @@ namespace lsys
 		float x, y, z;
 		float nx, ny, nz;
 		float s, t, id;
+
+		bool operator==(const Vertex& v)
+		{
+			return x == v.x && y == v.y && z == v.z
+				&& nx == v.nx && ny == v.ny && nz == v.nz
+				&& s == v.s && t == v.t && id == v.id;
+		}
 	};
 
 	struct TurtleState

@@ -63,6 +63,7 @@ namespace lrend
 		std::vector<float> vert(vertices, vertices + sizeof(vertices) / sizeof(vertices[0]));
 		*/
 
+		/*
 		std::vector<float> vertices;
 
 		float R = 0.15f;
@@ -109,6 +110,7 @@ namespace lrend
 		tex.push_back("../LSystemRenderer/tree.jpg");
 
 		OGLRenderer::renderScene(vertices, tex);
+		*/
 	}
 
 }

@@ -16,7 +16,7 @@ uniform mat4 model;
 void main()
 {
 	gl_Position = proj * view * model * vec4(vPos, 1.0f);
-	vertNormal = vec3(model * vec4(vNorm, 1.0f));
+	vertNormal = mat3(transpose(inverse(model))) * vNorm;
 	texCoordinate = tCoord;
 	texPointer = tPoint;
 }

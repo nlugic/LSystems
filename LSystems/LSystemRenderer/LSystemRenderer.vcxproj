@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="LSystemRenderer.cpp" />
+    <ClCompile Include="OGLArrayTexture.cpp" />
     <ClCompile Include="OGLCamera.cpp" />
     <ClCompile Include="OGLRenderer.cpp" />
     <ClCompile Include="OGLShader.cpp" />
@@ -29,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LSystemRenderer.h" />
+    <ClInclude Include="OGLArrayTexture.h" />
     <ClInclude Include="OGLCamera.h" />
     <ClInclude Include="OGLRenderer.h" />
     <ClInclude Include="OGLShader.h" />

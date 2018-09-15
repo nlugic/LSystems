@@ -10,7 +10,7 @@ namespace lrend
 		unsigned textureId;
 		int width, height;
 
-		void createTexture();
+		void initTexture();
 
 	public:
 		static unsigned char texPointer;

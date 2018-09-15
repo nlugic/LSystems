@@ -9,7 +9,7 @@ namespace lrend
 
 	unsigned char OGLTexture::texPointer = 0U;
 
-	void OGLTexture::createTexture()
+	void OGLTexture::initTexture()
 	{
 		glGenTextures(1, &textureId);
 		glActiveTexture(GL_TEXTURE0 + OGLTexture::texPointer);
@@ -25,7 +25,7 @@ namespace lrend
 
 	OGLTexture::OGLTexture(const char *path)
 	{
-		createTexture();
+		initTexture();
 
 		int channels;
 		stbi_set_flip_vertically_on_load(true);
@@ -45,7 +45,7 @@ namespace lrend
 	OGLTexture::OGLTexture(unsigned char *data, int w, int h)
 		:width(w), height(h)
 	{
-		createTexture();
+		initTexture();
 
 		if (data)
 		{

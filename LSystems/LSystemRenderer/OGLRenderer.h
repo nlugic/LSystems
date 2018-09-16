@@ -29,8 +29,8 @@ namespace lrend
 		static float deltaTime, lastFrame;
 		static OGLCamera *camera;
 
-		static unsigned vao, vbo, ebo;
-		static size_t vertexBufSize, elementBufSize;
+		static unsigned vao, vbo, ebo, ssbo;
+		static size_t vertexBufSize, elementBufSize, shaderStorageBufSize;
 		static OGLShader *shaderProgram;
 		static OGLArrayTexture *textures;
 
@@ -40,7 +40,8 @@ namespace lrend
 
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();
-		static void initVertexArrays(const std::vector<float>& vertData, const std::vector<unsigned>& elemData);
+		static void initBuffers(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
+			const std::vector<glm::mat4>& transformData);
 		static void initCamera(const glm::vec3& cameraPosition);
 		static void initShader(const char *vertexPath, const char *fragmentPath);
 		static void initTextures(const std::vector<const char *>& texturePaths, int w, int h);
@@ -53,12 +54,13 @@ namespace lrend
 	public:
 		~OGLRenderer() = default;
 
-		static void renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf, const std::vector<const char *>& texPaths,
+		static void renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
+			const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
 			unsigned w = defaultWidth, unsigned h = defaultHeight, int texW = defaultTexWidth, int texH = defaultTexHeight,
 			const glm::vec3& cPos = defaultCamPos, const char *vSh = "../LSystemRenderer/shader.vert",
-			const char *fSh = "../LSystemRenderer/shader.frag", const char *cap = "L-Systems Renderer");
+			const char *fSh = "../LSystemRenderer/shader.frag", const char *cap = "L-System Renderer");
 	};
-	
+
 }
 
 #endif

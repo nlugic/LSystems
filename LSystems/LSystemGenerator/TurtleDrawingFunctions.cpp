@@ -33,8 +33,8 @@ namespace lsys
 
 		for (unsigned short i = 0U; i <= n; ++i)
 		{
-			vertices.push_back({ v1.x, v1.y, v1.z, nm.x, nm.y, nm.z, s, 0.0f, t });
-			vertices.push_back({ v2.x, v2.y, v2.z, nm.x, nm.y, nm.z, s, 1.0f, t });
+			vertices.push_back({ v1.x, v1.y, v1.z, nm.x, nm.y, nm.z, s, 0.0f, t, GraphicsTurtle::transformPointer });
+			vertices.push_back({ v2.x, v2.y, v2.z, nm.x, nm.y, nm.z, s, 1.0f, t, GraphicsTurtle::transformPointer });
 			
 			phi += ang; s -= ds;
 			sf = std::sin(phi); cf = std::cos(phi);
@@ -48,7 +48,7 @@ namespace lsys
 		glm::vec3 trans = v2 - v1;
 		turtle->translateState(trans);
 
-		vertices.push_back({ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NAN });
+		vertices.push_back({ 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NAN});
 
 		/*
 
@@ -93,6 +93,7 @@ namespace lsys
 		*/
 
 		turtle->addVertices(vertices);
+		++GraphicsTurtle::transformPointer;
 	}
 
 	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *sym)

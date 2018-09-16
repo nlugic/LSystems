@@ -5,6 +5,8 @@
 namespace lsys
 {
 
+	unsigned GraphicsTurtle::transformPointer = 0U;
+
 	GraphicsTurtle::GraphicsTurtle(const TurtleState& state)
 		:initialState(state), currentState(initialState), elemPointer(0U)
 	{
@@ -45,7 +47,8 @@ namespace lsys
 			buffer.push_back(vert.nz);
 			buffer.push_back(vert.s);
 			buffer.push_back(vert.t);
-			buffer.push_back(vert.id);
+			buffer.push_back(vert.d);
+			buffer.push_back(vert.tr);
 		}
 
 		return buffer;
@@ -118,7 +121,7 @@ namespace lsys
 	{
 		for (Vertex vert : vertices)
 		{
-			if (vert.id == NAN)
+			if (vert.tr == NAN)
 				elementBuffer.push_back(UINT_MAX);
 			else
 			{

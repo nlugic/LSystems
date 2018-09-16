@@ -8,22 +8,26 @@
 namespace lrend
 {
 
-	int OGLRenderer::width = defaultWidth;
-	int OGLRenderer::height = defaultHeight;
-	GLFWwindow *OGLRenderer::glWindow = nullptr;
-	bool OGLRenderer::mouseMoved = false;
-	double OGLRenderer::lastXPos = defaultWidth / 2.0;
-	double OGLRenderer::lastYPos = defaultHeight / 2.0;
-	float OGLRenderer::deltaTime = 0.0f;
-	float OGLRenderer::lastFrame = 0.0f;
-	OGLCamera *OGLRenderer::camera = nullptr;
-	unsigned OGLRenderer::vao = 0U;
-	unsigned OGLRenderer::vbo = 0U;
-	unsigned OGLRenderer::ebo = 0U;
-	size_t OGLRenderer::vertexBufSize = 0ULL;
-	size_t OGLRenderer::elementBufSize = 0ULL;
-	OGLShader *OGLRenderer::shaderProgram = nullptr;
-	OGLArrayTexture *OGLRenderer::textures = nullptr;
+	using OGLR = OGLRenderer;
+
+	int OGLR::width = defaultWidth;
+	int OGLR::height = defaultHeight;
+	GLFWwindow *OGLR::glWindow = nullptr;
+	bool OGLR::mouseMoved = false;
+	double OGLR::lastXPos = defaultWidth / 2.0;
+	double OGLR::lastYPos = defaultHeight / 2.0;
+	float OGLR::deltaTime = 0.0f;
+	float OGLR::lastFrame = 0.0f;
+	OGLCamera *OGLR::camera = nullptr;
+	unsigned OGLR::vao = 0U;
+	unsigned OGLR::vbo = 0U;
+	unsigned OGLR::ebo = 0U;
+	unsigned OGLR::ssbo = 0U;
+	size_t OGLR::vertexBufSize = 0ULL;
+	size_t OGLR::elementBufSize = 0ULL;
+	size_t OGLR::shaderStorageBufSize = 0ULL;
+	OGLShader *OGLR::shaderProgram = nullptr;
+	OGLArrayTexture *OGLR::textures = nullptr;
 
 	void OGLRenderer::initGLWindow(const char *caption)
 	{
@@ -33,7 +37,7 @@ namespace lrend
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		GLFWwindow *tWnd = glfwCreateWindow(OGLRenderer::width, OGLRenderer::height, caption, nullptr, nullptr);
+		GLFWwindow *tWnd = glfwCreateWindow(OGLR::width, OGLR::height, caption, nullptr, nullptr);
 		if (!tWnd)
 		{
 			std::cout << "An error ocurred while creating the GLFW window." << std::endl;
@@ -49,98 +53,114 @@ namespace lrend
 			return;
 		}
 
-		glViewport(0, 0, OGLRenderer::width, OGLRenderer::height);
+		glViewport(0, 0, OGLR::width, OGLR::height);
 
 		glfwSwapInterval(1);
 		glfwSetInputMode(tWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetWindowSizeCallback(tWnd, OGLRenderer::onWindowResize);
-		glfwSetCursorPosCallback(tWnd, OGLRenderer::onMouseMove);
-		glfwSetScrollCallback(tWnd, OGLRenderer::onMouseScroll);
+		glfwSetWindowSizeCallback(tWnd, OGLR::onWindowResize);
+		glfwSetCursorPosCallback(tWnd, OGLR::onMouseMove);
+		glfwSetScrollCallback(tWnd, OGLR::onMouseScroll);
 
-		OGLRenderer::glWindow = tWnd;
+		OGLR::glWindow = tWnd;
 	}
 
 	void OGLRenderer::destroyGLWindow()
 	{
-		if (OGLRenderer::camera)
-			delete OGLRenderer::camera;
-		if (OGLRenderer::shaderProgram)
-			delete OGLRenderer::shaderProgram;
-		if (OGLRenderer::textures)
-			delete OGLRenderer::textures;
+		if (OGLR::camera)
+			delete OGLR::camera;
+		if (OGLR::shaderProgram)
+			delete OGLR::shaderProgram;
+		if (OGLR::textures)
+			delete OGLR::textures;
 
-		glDeleteVertexArrays(1, &OGLRenderer::ebo);
-		glDeleteVertexArrays(1, &OGLRenderer::vbo);
-		glDeleteVertexArrays(1, &OGLRenderer::vao);
+		glDeleteBuffers(1, &OGLR::ssbo);
+		glDeleteBuffers(1, &OGLR::ebo);
+		glDeleteBuffers(1, &OGLR::vbo);
+		glDeleteVertexArrays(1, &OGLR::vao);
 		glfwTerminate();
 
-		OGLRenderer::width = defaultWidth;
-		OGLRenderer::height = defaultHeight;
-		OGLRenderer::glWindow = nullptr;
-		OGLRenderer::mouseMoved = false;
-		OGLRenderer::lastXPos = defaultWidth / 2U;
-		OGLRenderer::lastYPos = defaultHeight / 2U;
-		OGLRenderer::deltaTime = 0.0f;
-		OGLRenderer::lastFrame = 0.0f;
-		OGLRenderer::camera = nullptr;
-		OGLRenderer::vao = 0U;
-		OGLRenderer::vbo = 0U;
-		OGLRenderer::ebo = 0U;
-		OGLRenderer::vertexBufSize = 0ULL;
-		OGLRenderer::elementBufSize = 0ULL;
-		OGLRenderer::shaderProgram = nullptr;
-		OGLRenderer::textures = nullptr;
+		OGLR::width = defaultWidth;
+		OGLR::height = defaultHeight;
+		OGLR::glWindow = nullptr;
+		OGLR::mouseMoved = false;
+		OGLR::lastXPos = defaultWidth / 2U;
+		OGLR::lastYPos = defaultHeight / 2U;
+		OGLR::deltaTime = 0.0f;
+		OGLR::lastFrame = 0.0f;
+		OGLR::camera = nullptr;
+		OGLR::vao = 0U;
+		OGLR::vbo = 0U;
+		OGLR::ebo = 0U;
+		OGLR::ssbo = 0U;
+		OGLR::vertexBufSize = 0ULL;
+		OGLR::elementBufSize = 0ULL;
+		OGLR::shaderStorageBufSize = 0ULL;
+		OGLR::shaderProgram = nullptr;
+		OGLR::textures = nullptr;
 	}
 
-	void OGLRenderer::initVertexArrays(const std::vector<float>& vertData, const std::vector<unsigned>& elemData)
+	void OGLRenderer::initBuffers(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
+		const std::vector<glm::mat4>& transformData)
 	{
-		OGLRenderer::vertexBufSize = vertData.size();
-		OGLRenderer::elementBufSize = elemData.size();
+		OGLR::vertexBufSize = vertData.size();
+		OGLR::elementBufSize = elemData.size();
+		OGLR::shaderStorageBufSize = transformData.size();
 
-		glGenVertexArrays(1, &OGLRenderer::vao);
-		glBindVertexArray(OGLRenderer::vao);
+		glGenVertexArrays(1, &OGLR::vao);
+		glBindVertexArray(OGLR::vao);
 
-		glGenBuffers(1, &OGLRenderer::vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, OGLRenderer::vbo);
-		glBufferData(GL_ARRAY_BUFFER, OGLRenderer::vertexBufSize * sizeof(float), vertData.data(), GL_STATIC_DRAW);
+		glGenBuffers(1, &OGLR::vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
+		glBufferData(GL_ARRAY_BUFFER, OGLR::vertexBufSize * sizeof(float), vertData.data(), GL_STATIC_DRAW);
 
-		glGenBuffers(1, &OGLRenderer::ebo);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), nullptr);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(6 * sizeof(float)));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(9 * sizeof(float)));
+		glEnableVertexAttribArray(3);
+
+		glGenBuffers(1, &OGLR::ebo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, OGLRenderer::elementBufSize * sizeof(float), elemData.data(), GL_STATIC_DRAW);
-
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, OGLR::elementBufSize * sizeof(float), elemData.data(), GL_STATIC_DRAW);
+		
 		glEnable(GL_PRIMITIVE_RESTART);
 		glPrimitiveRestartIndex(UINT_MAX);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
+		glGenBuffers(1, &OGLR::ssbo);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data(), GL_STATIC_DRAW);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, OGLR::ssbo);
+
+		glBindVertexArray(0U);
+		glBindBuffer(GL_ARRAY_BUFFER, 0U);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
 	void OGLRenderer::initCamera(const glm::vec3& cameraPosition)
 	{
-		if (OGLRenderer::camera)
-			delete OGLRenderer::camera;
-		OGLRenderer::camera = new OGLCamera(cameraPosition);
+		if (OGLR::camera)
+			delete OGLR::camera;
+		OGLR::camera = new OGLCamera(cameraPosition);
 	}
 
 	void OGLRenderer::initShader(const char *vertexPath, const char *fragmentPath)
 	{
-		if (OGLRenderer::shaderProgram)
-			delete OGLRenderer::shaderProgram;
-		OGLRenderer::shaderProgram = new OGLShader(vertexPath, fragmentPath);
+		if (OGLR::shaderProgram)
+			delete OGLR::shaderProgram;
+		OGLR::shaderProgram = new OGLShader(vertexPath, fragmentPath);
 	}
 
 	void OGLRenderer::initTextures(const std::vector<const char *>& texturePaths, int w, int h)
 	{
-		if (OGLRenderer::textures)
-			delete OGLRenderer::textures;
+		if (OGLR::textures)
+			delete OGLR::textures;
 
-		OGLRenderer::textures = new OGLArrayTexture(texturePaths, w, h);
-
-		OGLRenderer::shaderProgram->setInt("texLayers", texturePaths.size());
+		OGLR::textures = new OGLArrayTexture(texturePaths, w, h);
+		OGLR::shaderProgram->setInt("texLayers", texturePaths.size());
 	}
 
 	void OGLRenderer::processInput(GLFWwindow *wnd)
@@ -149,64 +169,62 @@ namespace lrend
 			glfwSetWindowShouldClose(wnd, true);
 
 		if (glfwGetKey(wnd, GLFW_KEY_W) == GLFW_PRESS)
-			OGLRenderer::camera->move(FORWARD, OGLRenderer::deltaTime);
+			OGLR::camera->move(FORWARD, OGLR::deltaTime);
 		if (glfwGetKey(wnd, GLFW_KEY_S) == GLFW_PRESS)
-			OGLRenderer::camera->move(BACKWARDS, OGLRenderer::deltaTime);
+			OGLR::camera->move(BACKWARDS, OGLR::deltaTime);
 		if (glfwGetKey(wnd, GLFW_KEY_A) == GLFW_PRESS)
-			OGLRenderer::camera->move(LEFT, OGLRenderer::deltaTime);
+			OGLR::camera->move(LEFT, OGLR::deltaTime);
 		if (glfwGetKey(wnd, GLFW_KEY_D) == GLFW_PRESS)
-			OGLRenderer::camera->move(RIGHT, OGLRenderer::deltaTime);
+			OGLR::camera->move(RIGHT, OGLR::deltaTime);
 	}
 
 	void OGLRenderer::onWindowResize(GLFWwindow *wnd, int w, int h)
 	{
-		OGLRenderer::width = w;
-		OGLRenderer::height = h;
+		OGLR::width = w;
+		OGLR::height = h;
 
 		glViewport(0, 0, w, h);
 	}
 
 	void OGLRenderer::onMouseMove(GLFWwindow *wnd, double xPos, double yPos)
 	{
-		if (!OGLRenderer::mouseMoved)
+		if (!OGLR::mouseMoved)
 		{
-			OGLRenderer::lastXPos = xPos;
-			OGLRenderer::lastYPos = yPos;
-			OGLRenderer::mouseMoved = true;
+			OGLR::lastXPos = xPos;
+			OGLR::lastYPos = yPos;
+			OGLR::mouseMoved = true;
 		}
 
-		double xOff = xPos - OGLRenderer::lastXPos;
-		double yOff = OGLRenderer::lastYPos - yPos;
+		double xOff = xPos - OGLR::lastXPos;
+		double yOff = OGLR::lastYPos - yPos;
 
-		OGLRenderer::lastXPos = xPos;
-		OGLRenderer::lastYPos = yPos;
+		OGLR::lastXPos = xPos;
+		OGLR::lastYPos = yPos;
 
-		OGLRenderer::camera->look(static_cast<float>(xOff), static_cast<float>(yOff));
+		OGLR::camera->look(static_cast<float>(xOff), static_cast<float>(yOff));
 	}
 
 	void OGLRenderer::onMouseScroll(GLFWwindow *wnd, double xOff, double yOff)
 	{
-		OGLRenderer::camera->zoom(static_cast<float>(yOff));
+		OGLR::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf, const std::vector<const char *>& texPaths,
+	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
+		const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
 		unsigned w, unsigned h, int texW, int texH, const glm::vec3& cPos, const char *vSh, const char *fSh, const char *cap)
 	{
-		OGLRenderer::width = w;
-		OGLRenderer::height = h;
-		OGLRenderer::lastXPos = w / 2.0;
-		OGLRenderer::lastYPos = h / 2.0;
-		OGLRenderer::initGLWindow(cap);
+		OGLR::width = w;
+		OGLR::height = h;
+		OGLR::lastXPos = w / 2.0;
+		OGLR::lastYPos = h / 2.0;
 
-		OGLRenderer::initVertexArrays(vBuf, eBuf);
-		glBindVertexArray(OGLRenderer::vao);
-
-		OGLRenderer::initCamera(cPos);
-
-		OGLRenderer::initShader(vSh, fSh);
-		OGLRenderer::shaderProgram->use();
-
-		OGLRenderer::initTextures(texPaths, texW, texH);
+		OGLR::initGLWindow(cap);
+		OGLR::initBuffers(vBuf, eBuf, transMats);
+		glBindVertexArray(OGLR::vao);
+		OGLR::initCamera(cPos);
+		OGLR::initShader(vSh, fSh);
+		OGLR::shaderProgram->use();
+		OGLR::initTextures(texPaths, texW, texH);
 
 		glEnable(GL_DEPTH_TEST);
 		glFrontFace(GL_CCW);
@@ -214,43 +232,43 @@ namespace lrend
 		glCullFace(GL_BACK);
 		glPolygonMode(GL_FRONT, GL_FILL);
 
-		glm::mat4 projection = glm::perspective(glm::radians(OGLRenderer::camera->getFOV()),
-			(float)OGLRenderer::width / OGLRenderer::height, 0.1f, 100.0f);
-		glm::mat4 view = OGLRenderer::camera->getViewMatrix();
+		glm::mat4 projection = glm::perspective(glm::radians(OGLR::camera->getFOV()),
+			(float)OGLR::width / OGLR::height, 0.1f, 100.0f);
+		glm::mat4 view = OGLR::camera->getViewMatrix();
 
-		OGLRenderer::shaderProgram->setFloatMx4("proj", projection);
-		OGLRenderer::shaderProgram->setFloatMx4("view", view);
+		OGLR::shaderProgram->setFloatMx4("proj", projection);
+		OGLR::shaderProgram->setFloatMx4("view", view);
 
-		while (!glfwWindowShouldClose(OGLRenderer::glWindow))
+		while (!glfwWindowShouldClose(OGLR::glWindow))
 		{
-			processInput(OGLRenderer::glWindow);
+			processInput(OGLR::glWindow);
 
 			glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			projection = glm::perspective(glm::radians(OGLRenderer::camera->getFOV()),
-				(float)OGLRenderer::width / OGLRenderer::height, 0.1f, 100.0f);
-			view = OGLRenderer::camera->getViewMatrix();
+			projection = glm::perspective(glm::radians(OGLR::camera->getFOV()),
+				(float)OGLR::width / OGLR::height, 0.1f, 100.0f);
+			view = OGLR::camera->getViewMatrix();
 
-			OGLRenderer::shaderProgram->setFloatMx4("proj", projection);
-			OGLRenderer::shaderProgram->setFloatMx4("view", view);
+			OGLR::shaderProgram->setFloatMx4("proj", projection);
+			OGLR::shaderProgram->setFloatMx4("view", view);
 
 			float currentFrame = (float)glfwGetTime();
-			OGLRenderer::deltaTime = currentFrame - OGLRenderer::lastFrame;
-			OGLRenderer::lastFrame = currentFrame;
+			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
+			OGLR::lastFrame = currentFrame;
 			
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
 			model = glm::rotate(model, (float)glfwGetTime() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			shaderProgram->setFloatMx4("model", model);
 
-			glDrawElements(GL_TRIANGLES, OGLRenderer::elementBufSize, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLE_STRIP, OGLR::elementBufSize, GL_UNSIGNED_INT, nullptr);
 
-			glfwSwapBuffers(OGLRenderer::glWindow);
+			glfwSwapBuffers(OGLR::glWindow);
 			glfwPollEvents();
 		}
 
-		OGLRenderer::destroyGLWindow();
+		OGLR::destroyGLWindow();
 	}
 
 }

@@ -14,13 +14,13 @@ namespace lsys
 	{
 		float x, y, z;
 		float nx, ny, nz;
-		float s, t, id;
+		float s, t, d, tr;
 
 		bool operator==(const Vertex& v)
 		{
 			return x == v.x && y == v.y && z == v.z
 				&& nx == v.nx && ny == v.ny && nz == v.nz
-				&& s == v.s && t == v.t && id == v.id;
+				&& s == v.s && t == v.t && d == v.d && tr == v.tr;
 		}
 	};
 
@@ -51,6 +51,8 @@ namespace lsys
 		std::vector<unsigned> elementBuffer;
 
 	public:
+		static unsigned transformPointer;
+
 		GraphicsTurtle(const TurtleState& state = defaultTurtleState);
 		GraphicsTurtle(const GraphicsTurtle&) = default;
 		GraphicsTurtle& operator=(const GraphicsTurtle&) = default;

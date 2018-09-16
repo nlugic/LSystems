@@ -4,12 +4,6 @@
 #include "LSystemSymbol.h"
 #include "GraphicsTurtle.h"
 
-// move konstruktori i copy&swap
-// redosled i constness funkcija i parametara, imena parametara
-// shvatanje turnLeft/Right itd, u odnosu na heading ili sta?
-// svetlo, materijali itd
-// jedan konkretan l sistem sa do sad dostupnim simbolima radi testa
-
 namespace lsys
 {
 

@@ -1,14 +1,15 @@
 #version 450 core
 
 in vec3 vertNormal;
-in vec2 texCoordinate;
-in float texPointer;
+in vec3 texCoordinate;
 
 out vec4 gl_FragColor;
 
-uniform sampler2D tex[16];
+layout (binding = 0) uniform sampler2DArray textures;
+uniform int texLayers;
 
 void main()
 {
-	gl_FragColor = texture(tex[int(texPointer)], texCoordinate);
+	float texIndex = max(0, min(texLayers - 1, floor(texCoordinate.z + 0.5f)));
+	gl_FragColor = texture(textures, vec3(texCoordinate.xy, texIndex));
 }

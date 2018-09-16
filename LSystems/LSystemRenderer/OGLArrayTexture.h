@@ -11,7 +11,7 @@ namespace lrend
 	private:
 		unsigned arrayTextureId;
 
-		unsigned char layers;
+		size_t layers;
 		int width, height;
 
 		void initArrayTexture();

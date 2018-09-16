@@ -23,7 +23,7 @@ namespace lrend
 	size_t OGLRenderer::vertexBufSize = 0ULL;
 	size_t OGLRenderer::elementBufSize = 0ULL;
 	OGLShader *OGLRenderer::shaderProgram = nullptr;
-	std::vector<OGLTexture *> OGLRenderer::textures;
+	OGLArrayTexture *OGLRenderer::textures = nullptr;
 
 	void OGLRenderer::initGLWindow(const char *caption)
 	{
@@ -66,11 +66,8 @@ namespace lrend
 			delete OGLRenderer::camera;
 		if (OGLRenderer::shaderProgram)
 			delete OGLRenderer::shaderProgram;
-
-		for (OGLTexture *tex : OGLRenderer::textures)
-			delete tex;
-		OGLRenderer::textures.clear();
-		OGLTexture::texPointer = 0U;
+		if (OGLRenderer::textures)
+			delete OGLRenderer::textures;
 
 		glDeleteVertexArrays(1, &OGLRenderer::ebo);
 		glDeleteVertexArrays(1, &OGLRenderer::vbo);
@@ -92,6 +89,7 @@ namespace lrend
 		OGLRenderer::vertexBufSize = 0ULL;
 		OGLRenderer::elementBufSize = 0ULL;
 		OGLRenderer::shaderProgram = nullptr;
+		OGLRenderer::textures = nullptr;
 	}
 
 	void OGLRenderer::initVertexArrays(const std::vector<float>& vertData, const std::vector<unsigned>& elemData)
@@ -117,10 +115,8 @@ namespace lrend
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(6 * sizeof(float)));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (const void *)(8 * sizeof(float)));
-		glEnableVertexAttribArray(3);
 	}
 
 	void OGLRenderer::initCamera(const glm::vec3& cameraPosition)
@@ -137,25 +133,14 @@ namespace lrend
 		OGLRenderer::shaderProgram = new OGLShader(vertexPath, fragmentPath);
 	}
 
-	void OGLRenderer::initTextures(const std::vector<const char *>& texturePaths)
+	void OGLRenderer::initTextures(const std::vector<const char *>& texturePaths, int w, int h)
 	{
-		if (OGLRenderer::textures.size() > 0)
-		{
-			for (OGLTexture *tex : OGLRenderer::textures)
-				delete tex;
-			OGLRenderer::textures.clear();
-		}
+		if (OGLRenderer::textures)
+			delete OGLRenderer::textures;
 
-		for (const char *path : texturePaths)
-			OGLRenderer::textures.push_back(new OGLTexture(path));
+		OGLRenderer::textures = new OGLArrayTexture(texturePaths, w, h);
 
-		for (unsigned char i = 0; i < 16; ++i)
-		{
-			std::string name = "tex[";
-			name += std::to_string(i);
-			name += ']';
-			OGLRenderer::shaderProgram->setInt(name.c_str(), i);
-		}
+		OGLRenderer::shaderProgram->setInt("texLayers", texturePaths.size());
 	}
 
 	void OGLRenderer::processInput(GLFWwindow *wnd)
@@ -204,9 +189,8 @@ namespace lrend
 		OGLRenderer::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf, 
-		const std::vector<const char *>& texPaths, unsigned w, unsigned h, const glm::vec3& cPos,
-		const char *vSh, const char *fSh, const char *cap)
+	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf, const std::vector<const char *>& texPaths,
+		unsigned w, unsigned h, int texW, int texH, const glm::vec3& cPos, const char *vSh, const char *fSh, const char *cap)
 	{
 		OGLRenderer::width = w;
 		OGLRenderer::height = h;
@@ -222,7 +206,7 @@ namespace lrend
 		OGLRenderer::initShader(vSh, fSh);
 		OGLRenderer::shaderProgram->use();
 
-		OGLRenderer::initTextures(texPaths);
+		OGLRenderer::initTextures(texPaths, texW, texH);
 
 		glEnable(GL_DEPTH_TEST);
 		glFrontFace(GL_CCW);
@@ -260,7 +244,7 @@ namespace lrend
 			model = glm::rotate(model, (float)glfwGetTime() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			shaderProgram->setFloatMx4("model", model);
 
-			glDrawElements(GL_TRIANGLE_STRIP, OGLRenderer::elementBufSize, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, OGLRenderer::elementBufSize, GL_UNSIGNED_INT, nullptr);
 
 			glfwSwapBuffers(OGLRenderer::glWindow);
 			glfwPollEvents();

@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="GraphicsTurtle.h" />
     <ClInclude Include="LSystem.h" />
+    <ClInclude Include="LSystemContext.h" />
     <ClInclude Include="LSystemGenerator.h" />
     <ClInclude Include="LSystemProdRule.h" />
     <ClInclude Include="LSystemSymbol.h" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="GraphicsTurtle.cpp" />
     <ClCompile Include="LSystem.cpp" />
+    <ClCompile Include="LSystemContext.cpp" />
     <ClCompile Include="LSystemGenerator.cpp" />
     <ClCompile Include="LSystemProdRule.cpp" />
     <ClCompile Include="LSystemSymbol.cpp" />

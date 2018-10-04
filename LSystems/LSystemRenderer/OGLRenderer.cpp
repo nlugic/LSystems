@@ -126,9 +126,6 @@ namespace lrend
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, OGLR::elementBufSize * sizeof(float), elemData.data(), GL_STATIC_DRAW);
 		
-		glEnable(GL_PRIMITIVE_RESTART);
-		glPrimitiveRestartIndex(UINT_MAX);
-
 		glGenBuffers(1, &OGLR::ssbo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data(), GL_STATIC_DRAW);
@@ -160,7 +157,7 @@ namespace lrend
 			delete OGLR::textures;
 
 		OGLR::textures = new OGLArrayTexture(texturePaths, w, h);
-		OGLR::shaderProgram->setInt("texLayers", texturePaths.size());
+		OGLR::shaderProgram->setInt("texLayers", static_cast<int>(texturePaths.size()));
 	}
 
 	void OGLRenderer::processInput(GLFWwindow *wnd)
@@ -262,7 +259,7 @@ namespace lrend
 			model = glm::rotate(model, (float)glfwGetTime() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 			shaderProgram->setFloatMx4("model", model);
 
-			glDrawElements(GL_TRIANGLE_STRIP, OGLR::elementBufSize, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(OGLR::elementBufSize), GL_UNSIGNED_INT, nullptr);
 
 			glfwSwapBuffers(OGLR::glWindow);
 			glfwPollEvents();

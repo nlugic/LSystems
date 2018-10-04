@@ -7,10 +7,15 @@ namespace lsys
 
 	unsigned GraphicsTurtle::transformPointer = 0U;
 
-	GraphicsTurtle::GraphicsTurtle(const TurtleState& state)
-		:initialState(state), currentState(initialState), elemPointer(0U)
+	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
+		:owner(owner), initialState(state), currentState(initialState), elemPointer(0U)
 	{
 		updateTransform();
+	}
+
+	void GraphicsTurtle::setOwner(LSystem *lSys)
+	{
+		owner = lSys;
 	}
 
 	TurtleState& GraphicsTurtle::getCurrentState()
@@ -23,12 +28,12 @@ namespace lsys
 		return currentTransform;
 	}
 
-	std::function<void(GraphicsTurtle *, LSystemSymbol *)> GraphicsTurtle::getFunction(char key)
+	std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> GraphicsTurtle::getFunction(char key)
 	{
 		return drawingFuncs[key];
 	}
 
-	void GraphicsTurtle::setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *)>& func)
+	void GraphicsTurtle::setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
 	{
 		drawingFuncs[key] = func;
 	}
@@ -38,18 +43,7 @@ namespace lsys
 		std::vector<float> buffer;
 
 		for (Vertex vert : vertexBuffer)
-		{
-			buffer.push_back(vert.x);
-			buffer.push_back(vert.y);
-			buffer.push_back(vert.z);
-			buffer.push_back(vert.nx);
-			buffer.push_back(vert.ny);
-			buffer.push_back(vert.nz);
-			buffer.push_back(vert.s);
-			buffer.push_back(vert.t);
-			buffer.push_back(vert.d);
-			buffer.push_back(vert.tr);
-		}
+			buffer.insert(buffer.end(), &vert.x, &vert.x + sizeof(Vertex) / sizeof(float) - 1);
 
 		return buffer;
 	}
@@ -57,6 +51,11 @@ namespace lsys
 	const std::vector<unsigned>& GraphicsTurtle::getElements() const
 	{
 		return elementBuffer;
+	}
+
+	const std::vector<glm::mat4>& GraphicsTurtle::getTransforms() const
+	{
+		return transformBuffer;
 	}
 
 	void GraphicsTurtle::pushState()
@@ -78,7 +77,7 @@ namespace lsys
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
 	{
-		currentState.position += offset;
+		currentState.position += glm::vec3(currentTransform * glm::vec4(offset, 1.0f));
 		updateTransform();
 	}
 
@@ -106,7 +105,7 @@ namespace lsys
 		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
 	}
 
-	void GraphicsTurtle::rotateStateToVector(glm::vec3& target)
+	void GraphicsTurtle::rotateStateToVector(const glm::vec3& target)
 	{
 		glm::vec3 axis = glm::cross(currentState.heading, target);
 		float sine = glm::length(axis);
@@ -121,26 +120,23 @@ namespace lsys
 	{
 		for (Vertex vert : vertices)
 		{
-			if (vert.tr == NAN)
-				elementBuffer.push_back(UINT_MAX);
-			else
+			ptrdiff_t pos = std::distance(vertexBuffer.begin(), std::find(vertexBuffer.begin(), vertexBuffer.end(), vert));
+			if (pos >= static_cast<ptrdiff_t>(vertexBuffer.size()))
 			{
-				ptrdiff_t pos = std::distance(vertexBuffer.begin(), std::find(vertexBuffer.begin(), vertexBuffer.end(), vert));
-				if (pos >= vertexBuffer.size())
-				{
-					vertexBuffer.push_back(vert);
-					elementBuffer.push_back(elemPointer++);
-				}
-				else
-					elementBuffer.push_back(pos);
+				vertexBuffer.push_back(vert);
+				elementBuffer.push_back(elemPointer++);
 			}
+			else
+				elementBuffer.push_back(static_cast<unsigned>(pos));
+
+			transformBuffer.push_back(currentTransform);
 		}
 	}
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
 		for (LSystemSymbol *sym : symbols)
-			drawingFuncs[sym->getKey()](this, sym);
+			drawingFuncs[sym->getKey()](this, sym, owner);
 	}
 
 	void GraphicsTurtle::updateTransform()
@@ -150,6 +146,23 @@ namespace lsys
 		glm::mat4 mat(1.0f);
 		mat = glm::translate(mat, currentState.position);
 		currentTransform = glm::rotate(mat, glm::asin(sine), axis);
+	}
+
+	std::string GraphicsTurtle::toString() const
+	{
+		std::string ret("Turtle's symbols = { ");
+		for (std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>>::const_iterator& iter = drawingFuncs.begin();
+				iter != drawingFuncs.end(); ++iter)
+			ret += iter->first + (std::distance(iter, drawingFuncs.end()) > 1) ? ", " : " ";
+		ret += '}';
+
+		return ret;
+	}
+	
+	std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& gTrt)
+	{
+		out << gTrt.toString();
+		return out;
 	}
 
 }

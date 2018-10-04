@@ -1,9 +1,8 @@
 #ifndef GRAPHICSTURTLE_H
 #define GRAPHICSTURTLE_H
 
-#include "LSystemSymbol.h"
+#include "LSystem.h"
 #include "..\..\include\glm\glm.hpp"
-#include <vector>
 #include <stack>
 #include <functional>
 
@@ -39,41 +38,48 @@ namespace lsys
 	class GraphicsTurtle
 	{
 	private:
-		std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *)>> drawingFuncs;
+		LSystem *owner;
+		std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>> drawingFuncs;
 
-		std::stack<TurtleState> statesStack;
-		const TurtleState initialState;
-		TurtleState currentState;
+		TurtleState initialState, currentState;
 		glm::mat4 currentTransform;
+		std::stack<TurtleState> statesStack;
 
 		std::vector<Vertex> vertexBuffer;
 		unsigned elemPointer;
 		std::vector<unsigned> elementBuffer;
-
+		std::vector<glm::mat4> transformBuffer;
+		
 	public:
 		static unsigned transformPointer;
 
-		GraphicsTurtle(const TurtleState& state = defaultTurtleState);
+		GraphicsTurtle(LSystem *owner, const TurtleState& state = defaultTurtleState);
 		GraphicsTurtle(const GraphicsTurtle&) = default;
 		GraphicsTurtle& operator=(const GraphicsTurtle&) = default;
 		~GraphicsTurtle() = default;
 
+		void setOwner(LSystem *lSys);
 		TurtleState& getCurrentState();
 		glm::mat4& getCurrentTransform();
-		std::function<void(GraphicsTurtle *, LSystemSymbol *)> getFunction(char key);
-		void setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *)>& func);
+		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> getFunction(char key);
+		void setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
 		std::vector<float> getVertices() const;
 		const std::vector<unsigned>& getElements() const;
+		const std::vector<glm::mat4>& getTransforms() const;
+
 		void pushState();
 		void popState();
 		void translateState(const glm::vec3& offset);
 		void rotateStateAroundUp(float angle);
 		void rotateStateAroundLeft(float angle);
 		void rotateStateAroundHeading(float angle);
-		void rotateStateToVector(glm::vec3& target);
+		void rotateStateToVector(const glm::vec3& target);
 		void interpretSymbols(const std::vector<LSystemSymbol *>& symbols);
 		void addVertices(const std::vector<Vertex>& vertices);
 		void updateTransform();
+
+		std::string toString() const;
+		friend std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& gTrt);
 	};
 
 }

@@ -18,7 +18,7 @@ namespace lrend
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 4, GL_RGBA8, width, height, layers);
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 4, GL_RGBA8, width, height, static_cast<GLsizei>(layers));
 	}
 
 	OGLArrayTexture::OGLArrayTexture(const std::vector<const char *>& paths, int w, int h)

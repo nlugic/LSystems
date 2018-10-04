@@ -4,26 +4,26 @@
 namespace lsys
 {
 
-	LSystemSymbol::LSystemSymbol(char k)
-		:key(k) { }
+	LSystemSymbol::LSystemSymbol(char key)
+		:key(key) { }
 
 
-	LSystemSymbol::LSystemSymbol(char k, const char *params)
-		:key(k)
+	LSystemSymbol::LSystemSymbol(char key, const char *params)
+		:key(key)
 	{
-		for (const char *c = params; *c != '\0'; ++c)
+		for (const char *c = params; *c; ++c)
 			createParam(*c);
 	}
 		
-	LSystemSymbol::LSystemSymbol(const LSystemSymbol& sym)
-		:key(sym.key), params(sym.params) { }
+	LSystemSymbol::LSystemSymbol(const LSystemSymbol& lSym)
+		:key(lSym.key), params(lSym.params) { }
 
-	LSystemSymbol& LSystemSymbol::operator=(const LSystemSymbol& sym)
+	LSystemSymbol& LSystemSymbol::operator=(const LSystemSymbol& lSym)
 	{
-		if (this != &sym)
+		if (this != &lSym)
 		{
-			key = sym.key;
-			params = sym.params;
+			key = lSym.key;
+			params = lSym.params;
 		}
 		return *this;
 	}
@@ -64,8 +64,7 @@ namespace lsys
 	{
 		std::string ret;
 		ret += key;
-
-		if (params.size() > 0)
+		if (!params.empty())
 			ret += '(';
 		for (std::map<char, float>::const_iterator& iter = params.begin(); iter != params.end(); ++iter)
 			ret += (!std::isnan(iter->second) ? iter->second : iter->first) + (std::distance(iter, params.end()) == 1) ? ", " : ")";

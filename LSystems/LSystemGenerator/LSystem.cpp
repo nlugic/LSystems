@@ -41,27 +41,11 @@ namespace lsys
 		products.push_back(prod);
 	}
 
-	void LSystem::initTurtleFunctions()
-	{
-		turtle.setFunction('[', saveTurtleState);
-		turtle.setFunction(']', restoreTurtleState);
-		turtle.setFunction('+', turnTurtleLeft);
-		turtle.setFunction('-', turnTurtleRight);
-		turtle.setFunction('^', pitchTurtleUp);
-		turtle.setFunction('&', pitchTurtleDown);
-		turtle.setFunction('\\', rollTurtleLeft);
-		turtle.setFunction('/', rollTurtleRight);
-		turtle.setFunction('|', turnTurtleAround);
-	}
-
-	LSystem::LSystem()
-	{
-		initTurtleFunctions();
-	}
+	LSystem::LSystem() { }
 
 	LSystem::LSystem(const char *params)
 	{
-		for (const char *c = params; *c != '\0'; ++c)
+		for (const char *c = params; *c; ++c)
 			createParam(*c);
 	}
 
@@ -93,14 +77,14 @@ namespace lsys
 		return products.size() - 1;
 	}
 
-	void LSystem::addSymbolToAxiom(LSystemSymbol *sym)
+	void LSystem::addSymbolToAxiom(LSystemSymbol *lSym)
 	{
-		axiom.push_back(sym);
+		axiom.push_back(lSym);
 	}
 
-	void LSystem::addRule(LSystemProdRule *rule)
+	void LSystem::addRule(LSystemProdRule *lRul)
 	{
-		rules.push_back(rule);
+		rules.push_back(lRul);
 	}
 
 	float LSystem::getParam(char param)
@@ -133,19 +117,9 @@ namespace lsys
 		}
 	}
 
-	const std::vector<float>& LSystem::getCurrentVertexBuffer() const
+	std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
 	{
-		return turtle.getVertices();
-	}
-
-	const std::vector<unsigned>& LSystem::getCurrentElementBuffer() const
-	{
-		return turtle.getElements();
-	}
-
-	std::vector<LSystemSymbol *>& LSystem::derive(unsigned char level)
-	{
-		while (level-- > 1)
+		while (--level)
 			derive();
 		return derive();
 	}
@@ -155,35 +129,37 @@ namespace lsys
 		if (products.empty())
 			produceAxiom();
 		
-		std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1];
+		const std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1];
 		std::vector<LSystemSymbol *> newLevel;
 
 		for (LSystemSymbol *sym : currentLevel)
 		{
 			LSystemProdRule *rule = pickRule(sym);
 
-			if (rule == nullptr)
+			if (!rule)
 			{
 				newLevel.push_back(new LSystemSymbol(*sym));
 				continue;
 			}
-			else
-				rule->rewriteSymbol(sym, newLevel);
+			else if (rule->condition() && *rule->getSymbol() == *sym)
+			{
+				const std::vector<LSystemSymbol *>& prod = rule->getProduct();
+				for (LSystemSymbol *sym : prod)
+					newLevel.push_back(new LSystemSymbol(*sym));
+			}
 		}
 
 		products.push_back(newLevel);
-		return newLevel;
+		return products[products.size() - 1];
 	}
 
-	LSystemProdRule* LSystem::pickRule(LSystemSymbol *sym) const
+	LSystemProdRule* LSystem::pickRule(LSystemSymbol *lSym) const
 	{
 		std::vector<LSystemProdRule *> candidates;
 
 		for (LSystemProdRule *rule : rules)
-		{
-			if (*rule->getSymbol() == *sym && rule->condition())
+			if (*rule->getSymbol() == *lSym && rule->condition())
 				candidates.push_back(rule);
-		}
 
 		if (candidates.size() == 1)
 			return candidates[0];
@@ -199,18 +175,9 @@ namespace lsys
 		return nullptr;
 	}
 
-	void LSystem::drawLevel(unsigned char level)
-	{
-		size_t curr = getCurrentLevel();
-		if (level > curr)
-			derive(level - curr);
-
-		turtle.interpretSymbols(products[level]);
-	}
-
 	std::string LSystem::toString() const
 	{
-		std::string ret = "A:\t";
+		std::string ret("A:\t");
 		for (LSystemSymbol *s : axiom)
 			ret += s->toString();
 		ret += '\n';

@@ -1,7 +1,7 @@
 #ifndef LSYSTEMRENDERER_H
 #define LSYSTEMRENDERER_H
 
-#include "..\LSystemGenerator\LSystem.h"
+#include "..\LSystemGenerator\LSystemContext.h"
 #include "OGLRenderer.h"
 
 #ifdef LSYSTEMRENDERER_EXPORTS
@@ -16,10 +16,10 @@ namespace lrend
 	class LSystemRenderer
 	{
 	protected:
-		lsys::LSystem *current;
+		lsys::LSystemContext *current;
 
 	public:
-		LSystemRenderer(lsys::LSystem *lSys);
+		LSystemRenderer(lsys::LSystemContext *lCxt = nullptr);
 		LSystemRenderer(const LSystemRenderer&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();

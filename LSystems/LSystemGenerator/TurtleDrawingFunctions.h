@@ -1,7 +1,7 @@
 #ifndef TURTLEDRAWINGFUNCTIONS_H
 #define TURTLEDRAWINGFUNCTIONS_H
 
-#include "LSystemSymbol.h"
+#include "LSystem.h"
 #include "GraphicsTurtle.h"
 
 namespace lsys
@@ -12,17 +12,19 @@ namespace lsys
 	const float pi_2 = 1.57079632679489661923f;
 	const float pi_4 = 0.785398163397448309616f;
 
-	void drawBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void restoreTurtleState(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *sym);
-	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *sym);
+	void drawGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void drawGenericBranchApex(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void drawGenericLeaf(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void restoreTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
+	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
 
 }
 

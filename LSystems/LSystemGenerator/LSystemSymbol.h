@@ -5,8 +5,6 @@
 #include <string>
 #include <map>
 
-// move?
-
 namespace lsys
 {
 
@@ -17,10 +15,10 @@ namespace lsys
 		std::map<char, float> params;
 
 	public:
-		LSystemSymbol(char k);
-		LSystemSymbol(char k, const char *params);
-		LSystemSymbol(const LSystemSymbol& sym);
-		LSystemSymbol& operator=(const LSystemSymbol& sym);
+		LSystemSymbol(char key);
+		LSystemSymbol(char key, const char *params);
+		LSystemSymbol(const LSystemSymbol& lSym);
+		LSystemSymbol& operator=(const LSystemSymbol& lSym);
 		virtual ~LSystemSymbol() = default;
 
 		char getKey() const;

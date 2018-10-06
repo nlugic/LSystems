@@ -136,7 +136,8 @@ namespace lsys
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
 		for (LSystemSymbol *sym : symbols)
-			drawingFuncs[sym->getKey()](this, sym, owner);
+			if (drawingFuncs.count(sym->getKey()))
+				drawingFuncs[sym->getKey()](this, sym, owner);
 	}
 
 	void GraphicsTurtle::updateTransform()

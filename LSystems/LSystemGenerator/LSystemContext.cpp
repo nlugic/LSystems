@@ -4,10 +4,10 @@
 namespace lsys
 {
 
-	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state = defaultTurtleState)
+	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
 		:lSystem(lSys), turtle(lSystem, state) { }
 
-	LSystemContext::LSystemContext(const char *params, const TurtleState& state = defaultTurtleState)
+	LSystemContext::LSystemContext(const char *params, const TurtleState& state)
 		:lSystem(new LSystem(params)), turtle(lSystem, state) { }
 
 	LSystemContext::LSystemContext(const LSystemContext& lCxt)
@@ -18,10 +18,14 @@ namespace lsys
 
 	LSystemContext& LSystemContext::operator=(const LSystemContext& lCxt)
 	{
-		delete lSystem;
-		lSystem = new LSystem(*lCxt.lSystem);
-		turtle = lCxt.turtle;
-		turtle.setOwner(lSystem);
+		if (this != &lCxt)
+		{
+			delete lSystem;
+			lSystem = new LSystem(*lCxt.lSystem);
+			turtle = lCxt.turtle;
+			turtle.setOwner(lSystem);
+		}
+		return *this;
 	}
 
 	LSystemContext::~LSystemContext()

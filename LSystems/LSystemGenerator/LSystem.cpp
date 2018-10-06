@@ -104,7 +104,7 @@ namespace lsys
 		params[param] = NAN;
 	}
 
-	std::vector<LSystemSymbol *>& LSystem::operator[](unsigned char level)
+	std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
 	{
 		try { return products.at(level); }
 		catch (std::out_of_range& err)

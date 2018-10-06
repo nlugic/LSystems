@@ -32,7 +32,7 @@ namespace lsys
 		float getParam(char param);
 		void setParam(char param, float value);
 		void createParam(char param);
-		std::vector<LSystemSymbol *>& operator[](unsigned char level);
+		std::vector<LSystemSymbol *>& operator[](size_t level);
 		
 		std::vector<LSystemSymbol *>& derive(size_t level);
 		std::vector<LSystemSymbol *>& derive();

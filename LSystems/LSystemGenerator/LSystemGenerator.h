@@ -13,7 +13,7 @@ namespace LSystemGeneratorAPI
 	class LSystemGenerator
 	{
 	public:
-		static LSYSTEMGENERATOR_API void test();
+		static LSYSTEMGENERATOR_API void testLSystem();
 	};
 
 }

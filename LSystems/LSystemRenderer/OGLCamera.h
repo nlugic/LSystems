@@ -29,8 +29,9 @@ namespace lrend
 		OGLCamera& operator=(const OGLCamera&) = delete;
 		~OGLCamera() = default;
 
-		float getFOV();
-		glm::mat4 getViewMatrix();
+		const glm::vec3& getPosition() const;
+		float getFOV() const;
+		glm::mat4 getViewMatrix() const;
 		void move(MovementDirection direction, float deltaTime);
 		void look(float xOffset, float yOffset);
 		void zoom(float yOffset);

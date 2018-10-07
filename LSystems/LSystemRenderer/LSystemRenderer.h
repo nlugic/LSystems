@@ -24,7 +24,8 @@ namespace lrend
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 
-		static LSYSTEMRENDERER_API void test();
+		static LSYSTEMRENDERER_API void testOGLRender();
+		static LSYSTEMRENDERER_API void testTurtleRender();
 	};
 
 }

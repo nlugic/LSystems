@@ -1,5 +1,6 @@
 
 #include "LSystemContext.h"
+#include "TurtleDrawingFunctions.h"
 
 namespace lsys
 {
@@ -35,15 +36,15 @@ namespace lsys
 
 	void LSystemContext::initTurtleFunctions()
 	{
-		turtle.setFunction('[', saveTurtleState);
-		turtle.setFunction(']', restoreTurtleState);
-		turtle.setFunction('+', turnTurtleLeft);
-		turtle.setFunction('-', turnTurtleRight);
-		turtle.setFunction('^', pitchTurtleUp);
-		turtle.setFunction('&', pitchTurtleDown);
-		turtle.setFunction('\\', rollTurtleLeft);
-		turtle.setFunction('/', rollTurtleRight);
-		turtle.setFunction('|', turnTurtleAround);
+		turtle.setAction('[', lsys::saveTurtleState);
+		turtle.setAction(']', lsys::restoreTurtleState);
+		turtle.setAction('+', lsys::turnTurtleLeft);
+		turtle.setAction('-', lsys::turnTurtleRight);
+		turtle.setAction('^', lsys::pitchTurtleUp);
+		turtle.setAction('&', lsys::pitchTurtleDown);
+		turtle.setAction('\\', lsys::rollTurtleLeft);
+		turtle.setAction('/', lsys::rollTurtleRight);
+		turtle.setAction('|', lsys::turnTurtleAround);
 	}
 
 	GraphicsTurtle& LSystemContext::getTurtle()

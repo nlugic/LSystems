@@ -4,8 +4,9 @@
 
 int main(int argc, char **argv)
 {
-	//LSystemGeneratorAPI::LSystemGenerator::test();
-	lrend::LSystemRenderer::test();
+	//LSystemGeneratorAPI::LSystemGenerator::testLSystem();
+	//lrend::LSystemRenderer::testOGLRender();
+	lrend::LSystemRenderer::testTurtleRender();
 
 	return 0;
 }

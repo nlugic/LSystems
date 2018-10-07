@@ -6,6 +6,7 @@ layout (location = 2) in vec3 tCoord;
 layout (location = 3) in float trPoint;
 
 out vec3 vertNormal;
+out vec3 fragPosition;
 out vec3 texCoordinate;
 
 uniform mat4 proj;
@@ -19,8 +20,11 @@ layout (std430, binding = 0) buffer transformData
 
 void main()
 {
-	int trPtr = int(trPoint);
-	gl_Position = proj * view * transforms[trPtr] * model * vec4(vPos, 1.0f);
-	vertNormal = mat3(transpose(inverse(transforms[trPtr] * model))) * vNorm;
+	mat4 combinedModel = transforms[int(trPoint)] * model;
+
+	vertNormal = mat3(transpose(inverse(combinedModel))) * vNorm;
+	fragPosition = vec3(combinedModel * vec4(vPos, 1.0f));
 	texCoordinate = tCoord;
+
+	gl_Position = proj * view * vec4(fragPosition, 1.0f);
 }

@@ -12,12 +12,17 @@ namespace lrend
 		updateCameraVectors();
 	}
 
-	float OGLCamera::getFOV()
+	const glm::vec3& OGLCamera::getPosition() const
+	{
+		return position;
+	}
+
+	float OGLCamera::getFOV() const
 	{
 		return fov;
 	}
 
-	glm::mat4 OGLCamera::getViewMatrix()
+	glm::mat4 OGLCamera::getViewMatrix() const
 	{
 		return glm::lookAt(position, position + front, up);
 	}

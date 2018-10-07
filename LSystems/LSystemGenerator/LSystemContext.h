@@ -2,7 +2,7 @@
 #define LSYSTEMCONTEXT_H
 
 #include "LSystem.h"
-#include "TurtleDrawingFunctions.h"
+#include "GraphicsTurtle.h"
 
 namespace lsys
 {

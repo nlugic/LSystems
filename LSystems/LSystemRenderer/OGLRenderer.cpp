@@ -160,6 +160,17 @@ namespace lrend
 		OGLR::shaderProgram->setInt("texLayers", static_cast<int>(texturePaths.size()));
 	}
 
+	void OGLRenderer::initLighting(const glm::vec3& lightPosition, const glm::vec3& lightAttenuation, 
+		const glm::vec3& lightAmbient, const glm::vec3& lightDiffuse, const glm::vec3& lightSpecular, float shininess)
+	{
+		OGLR::shaderProgram->setFloatVx3("light.position", lightPosition);
+		OGLR::shaderProgram->setFloatVx3("light.attenuation", lightAttenuation);
+		OGLR::shaderProgram->setFloatVx3("light.ambient", lightAmbient);
+		OGLR::shaderProgram->setFloatVx3("light.diffuse", lightDiffuse);
+		OGLR::shaderProgram->setFloatVx3("light.specular", lightSpecular);
+		OGLR::shaderProgram->setFloat("light.shininess", shininess);
+	}
+
 	void OGLRenderer::processInput(GLFWwindow *wnd)
 	{
 		if (glfwGetKey(wnd, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -207,21 +218,22 @@ namespace lrend
 	}
 	
 	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
-		const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
-		unsigned w, unsigned h, int texW, int texH, const glm::vec3& cPos, const char *vSh, const char *fSh, const char *cap)
+		const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
 	{
-		OGLR::width = w;
-		OGLR::height = h;
-		OGLR::lastXPos = w / 2.0;
-		OGLR::lastYPos = h / 2.0;
+		OGLR::width = config.windowWidth;
+		OGLR::height = config.windowHeight;
+		OGLR::lastXPos = OGLR::width / 2.0;
+		OGLR::lastYPos = OGLR::height / 2.0;
 
-		OGLR::initGLWindow(cap);
+		OGLR::initGLWindow(config.windowCaption);
 		OGLR::initBuffers(vBuf, eBuf, transMats);
 		glBindVertexArray(OGLR::vao);
-		OGLR::initCamera(cPos);
-		OGLR::initShader(vSh, fSh);
+		OGLR::initCamera(config.cameraPosition);
+		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();
-		OGLR::initTextures(texPaths, texW, texH);
+		OGLR::initLighting(config.lightPosition, config.lightAttenuation, config.lightAmbient,
+			config.lightDiffuse, config.lightSpecular, config.specularShininess);
+		OGLR::initTextures(texPaths, config.textureWidth, config.textureHeight);
 
 		glEnable(GL_DEPTH_TEST);
 		glFrontFace(GL_CCW);
@@ -229,18 +241,20 @@ namespace lrend
 		glCullFace(GL_BACK);
 		glPolygonMode(GL_FRONT, GL_FILL);
 
-		glm::mat4 projection = glm::perspective(glm::radians(OGLR::camera->getFOV()),
-			(float)OGLR::width / OGLR::height, 0.1f, 100.0f);
-		glm::mat4 view = OGLR::camera->getViewMatrix();
+		glm::mat4 projection(glm::perspective(glm::radians(OGLR::camera->getFOV()),
+			(float)OGLR::width / OGLR::height, 0.1f, 100.0f));
+		glm::mat4 view(OGLR::camera->getViewMatrix());
+		glm::mat4 model(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -3.0f)));
 
 		OGLR::shaderProgram->setFloatMx4("proj", projection);
 		OGLR::shaderProgram->setFloatMx4("view", view);
+		OGLR::shaderProgram->setFloatMx4("model", model);
 
 		while (!glfwWindowShouldClose(OGLR::glWindow))
 		{
 			processInput(OGLR::glWindow);
 
-			glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+			glClearColor(config.backgroundColor.x, config.backgroundColor.y, config.backgroundColor.z, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			projection = glm::perspective(glm::radians(OGLR::camera->getFOV()),
@@ -250,14 +264,11 @@ namespace lrend
 			OGLR::shaderProgram->setFloatMx4("proj", projection);
 			OGLR::shaderProgram->setFloatMx4("view", view);
 
+			OGLR::shaderProgram->setFloatVx3("viewPosition", OGLR::camera->getPosition());
+
 			float currentFrame = (float)glfwGetTime();
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
-			
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
-			model = glm::rotate(model, (float)glfwGetTime() / 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-			shaderProgram->setFloatMx4("model", model);
 
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(OGLR::elementBufSize), GL_UNSIGNED_INT, nullptr);
 

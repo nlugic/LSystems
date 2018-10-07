@@ -5,7 +5,7 @@
 namespace lsys
 {
 
-	unsigned GraphicsTurtle::transformPointer = 0U;
+	float GraphicsTurtle::transformPointer = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
 		:owner(owner), initialState(state), currentState(initialState), elemPointer(0U)
@@ -28,14 +28,14 @@ namespace lsys
 		return currentTransform;
 	}
 
-	std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> GraphicsTurtle::getFunction(char key)
+	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& GraphicsTurtle::getAction(char key)
 	{
-		return drawingFuncs[key];
+		return actions[key];
 	}
 
-	void GraphicsTurtle::setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
+	void GraphicsTurtle::setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
 	{
-		drawingFuncs[key] = func;
+		actions.emplace(key, func);
 	}
 
 	std::vector<float> GraphicsTurtle::getVertices() const
@@ -43,7 +43,7 @@ namespace lsys
 		std::vector<float> buffer;
 
 		for (Vertex vert : vertexBuffer)
-			buffer.insert(buffer.end(), &vert.x, &vert.x + sizeof(Vertex) / sizeof(float) - 1);
+			buffer.insert(buffer.end(), &vert.x, &vert.x + sizeof(Vertex) / sizeof(float));
 
 		return buffer;
 	}
@@ -77,7 +77,9 @@ namespace lsys
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
 	{
-		currentState.position += glm::vec3(currentTransform * glm::vec4(offset, 1.0f));
+		glm::mat4 currentRotation(currentTransform);
+		std::memset(&currentRotation[3], 0, 3 * sizeof(float));
+		currentState.position += glm::vec3(currentRotation * glm::vec4(offset, 1.0f));
 		updateTransform();
 	}
 
@@ -128,16 +130,15 @@ namespace lsys
 			}
 			else
 				elementBuffer.push_back(static_cast<unsigned>(pos));
-
-			transformBuffer.push_back(currentTransform);
 		}
+		transformBuffer.push_back(currentTransform);
 	}
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
 		for (LSystemSymbol *sym : symbols)
-			if (drawingFuncs.count(sym->getKey()))
-				drawingFuncs[sym->getKey()](this, sym, owner);
+			if (actions.count(sym->getKey()))
+				actions[sym->getKey()](this, sym, owner);
 	}
 
 	void GraphicsTurtle::updateTransform()
@@ -146,15 +147,14 @@ namespace lsys
 		float sine = glm::length(axis);
 		glm::mat4 mat(1.0f);
 		mat = glm::translate(mat, currentState.position);
-		currentTransform = glm::rotate(mat, glm::asin(sine), axis);
+		currentTransform = (!sine) ? mat : glm::rotate(mat, glm::asin(sine), axis);
 	}
 
 	std::string GraphicsTurtle::toString() const
 	{
 		std::string ret("Turtle's symbols = { ");
-		for (std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>>::const_iterator& iter = drawingFuncs.begin();
-				iter != drawingFuncs.end(); ++iter)
-			ret += iter->first + (std::distance(iter, drawingFuncs.end()) > 1) ? ", " : " ";
+		for (std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>>::const_iterator& iter = actions.begin(); iter != actions.end(); ++iter)
+			ret += iter->first + (std::distance(iter, actions.end()) > 1) ? ", " : " ";
 		ret += '}';
 
 		return ret;

@@ -39,7 +39,7 @@ namespace lsys
 	{
 	private:
 		LSystem *owner;
-		std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>> drawingFuncs;
+		std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>> actions;
 
 		TurtleState initialState, currentState;
 		glm::mat4 currentTransform;
@@ -51,7 +51,7 @@ namespace lsys
 		std::vector<glm::mat4> transformBuffer;
 		
 	public:
-		static unsigned transformPointer;
+		static float transformPointer;
 
 		GraphicsTurtle(LSystem *owner, const TurtleState& state = defaultTurtleState);
 		GraphicsTurtle(const GraphicsTurtle&) = default;
@@ -61,8 +61,8 @@ namespace lsys
 		void setOwner(LSystem *lSys);
 		TurtleState& getCurrentState();
 		glm::mat4& getCurrentTransform();
-		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> getFunction(char key);
-		void setFunction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
+		const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& getAction(char key);
+		void setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
 		std::vector<float> getVertices() const;
 		const std::vector<unsigned>& getElements() const;
 		const std::vector<glm::mat4>& getTransforms() const;

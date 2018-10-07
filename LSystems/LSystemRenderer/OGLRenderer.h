@@ -18,6 +18,33 @@ namespace lrend
 	const int defaultTexHeight = 256;
 	const glm::vec3 defaultCamPos = glm::vec3(0.0f, 0.0f, 3.0f);
 
+	struct OGLRendererConfig
+	{
+		unsigned windowWidth, windowHeight;
+		unsigned textureWidth, textureHeight;
+		glm::vec3 backgroundColor;
+		glm::vec3 cameraPosition, lightPosition, lightAttenuation;
+		glm::vec3 lightAmbient, lightDiffuse, lightSpecular;
+		float specularShininess;
+		const char *vertShaderPath, *fragShaderPath;
+		const char *windowCaption;
+	};
+
+	const OGLRendererConfig defaultOGLRendererConfig =
+	{
+		1024U, 768U, 256U, 256U,
+		glm::vec3(1.0f, 1.0f, 1.0f),
+		glm::vec3(0.0f, 0.0f, 3.0f),
+		glm::vec3(0.0f, 5.0f, 3.0f),
+		glm::vec3(1.0f, 0.05f, 0.015f),
+		glm::vec3(0.3f, 0.3f, 0.3f),
+		glm::vec3(0.9f, 0.9f, 0.9f),
+		glm::vec3(0.95f, 0.95f, 0.95f), 32.0f,
+		"../LSystemRenderer/shader.vert",
+		"../LSystemRenderer/shader.frag",
+		"L-System Renderer"
+	};
+
 	class OGLRenderer
 	{
 	private:
@@ -44,6 +71,8 @@ namespace lrend
 			const std::vector<glm::mat4>& transformData);
 		static void initCamera(const glm::vec3& cameraPosition);
 		static void initShader(const char *vertexPath, const char *fragmentPath);
+		static void initLighting(const glm::vec3& lightPosition, const glm::vec3& lightAttenuation,
+			const glm::vec3& lightAmbient, const glm::vec3& lightDiffuse, const glm::vec3& lightSpecular, float shininess);
 		static void initTextures(const std::vector<const char *>& texturePaths, int w, int h);
 
 		static void processInput(GLFWwindow *wnd);
@@ -56,9 +85,7 @@ namespace lrend
 
 		static void renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
 			const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
-			unsigned w = defaultWidth, unsigned h = defaultHeight, int texW = defaultTexWidth, int texH = defaultTexHeight,
-			const glm::vec3& cPos = defaultCamPos, const char *vSh = "../LSystemRenderer/shader.vert",
-			const char *fSh = "../LSystemRenderer/shader.frag", const char *cap = "L-System Renderer");
+			const OGLRendererConfig& config = defaultOGLRendererConfig);
 	};
 
 }

@@ -2,12 +2,10 @@
 #include "LSystemGenerator.h"
 #include "LSystem.h"
 
-// funkcija koja parsira string simbola i dodaje ih proizvodu
-
 namespace LSystemGeneratorAPI
 {
 
-	void LSystemGenerator::test()
+	void LSystemGenerator::testLSystem()
 	{
 		lsys::LSystem ls1;
 

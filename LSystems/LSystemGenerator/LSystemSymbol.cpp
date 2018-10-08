@@ -7,27 +7,6 @@ namespace lsys
 	LSystemSymbol::LSystemSymbol(char key)
 		:key(key) { }
 
-
-	LSystemSymbol::LSystemSymbol(char key, const char *params)
-		:key(key)
-	{
-		for (const char *c = params; *c; ++c)
-			createParam(*c);
-	}
-		
-	LSystemSymbol::LSystemSymbol(const LSystemSymbol& lSym)
-		:key(lSym.key), params(lSym.params) { }
-
-	LSystemSymbol& LSystemSymbol::operator=(const LSystemSymbol& lSym)
-	{
-		if (this != &lSym)
-		{
-			key = lSym.key;
-			params = lSym.params;
-		}
-		return *this;
-	}
-
 	char LSystemSymbol::getKey() const
 	{
 		return key;
@@ -35,7 +14,7 @@ namespace lsys
 
 	float LSystemSymbol::getParam(char param)
 	{
-		if (params.find(param) != params.end())
+		if (params.count(param))
 			return params[param];
 		return NAN;
 	}
@@ -43,11 +22,6 @@ namespace lsys
 	void LSystemSymbol::setParam(char param, float value)
 	{
 		params[param] = value;
-	}
-
-	void LSystemSymbol::createParam(char param)
-	{
-		params[param] = NAN;
 	}
 
 	bool LSystemSymbol::operator==(const LSystemSymbol& lSym) const

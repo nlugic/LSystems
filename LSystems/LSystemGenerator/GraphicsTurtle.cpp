@@ -85,37 +85,37 @@ namespace lsys
 
 	void GraphicsTurtle::rotateStateAroundUp(float angle)
 	{
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(angle), currentState.up);
+		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up));
 		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
 		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
+		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateStateAroundLeft(float angle)
 	{
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(angle), currentState.left);
+		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left));
 		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
 		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
+		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateStateAroundHeading(float angle)
 	{
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::radians(angle), currentState.heading);
+		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading));
 		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
 		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
+		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateStateToVector(const glm::vec3& target)
 	{
 		glm::vec3 axis = glm::cross(currentState.heading, target);
 		float sine = glm::length(axis);
-		glm::mat4 mat(1.0f);
-		mat = glm::rotate(mat, glm::asin(sine), axis);
+		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::asin(sine), axis));
 		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
 		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
 		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
+		updateTransform();
 	}
 
 	void GraphicsTurtle::addVertices(const std::vector<Vertex>& vertices)
@@ -143,11 +143,19 @@ namespace lsys
 
 	void GraphicsTurtle::updateTransform()
 	{
+		glm::mat4 mat(glm::translate(glm::mat4(1.0f), currentState.position));
+
 		glm::vec3 axis = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading);
 		float sine = glm::length(axis);
-		glm::mat4 mat(1.0f);
-		mat = glm::translate(mat, currentState.position);
-		currentTransform = (!sine) ? mat : glm::rotate(mat, glm::asin(sine), axis);
+
+		if (sine)
+			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.heading);
+		else
+		{
+			axis = glm::cross(glm::vec3(-1.0f, 0.0f, 0.0f), currentState.left);
+			sine = glm::length(axis);
+			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.left);
+		}
 	}
 
 	std::string GraphicsTurtle::toString() const

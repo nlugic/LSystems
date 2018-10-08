@@ -4,6 +4,56 @@
 namespace lsys
 {
 
+	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->pushState();
+	}
+
+	void restoreTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->popState();
+	}
+
+	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundUp(lSym->getParam('a'));
+	}
+
+	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundUp(-lSym->getParam('a'));
+	}
+
+	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundLeft(-lSym->getParam('a'));
+	}
+
+	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundLeft(lSym->getParam('a'));
+	}
+
+	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundHeading(-lSym->getParam('a'));
+	}
+
+	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundHeading(lSym->getParam('a'));
+	}
+
+	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateAroundUp(180.0f);
+	}
+
+	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		turtle->rotateStateToVector(glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+
 	void drawGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
 		int n = static_cast<int>(lSym->getParam('n'));
@@ -41,7 +91,7 @@ namespace lsys
 				static_cast<float>(GraphicsTurtle::transformPointer) });
 
 			vertices.push_back({ v2u.x, v2u.y, v2u.z,
-				nmu.x, nmu.y, nmu.z, s + ds, 1.0f, t,
+				nmu.x, nmu.y, nmu.z, s - ds, 1.0f, t,
 				static_cast<float>(GraphicsTurtle::transformPointer) });
 
 			vertices.push_back({ v1.x, v1.y, v1.z,
@@ -49,14 +99,14 @@ namespace lsys
 				static_cast<float>(GraphicsTurtle::transformPointer) });
 
 			vertices.push_back({ v2u.x, v2u.y, v2u.z,
-				nmu.x, nmu.y, nmu.z, s + ds, 1.0f, t,
+				nmu.x, nmu.y, nmu.z, s - ds, 1.0f, t,
 				static_cast<float>(GraphicsTurtle::transformPointer) });
 
 			vertices.push_back({ v1u.x, v1u.y, v1u.z,
-				nmu.x, nmu.y, nmu.z, s + ds, 0.0f, t,
+				nmu.x, nmu.y, nmu.z, s - ds, 0.0f, t,
 				static_cast<float>(GraphicsTurtle::transformPointer) });
 
-			phi += ang; s += ds;
+			phi += ang; s -= ds;
 			sf = sfu; cf = cfu;
 			sfu = std::sin(phi + ang); cfu = std::cos(phi + ang);
 			v1 = v1u; v2 = v2u; nm = nmu;
@@ -66,8 +116,8 @@ namespace lsys
 		}
 
 		turtle->addVertices(vertices);
-		++GraphicsTurtle::transformPointer;
 		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
+		++GraphicsTurtle::transformPointer;
 	}
 
 	void drawGenericBranchApex(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
@@ -118,8 +168,8 @@ namespace lsys
 		}
 
 		turtle->addVertices(vertices);
-		++GraphicsTurtle::transformPointer;
 		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
+		++GraphicsTurtle::transformPointer;
 	}
 
 	void drawGenericLeaf(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
@@ -131,104 +181,54 @@ namespace lsys
 		float C = lSym->getParam('C');
 		float t = lSym->getParam('t');
 
-		glm::vec3 vl(p + l * c, 0.0f, w / 2);
-		glm::vec3 vh(p + l * (1.0f - C), 0.0f, w / 2);
+		glm::vec3 vl(w / 2, p + l * c, 0.0f);
+		glm::vec3 vh(w / 2, p + l * (1.0f - C), 0.0f);
 
 		std::vector<Vertex> vertices;
 
-		vertices.push_back({ 0.0f, 0.0f, -0.025f * w, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ 0.0f, 0.0f, 0.025f * w, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ p, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -0.025f * w, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.025f * w, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.0f, p, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ p, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vl.x, vl.y, -vl.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.0f, p, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vl.x, vl.y, vl.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, -vh.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vl.x, vl.y, -vl.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vh.x, vh.y, vh.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vl.x, vl.y, vl.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, -vh.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vh.x, vh.y, vh.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ p + l, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, -vh.z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.0f, p + l, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vh.x, vh.y, vh.z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ 0.0f, 0.0f, -0.025f * w, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ p, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ 0.0f, 0.0f, 0.025f * w, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.025f * w, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -0.025f * w, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.0f, p, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ p, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vl.x, vl.y, -vl.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.0f, p, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vl.x, vl.y, vl.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vl.x, vl.y, -vl.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, -vh.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vl.x, vl.y, vl.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vh.x, vh.y, vh.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, -vh.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vl.x, vl.y, vl.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vh.x, vh.y, vh.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
-		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ vh.x, vh.y, -vh.z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
-		vertices.push_back({ p + l, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ vh.x, vh.y, vh.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ -vh.x, vh.y, vh.z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
+		vertices.push_back({ 0.0f, p + l, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, t, GraphicsTurtle::transformPointer });
 
 		turtle->addVertices(vertices);
+		turtle->translateState(glm::vec3(0.0f, l, 0.0f));
 		++GraphicsTurtle::transformPointer;
-		turtle->translateState(glm::vec3(l, 0.0f, 0.0f));
-	}
-
-	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->pushState();
-	}
-
-	void restoreTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->popState();
-	}
-
-	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundUp(lSym->getParam('y'));
-	}
-
-	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundUp(-lSym->getParam('y'));
-	}
-
-	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundLeft(-lSym->getParam('p'));
-	}
-
-	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundLeft(lSym->getParam('p'));
-	}
-
-	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundHeading(-lSym->getParam('r'));
-	}
-
-	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundHeading(lSym->getParam('r'));
-	}
-
-	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateAroundUp(180.0f);
-	}
-
-	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateStateToVector(glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 }

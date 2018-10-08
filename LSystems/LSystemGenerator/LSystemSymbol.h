@@ -16,15 +16,13 @@ namespace lsys
 
 	public:
 		LSystemSymbol(char key);
-		LSystemSymbol(char key, const char *params);
-		LSystemSymbol(const LSystemSymbol& lSym);
-		LSystemSymbol& operator=(const LSystemSymbol& lSym);
+		LSystemSymbol(const LSystemSymbol&) = default;
+		LSystemSymbol& operator=(const LSystemSymbol&) = default;
 		virtual ~LSystemSymbol() = default;
 
 		char getKey() const;
 		float getParam(char param);
 		void setParam(char param, float value);
-		void createParam(char param);
 		virtual bool operator==(const LSystemSymbol& lSym) const;
 		virtual bool operator!=(const LSystemSymbol& lSym) const;
 

@@ -8,6 +8,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LSystemTest", "LSystemTest\LSystemTest.vcxproj", "{1A0AD9F1-E047-44D6-99B3-4D2287459242}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LSystemRenderer", "LSystemRenderer\LSystemRenderer.vcxproj", "{3CB67474-CDA8-424C-A39A-011EC3552E58}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A4FB46B-21AA-4FA7-A155-57A0D220B5BB} = {6A4FB46B-21AA-4FA7-A155-57A0D220B5BB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

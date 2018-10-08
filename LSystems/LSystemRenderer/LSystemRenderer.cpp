@@ -80,70 +80,62 @@ namespace lrend
 		turtle.setAction('\\', lsys::rollTurtleLeft);
 		turtle.setAction('/', lsys::rollTurtleRight);
 		turtle.setAction('|', lsys::turnTurtleAround);
+		turtle.setAction('$', lsys::rotateTurtleToVertical);
 
 		turtle.setAction('F', lsys::drawGenericBranchSegment);
 		turtle.setAction('A', lsys::drawGenericBranchApex);
 		turtle.setAction('L', lsys::drawGenericLeaf);
 
-		/*
-		lsys::LSystemSymbol *lsym = new lsys::LSystemSymbol('F');
-		lsym->setParam('n', 16.0f);
-		lsym->setParam('R', 1.0f);
-		lsym->setParam('r', 0.5f);
-		lsym->setParam('h', 4.0f);
-		lsym->setParam('t', 0.0f);
-		lsym->setParam('w', 4.0f);
-		*/
-
-		/*
-		lsys::LSystemSymbol *lsym = new lsys::LSystemSymbol('A');
-		lsym->setParam('n', 16.0f);
-		lsym->setParam('r', 1.0f);
-		lsym->setParam('h', 4.0f);
-		lsym->setParam('t', 0.0f);
-		lsym->setParam('w', 4.0f);
-		*/
-
-		/*
-		lsys::LSystemSymbol *lsym = new lsys::LSystemSymbol('L');
-		lsym->setParam('l', 0.1f);
-		lsym->setParam('w', 0.04f);
-		lsym->setParam('p', 0.05f);
-		lsym->setParam('c', 0.25f);
-		lsym->setParam('C', 0.5f);
-		lsym->setParam('t', 1.0f);
-		*/
-
-		//std::vector<lsys::LSystemSymbol *> syms { lsym };
-
 		lsys::LSystemSymbol *lsym1 = new lsys::LSystemSymbol('F');
 		lsym1->setParam('n', 16.0f);
-		lsym1->setParam('R', 1.0f);
-		lsym1->setParam('r', 0.5f);
-		lsym1->setParam('h', 4.0f);
-		lsym1->setParam('t', 0.0f);
-		lsym1->setParam('w', 4.0f);
+		lsym1->setParam('R', 0.18f);
+		lsym1->setParam('r', 0.12f);
+		lsym1->setParam('h', 1.2f);
+		lsym1->setParam('t', 1.0f);
+		lsym1->setParam('w', 2.0f);
+
+		lsys::LSystemSymbol *lsymR1 = new lsys::LSystemSymbol('+');
+		lsymR1->setParam('a', 45.0f);
 
 		lsys::LSystemSymbol *lsym2 = new lsys::LSystemSymbol('F');
 		lsym2->setParam('n', 16.0f);
-		lsym2->setParam('R', 0.5f);
-		lsym2->setParam('r', 0.25f);
-		lsym2->setParam('h', 4.0f);
-		lsym2->setParam('t', 0.0f);
+		lsym2->setParam('R', 0.12f);
+		lsym2->setParam('r', 0.08f);
+		lsym2->setParam('h', 1.0f);
+		lsym2->setParam('t', 1.0f);
 		lsym2->setParam('w', 2.0f);
+
+		lsys::LSystemSymbol *lsymR2 = new lsys::LSystemSymbol('-');
+		lsymR2->setParam('a', 45.0f);
 
 		lsys::LSystemSymbol *lsym3 = new lsys::LSystemSymbol('F');
 		lsym3->setParam('n', 16.0f);
-		lsym3->setParam('R', 0.25f);
-		lsym3->setParam('r', 0.125f);
-		lsym3->setParam('h', 2.0f);
-		lsym3->setParam('t', 0.0f);
-		lsym3->setParam('w', 1.0f);
+		lsym3->setParam('R', 0.12f);
+		lsym3->setParam('r', 0.08f);
+		lsym3->setParam('h', 1.0f);
+		lsym3->setParam('t', 1.0f);
+		lsym3->setParam('w', 2.0f);
 
-		std::vector<lsys::LSystemSymbol *> syms { lsym1, lsym2, lsym3 };
+		lsys::LSystemSymbol *lsym4 = new lsys::LSystemSymbol('A');
+		lsym4->setParam('n', 16.0f);
+		lsym4->setParam('r', 0.12f);
+		lsym4->setParam('h', 0.9f);
+		lsym4->setParam('t', 1.0f);
+		lsym4->setParam('w', 2.0f);
+
+		lsys::LSystemSymbol *lsym5 = new lsys::LSystemSymbol('L');
+		lsym5->setParam('l', 0.05f);
+		lsym5->setParam('w', 0.025f);
+		lsym5->setParam('p', 0.015f);
+		lsym5->setParam('c', 0.25f);
+		lsym5->setParam('C', 0.5f);
+		lsym5->setParam('t', 1.0f);
+
+		std::vector<lsys::LSystemSymbol *> syms { lsym1, new lsys::LSystemSymbol('['), lsymR1, lsym2, new lsys::LSystemSymbol(']'),
+													new lsys::LSystemSymbol('['), lsymR2, lsym3, new lsys::LSystemSymbol(']'), lsym4, lsym5 };
 		turtle.interpretSymbols(syms);
-		// delete lsym;
-		delete lsym1; delete lsym2; delete lsym3;
+		delete lsym1; delete lsym2; delete lsym3; delete lsym4;
+		delete lsym5; delete lsymR1; delete lsymR2;
 
 		std::vector<const char *> texs { "../LSystemRenderer/test.png", "../LSystemRenderer/tree.jpg" };
 

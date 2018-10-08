@@ -17,9 +17,6 @@
     <ClInclude Include="LSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LSystemProdRule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LSystemSymbol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -35,15 +32,15 @@
     <ClInclude Include="LSystemContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LSystemProduction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LSystemGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LSystemProdRule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LSystemSymbol.cpp">
@@ -56,6 +53,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LSystemContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LSystemProduction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,21 +11,21 @@ namespace LSystemGeneratorAPI
 
 		ls1.addSymbolToAxiom(new lsys::LSystemSymbol('A'));
 		
-		lsys::LSystemProdRule *lr1 = new lsys::LSystemProdRule(new lsys::LSystemSymbol('A'));
-		lr1->addSymbolToProduct(new lsys::LSystemSymbol('A'));
-		lr1->addSymbolToProduct(new lsys::LSystemSymbol('B'));
+		lsys::LSystemProduction *lr1 = new lsys::LSystemProduction(new lsys::LSystemSymbol('A'));
+		lr1->addSymbolToSuccessor(new lsys::LSystemSymbol('A'));
+		lr1->addSymbolToSuccessor(new lsys::LSystemSymbol('B'));
 
-		lsys::LSystemProdRule *lr2 = new lsys::LSystemProdRule(new lsys::LSystemSymbol('B'));
-		lr2->addSymbolToProduct(new lsys::LSystemSymbol('A'));
+		lsys::LSystemProduction *lr2 = new lsys::LSystemProduction(new lsys::LSystemSymbol('B'));
+		lr2->addSymbolToSuccessor(new lsys::LSystemSymbol('A'));
 
-		ls1.addRule(lr1);
-		ls1.addRule(lr2);
+		ls1.addProduction(lr1);
+		ls1.addProduction(lr2);
 		
 		ls1.derive(8);
 		
 		lsys::LSystem ls2 = ls1;
 		
-		std::vector<lsys::LSystemSymbol *>& level1 = ls2[8];
+		const std::vector<lsys::LSystemSymbol *>& level1 = ls2[8];
 
 		std::cout << ls2 << std::endl;
 
@@ -37,19 +37,19 @@ namespace LSystemGeneratorAPI
 
 		ls3.addSymbolToAxiom(new lsys::LSystemSymbol('0'));
 
-		lsys::LSystemProdRule *lr3 = new lsys::LSystemProdRule(new lsys::LSystemSymbol('1'));
-		lr3->addSymbolToProduct(new lsys::LSystemSymbol('1'));
-		lr3->addSymbolToProduct(new lsys::LSystemSymbol('1'));
+		lsys::LSystemProduction *lr3 = new lsys::LSystemProduction(new lsys::LSystemSymbol('1'));
+		lr3->addSymbolToSuccessor(new lsys::LSystemSymbol('1'));
+		lr3->addSymbolToSuccessor(new lsys::LSystemSymbol('1'));
 
-		lsys::LSystemProdRule *lr4 = new lsys::LSystemProdRule(new lsys::LSystemSymbol('0'));
-		lr4->addSymbolToProduct(new lsys::LSystemSymbol('1'));
-		lr4->addSymbolToProduct(new lsys::LSystemSymbol('['));
-		lr4->addSymbolToProduct(new lsys::LSystemSymbol('0'));
-		lr4->addSymbolToProduct(new lsys::LSystemSymbol(']'));
-		lr4->addSymbolToProduct(new lsys::LSystemSymbol('0'));
+		lsys::LSystemProduction *lr4 = new lsys::LSystemProduction(new lsys::LSystemSymbol('0'));
+		lr4->addSymbolToSuccessor(new lsys::LSystemSymbol('1'));
+		lr4->addSymbolToSuccessor(new lsys::LSystemSymbol('['));
+		lr4->addSymbolToSuccessor(new lsys::LSystemSymbol('0'));
+		lr4->addSymbolToSuccessor(new lsys::LSystemSymbol(']'));
+		lr4->addSymbolToSuccessor(new lsys::LSystemSymbol('0'));
 
-		ls3.addRule(lr3);
-		ls3.addRule(lr4);
+		ls3.addProduction(lr3);
+		ls3.addProduction(lr4);
 		
 		ls3.derive(3);
 		

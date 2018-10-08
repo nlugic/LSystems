@@ -20,7 +20,7 @@ layout (std430, binding = 0) buffer transformData
 
 void main()
 {
-	mat4 combinedModel = transforms[int(trPoint)] * model;
+	mat4 combinedModel = model * transforms[int(trPoint)];
 
 	vertNormal = mat3(transpose(inverse(combinedModel))) * vNorm;
 	fragPosition = vec3(combinedModel * vec4(vPos, 1.0f));

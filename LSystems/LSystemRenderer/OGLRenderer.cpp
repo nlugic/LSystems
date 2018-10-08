@@ -10,12 +10,12 @@ namespace lrend
 
 	using OGLR = OGLRenderer;
 
-	int OGLR::width = defaultWidth;
-	int OGLR::height = defaultHeight;
+	int OGLR::width = defaultOGLRendererConfig.windowWidth;
+	int OGLR::height = defaultOGLRendererConfig.windowHeight;
 	GLFWwindow *OGLR::glWindow = nullptr;
 	bool OGLR::mouseMoved = false;
-	double OGLR::lastXPos = defaultWidth / 2.0;
-	double OGLR::lastYPos = defaultHeight / 2.0;
+	double OGLR::lastXPos = OGLR::width / 2.0;
+	double OGLR::lastYPos = OGLR::height / 2.0;
 	float OGLR::deltaTime = 0.0f;
 	float OGLR::lastFrame = 0.0f;
 	OGLCamera *OGLR::camera = nullptr;
@@ -79,22 +79,16 @@ namespace lrend
 		glDeleteVertexArrays(1, &OGLR::vao);
 		glfwTerminate();
 
-		OGLR::width = defaultWidth;
-		OGLR::height = defaultHeight;
+		OGLR::width = defaultOGLRendererConfig.windowWidth;
+		OGLR::height = defaultOGLRendererConfig.windowHeight;
 		OGLR::glWindow = nullptr;
 		OGLR::mouseMoved = false;
-		OGLR::lastXPos = defaultWidth / 2U;
-		OGLR::lastYPos = defaultHeight / 2U;
-		OGLR::deltaTime = 0.0f;
-		OGLR::lastFrame = 0.0f;
+		OGLR::lastXPos = OGLR::width / 2.0;
+		OGLR::lastYPos = OGLR::height / 2.0;
+		OGLR::deltaTime = OGLR::lastFrame = 0.0f;
 		OGLR::camera = nullptr;
-		OGLR::vao = 0U;
-		OGLR::vbo = 0U;
-		OGLR::ebo = 0U;
-		OGLR::ssbo = 0U;
-		OGLR::vertexBufSize = 0ULL;
-		OGLR::elementBufSize = 0ULL;
-		OGLR::shaderStorageBufSize = 0ULL;
+		OGLR::vao = OGLR::vbo = OGLR::ebo = OGLR::ssbo = 0U;
+		OGLR::vertexBufSize = OGLR::elementBufSize = OGLR::shaderStorageBufSize = 0ULL;
 		OGLR::shaderProgram = nullptr;
 		OGLR::textures = nullptr;
 	}
@@ -245,6 +239,7 @@ namespace lrend
 			(float)OGLR::width / OGLR::height, 0.1f, 100.0f));
 		glm::mat4 view(OGLR::camera->getViewMatrix());
 		glm::mat4 model(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -3.0f)));
+		//glm::mat4 model(1.0f);
 
 		OGLR::shaderProgram->setFloatMx4("proj", projection);
 		OGLR::shaderProgram->setFloatMx4("view", view);

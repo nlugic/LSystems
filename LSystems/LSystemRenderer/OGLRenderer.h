@@ -12,12 +12,6 @@
 namespace lrend
 {
 	
-	const unsigned defaultWidth = 1024;
-	const unsigned defaultHeight = 768;
-	const int defaultTexWidth = 256;
-	const int defaultTexHeight = 256;
-	const glm::vec3 defaultCamPos = glm::vec3(0.0f, 0.0f, 3.0f);
-
 	struct OGLRendererConfig
 	{
 		unsigned windowWidth, windowHeight;
@@ -33,13 +27,13 @@ namespace lrend
 	const OGLRendererConfig defaultOGLRendererConfig =
 	{
 		1024U, 768U, 256U, 256U,
-		glm::vec3(1.0f, 1.0f, 1.0f),
-		glm::vec3(0.0f, 0.0f, 3.0f),
+		glm::vec3(0.9f, 0.9f, 0.9f),
+		glm::vec3(0.0f, 1.0f, 3.0f),
 		glm::vec3(0.0f, 5.0f, 3.0f),
 		glm::vec3(1.0f, 0.05f, 0.015f),
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
-		glm::vec3(0.95f, 0.95f, 0.95f), 32.0f,
+		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
 		"../LSystemRenderer/shader.vert",
 		"../LSystemRenderer/shader.frag",
 		"L-System Renderer"

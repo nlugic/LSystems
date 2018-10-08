@@ -17,7 +17,7 @@ namespace lsys
 
 	public:
 		LSystemContext(LSystem *lSys = nullptr, const TurtleState& state = defaultTurtleState);
-		LSystemContext(const char *params, const TurtleState& state = defaultTurtleState);
+		LSystemContext(const TurtleState& state = defaultTurtleState);
 		LSystemContext(const LSystemContext& lCxt);
 		LSystemContext& operator=(const LSystemContext& lCxt);
 		virtual ~LSystemContext();

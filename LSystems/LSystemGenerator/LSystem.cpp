@@ -4,17 +4,27 @@
 namespace lsys
 {
 
-	void LSystem::clearSymbols()
+	void LSystem::clearAxiom()
 	{
 		for (LSystemSymbol *sym : axiom)
 			delete sym;
-		for (LSystemProdRule *rule : rules)
-			delete rule;
+		axiom.clear();
+	}
+
+	void LSystem::clearProductions()
+	{
+		for (LSystemProduction *prod : productions)
+			delete prod;
+		productions.clear();
+	}
+
+	void LSystem::clearSymbols()
+	{
+		clearAxiom();
+		clearProductions();
 		for (std::vector<LSystemSymbol *>& product : products)
 			for (LSystemSymbol *sym : product)
 				delete sym;
-		axiom.clear();
-		rules.clear();
 		products.clear();
 	}
 
@@ -22,8 +32,8 @@ namespace lsys
 	{
 		for (const LSystemSymbol *sym : lSys.axiom)
 			axiom.push_back(new LSystemSymbol(*sym));
-		for (const LSystemProdRule *rule : lSys.rules)
-			rules.push_back(new LSystemProdRule(*rule));
+		for (const LSystemProduction *prod : lSys.productions)
+			productions.push_back(new LSystemProduction(*prod));
 		for (const std::vector<LSystemSymbol *>& product : lSys.products)
 		{
 			std::vector<LSystemSymbol *> prod;
@@ -39,14 +49,6 @@ namespace lsys
 		for (LSystemSymbol *sym : axiom)
 			prod.push_back(new LSystemSymbol(*sym));
 		products.push_back(prod);
-	}
-
-	LSystem::LSystem() { }
-
-	LSystem::LSystem(const char *params)
-	{
-		for (const char *c = params; *c; ++c)
-			createParam(*c);
 	}
 
 	LSystem::LSystem(const LSystem& lSys)
@@ -77,14 +79,36 @@ namespace lsys
 		return products.size() - 1;
 	}
 
+	const std::vector<LSystemSymbol *>& LSystem::getAxiom() const
+	{
+		return axiom;
+	}
+
 	void LSystem::addSymbolToAxiom(LSystemSymbol *lSym)
 	{
 		axiom.push_back(lSym);
 	}
 
-	void LSystem::addRule(LSystemProdRule *lRul)
+	void LSystem::setAxiom(const std::vector<LSystemSymbol *>& ax)
 	{
-		rules.push_back(lRul);
+		clearAxiom();
+		axiom = ax;
+	}
+
+	const std::vector<LSystemProduction *>& LSystem::getProductions() const
+	{
+		return productions;
+	}
+
+	void LSystem::addProduction(LSystemProduction *prod)
+	{
+		productions.push_back(prod);
+	}
+
+	void LSystem::setProductions(const std::vector<LSystemProduction *>& prods)
+	{
+		clearProductions();
+		productions = prods;
 	}
 
 	float LSystem::getParam(char param)
@@ -99,12 +123,7 @@ namespace lsys
 		params[param] = value;
 	}
 
-	void LSystem::createParam(char param)
-	{
-		params[param] = NAN;
-	}
-
-	std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
+	const std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
 	{
 		try { return products.at(level); }
 		catch (std::out_of_range& err)
@@ -113,37 +132,30 @@ namespace lsys
 			if (products.empty())
 				produceAxiom();
 
-			return products[0];
+			return products[products.size() - 1];
 		}
-	}
-
-	std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
-	{
-		while (--level)
-			derive();
-		return derive();
 	}
 
 	std::vector<LSystemSymbol *>& LSystem::derive()
 	{
 		if (products.empty())
 			produceAxiom();
-		
+
 		const std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1];
 		std::vector<LSystemSymbol *> newLevel;
 
 		for (LSystemSymbol *sym : currentLevel)
 		{
-			LSystemProdRule *rule = pickRule(sym);
+			LSystemProduction *matchedProd = matchProduction(sym);
 
-			if (!rule)
+			if (!matchedProd)
 			{
 				newLevel.push_back(new LSystemSymbol(*sym));
 				continue;
 			}
-			else if (rule->condition() && *rule->getSymbol() == *sym)
+			else
 			{
-				const std::vector<LSystemSymbol *>& prod = rule->getProduct();
+				const std::vector<LSystemSymbol *>& prod = matchedProd->getSuccessor(sym);
 				for (LSystemSymbol *sym : prod)
 					newLevel.push_back(new LSystemSymbol(*sym));
 			}
@@ -153,13 +165,20 @@ namespace lsys
 		return products[products.size() - 1];
 	}
 
-	LSystemProdRule* LSystem::pickRule(LSystemSymbol *lSym) const
+	std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
 	{
-		std::vector<LSystemProdRule *> candidates;
+		while (--level)
+			derive();
+		return derive();
+	}
 
-		for (LSystemProdRule *rule : rules)
-			if (*rule->getSymbol() == *lSym && rule->condition())
-				candidates.push_back(rule);
+	LSystemProduction* LSystem::matchProduction(LSystemSymbol *lSym) const
+	{
+		std::vector<LSystemProduction *> candidates;
+
+		for (LSystemProduction *prod : productions)
+			if (*prod->getPredecessor() == *lSym && prod->condition())
+				candidates.push_back(prod);
 
 		if (candidates.size() == 1)
 			return candidates[0];
@@ -167,9 +186,9 @@ namespace lsys
 		{
 			float prob = (float)std::rand() / RAND_MAX, totalProb = 0.0f;
 
-			for (LSystemProdRule *rule : candidates)
-				if (prob <= (totalProb += rule->getProbability()))
-					return rule;
+			for (LSystemProduction *prod : candidates)
+				if (prob <= (totalProb += prod->getProbability()))
+					return prod;
 		}
 
 		return nullptr;
@@ -178,14 +197,14 @@ namespace lsys
 	std::string LSystem::toString() const
 	{
 		std::string ret("A:\t");
-		for (LSystemSymbol *s : axiom)
-			ret += s->toString();
+		for (LSystemSymbol *sym : axiom)
+			ret += sym->toString();
 		ret += '\n';
 		unsigned short no = 1;
-		for (LSystemProdRule *pr : rules)
+		for (LSystemProduction *prod : productions)
 		{
 			ret += 'P';	ret += std::to_string(no++); ret += ":\t";
-			ret += pr->toString();
+			ret += prod->toString();
 		}
 		return ret;
 	}

@@ -8,8 +8,8 @@ namespace lsys
 	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
 		:lSystem(lSys), turtle(lSystem, state) { }
 
-	LSystemContext::LSystemContext(const char *params, const TurtleState& state)
-		:lSystem(new LSystem(params)), turtle(lSystem, state) { }
+	LSystemContext::LSystemContext(const TurtleState& state)
+		:lSystem(new LSystem), turtle(lSystem, state) { }
 
 	LSystemContext::LSystemContext(const LSystemContext& lCxt)
 		:lSystem(new LSystem(*lCxt.lSystem)), turtle(lCxt.turtle)
@@ -36,15 +36,16 @@ namespace lsys
 
 	void LSystemContext::initTurtleFunctions()
 	{
-		turtle.setAction('[', lsys::saveTurtleState);
-		turtle.setAction(']', lsys::restoreTurtleState);
-		turtle.setAction('+', lsys::turnTurtleLeft);
-		turtle.setAction('-', lsys::turnTurtleRight);
-		turtle.setAction('^', lsys::pitchTurtleUp);
-		turtle.setAction('&', lsys::pitchTurtleDown);
-		turtle.setAction('\\', lsys::rollTurtleLeft);
-		turtle.setAction('/', lsys::rollTurtleRight);
-		turtle.setAction('|', lsys::turnTurtleAround);
+		turtle.setAction('[', saveTurtleState);
+		turtle.setAction(']', restoreTurtleState);
+		turtle.setAction('+', turnTurtleLeft);
+		turtle.setAction('-', turnTurtleRight);
+		turtle.setAction('^', pitchTurtleUp);
+		turtle.setAction('&', pitchTurtleDown);
+		turtle.setAction('\\', rollTurtleLeft);
+		turtle.setAction('/', rollTurtleRight);
+		turtle.setAction('|', turnTurtleAround);
+		turtle.setAction('$', rotateTurtleToVertical);
 	}
 
 	GraphicsTurtle& LSystemContext::getTurtle()

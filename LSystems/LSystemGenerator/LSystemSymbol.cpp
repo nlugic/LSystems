@@ -12,16 +12,16 @@ namespace lsys
 		return key;
 	}
 
-	float LSystemSymbol::getParam(char param)
+	float LSystemSymbol::getParam(char param) const
 	{
 		if (params.count(param))
-			return params[param];
+			return params.at(param);
 		return NAN;
 	}
 
 	void LSystemSymbol::setParam(char param, float value)
 	{
-		params[param] = value;
+		params.emplace(param, value);
 	}
 
 	bool LSystemSymbol::operator==(const LSystemSymbol& lSym) const

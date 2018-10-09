@@ -95,7 +95,7 @@ namespace lrend
 		lsym1->setParam('w', 2.0f);
 
 		lsys::LSystemSymbol *lsymR1 = new lsys::LSystemSymbol('+');
-		lsymR1->setParam('a', 45.0f);
+		lsymR1->setParam('y', 45.0f);
 
 		lsys::LSystemSymbol *lsym2 = new lsys::LSystemSymbol('F');
 		lsym2->setParam('n', 16.0f);
@@ -106,7 +106,7 @@ namespace lrend
 		lsym2->setParam('w', 2.0f);
 
 		lsys::LSystemSymbol *lsymR2 = new lsys::LSystemSymbol('-');
-		lsymR2->setParam('a', 45.0f);
+		lsymR2->setParam('y', 45.0f);
 
 		lsys::LSystemSymbol *lsym3 = new lsys::LSystemSymbol('F');
 		lsym3->setParam('n', 16.0f);
@@ -127,8 +127,8 @@ namespace lrend
 		lsym5->setParam('l', 0.05f);
 		lsym5->setParam('w', 0.025f);
 		lsym5->setParam('p', 0.015f);
-		lsym5->setParam('c', 0.25f);
-		lsym5->setParam('C', 0.5f);
+		lsym5->setParam('c', 0.015f);
+		lsym5->setParam('C', 0.02f);
 		lsym5->setParam('t', 1.0f);
 
 		std::vector<lsys::LSystemSymbol *> syms { lsym1, new lsys::LSystemSymbol('['), lsymR1, lsym2, new lsys::LSystemSymbol(']'),

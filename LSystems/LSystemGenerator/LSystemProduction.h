@@ -25,12 +25,15 @@ namespace lsys
 		virtual ~LSystemProduction();
 
 		const LSystemSymbol* getPredecessor() const;
-		virtual const std::vector<LSystemSymbol *>& getSuccessor(const LSystemSymbol *lSym = nullptr);
+		const std::vector<LSystemSymbol *>& getSuccessor() const;
 		void addSymbolToSuccessor(LSystemSymbol *lSym);
 		void setSuccessor(const std::vector<LSystemSymbol *>& succ);
 		float getProbability() const;
 		void setProbability(float prob);
-		virtual bool condition() const;
+
+		virtual bool condition(const LSystemSymbol *pred, const std::map<char, float>& globalParams) const;
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const;
 
 		virtual std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& out, const LSystemProduction& lProd);

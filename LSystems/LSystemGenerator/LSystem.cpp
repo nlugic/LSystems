@@ -79,6 +79,18 @@ namespace lsys
 		return products.size() - 1;
 	}
 
+	float LSystem::getParam(char param) const
+	{
+		if (params.count(param))
+			return params.at(param);
+		return NAN;
+	}
+
+	void LSystem::setParam(char param, float value)
+	{
+		params.emplace(param, value);
+	}
+
 	const std::vector<LSystemSymbol *>& LSystem::getAxiom() const
 	{
 		return axiom;
@@ -111,22 +123,10 @@ namespace lsys
 		productions = prods;
 	}
 
-	float LSystem::getParam(char param)
-	{
-		if (params.find(param) != params.end())
-			return params[param];
-		return NAN;
-	}
-
-	void LSystem::setParam(char param, float value)
-	{
-		params[param] = value;
-	}
-
 	const std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
 	{
 		try { return products.at(level); }
-		catch (std::out_of_range& err)
+		catch (const std::out_of_range& err)
 		{
 			std::cerr << err.what() << std::endl;
 			if (products.empty())
@@ -136,7 +136,7 @@ namespace lsys
 		}
 	}
 
-	std::vector<LSystemSymbol *>& LSystem::derive()
+	const std::vector<LSystemSymbol *>& LSystem::derive()
 	{
 		if (products.empty())
 			produceAxiom();
@@ -154,30 +154,26 @@ namespace lsys
 				continue;
 			}
 			else
-			{
-				const std::vector<LSystemSymbol *>& prod = matchedProd->getSuccessor(sym);
-				for (LSystemSymbol *sym : prod)
-					newLevel.push_back(new LSystemSymbol(*sym));
-			}
+				matchedProd->generateSuccessor(sym, params, newLevel);
 		}
 
 		products.push_back(newLevel);
 		return products[products.size() - 1];
 	}
 
-	std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
+	const std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
 	{
 		while (--level)
 			derive();
 		return derive();
 	}
 
-	LSystemProduction* LSystem::matchProduction(LSystemSymbol *lSym) const
+	LSystemProduction* LSystem::matchProduction(LSystemSymbol *pred)
 	{
 		std::vector<LSystemProduction *> candidates;
 
 		for (LSystemProduction *prod : productions)
-			if (*prod->getPredecessor() == *lSym && prod->condition())
+			if (*prod->getPredecessor() == *pred && prod->condition(pred, params))
 				candidates.push_back(prod);
 
 		if (candidates.size() == 1)

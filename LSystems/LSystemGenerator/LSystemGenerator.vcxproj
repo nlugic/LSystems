@@ -142,12 +142,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GenericBranchApexSymbol.h" />
+    <ClInclude Include="GenericBranchSegmentSymbol.h" />
+    <ClInclude Include="GenericLeafSymbol.h" />
     <ClInclude Include="GraphicsTurtle.h" />
     <ClInclude Include="LSystem.h" />
     <ClInclude Include="LSystemContext.h" />
     <ClInclude Include="LSystemGenerator.h" />
     <ClInclude Include="LSystemProduction.h" />
     <ClInclude Include="LSystemSymbol.h" />
+    <ClInclude Include="PitchDownSymbol.h" />
+    <ClInclude Include="PitchUpSymbol.h" />
+    <ClInclude Include="RestoreStateSymbol.h" />
+    <ClInclude Include="RollLeftSymbol.h" />
+    <ClInclude Include="RollRightSymbol.h" />
+    <ClInclude Include="RotateToVerticalSymbol.h" />
+    <ClInclude Include="SaveStateSymbol.h" />
+    <ClInclude Include="TurnAroundSymbol.h" />
+    <ClInclude Include="TurnLeftSymbol.h" />
+    <ClInclude Include="TurnRightSymbol.h" />
     <ClInclude Include="TurtleDrawingFunctions.h" />
   </ItemGroup>
   <ItemGroup>

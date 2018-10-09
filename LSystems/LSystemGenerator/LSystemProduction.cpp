@@ -50,7 +50,7 @@ namespace lsys
 		return predecessor;
 	}
 
-	const std::vector<LSystemSymbol *>& LSystemProduction::getSuccessor(const LSystemSymbol *lSym)
+	const std::vector<LSystemSymbol *>& LSystemProduction::getSuccessor() const
 	{
 		return successor;
 	}
@@ -78,9 +78,16 @@ namespace lsys
 			probability = prob;
 	}
 
-	bool LSystemProduction::condition() const
+	bool LSystemProduction::condition(const LSystemSymbol *pred, const std::map<char, float>& globalParams) const
 	{
 		return true;
+	}
+
+	void LSystemProduction::generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		std::vector<LSystemSymbol *>& word) const
+	{
+		for (LSystemSymbol *sym : successor)
+			word.push_back(new LSystemSymbol(*sym));
 	}
 
 	std::string LSystemProduction::toString() const

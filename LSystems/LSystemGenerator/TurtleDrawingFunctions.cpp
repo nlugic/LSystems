@@ -16,32 +16,32 @@ namespace lsys
 
 	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
-		turtle->rotateStateAroundUp(lSym->getParam('a'));
+		turtle->rotateStateAroundUp(lSym->getParam('y'));
 	}
 
 	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
-		turtle->rotateStateAroundUp(-lSym->getParam('a'));
+		turtle->rotateStateAroundUp(-lSym->getParam('y'));
 	}
 
 	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
-		turtle->rotateStateAroundLeft(-lSym->getParam('a'));
+		turtle->rotateStateAroundLeft(-lSym->getParam('p'));
 	}
 
 	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
-		turtle->rotateStateAroundLeft(lSym->getParam('a'));
+		turtle->rotateStateAroundLeft(lSym->getParam('p'));
 	}
 
 	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
-		turtle->rotateStateAroundHeading(-lSym->getParam('a'));
+		turtle->rotateStateAroundHeading(-lSym->getParam('r'));
 	}
 
 	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
 	{
-		turtle->rotateStateAroundHeading(lSym->getParam('a'));
+		turtle->rotateStateAroundHeading(lSym->getParam('r'));
 	}
 
 	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
@@ -181,8 +181,8 @@ namespace lsys
 		float C = lSym->getParam('C');
 		float t = lSym->getParam('t');
 
-		glm::vec3 vl(w / 2, p + l * c, 0.0f);
-		glm::vec3 vh(w / 2, p + l * (1.0f - C), 0.0f);
+		glm::vec3 vl(w / 2, p + c, 0.0f);
+		glm::vec3 vh(w / 2, p + l - C, 0.0f);
 
 		std::vector<Vertex> vertices;
 

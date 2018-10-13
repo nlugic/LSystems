@@ -16,19 +16,19 @@ namespace lsys
 		void initTurtleFunctions();
 
 	public:
-		LSystemContext(LSystem *lSys = nullptr, const TurtleState& state = defaultTurtleState);
+		LSystemContext(LSystem *lSys, const TurtleState& state = defaultTurtleState);
 		LSystemContext(const TurtleState& state = defaultTurtleState);
 		LSystemContext(const LSystemContext& lCxt);
 		LSystemContext& operator=(const LSystemContext& lCxt);
 		virtual ~LSystemContext();
 
 		GraphicsTurtle& getTurtle();
-		const std::vector<float> getCurrentVertexBuffer() const;
-		const std::vector<unsigned>& getCurrentElementBuffer() const;
-		const std::vector<glm::mat4>& getCurrentTransformBuffer() const;
-		void drawLevel(size_t level);
+		const std::vector<float> getVertexBuffer() const;
+		const std::vector<unsigned>& getElementBuffer() const;
+		const std::vector<glm::mat4>& getTransformBuffer() const;
+		void generateModel(size_t level);
 
-		std::string toString() const;
+		virtual std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& out, const LSystemContext& lCxt);
 	};
 

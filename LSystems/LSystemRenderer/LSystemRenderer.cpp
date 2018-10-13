@@ -1,6 +1,6 @@
 
 #include "LSystemRenderer.h"
-#include "..\LSystemGenerator\TurtleDrawingFunctions.h"
+#include "..\LSystemGenerator\TurtleActions.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
 #pragma comment (lib, "..\\x64\\Debug\\LSystemGenerator.lib")
@@ -67,7 +67,7 @@ namespace lrend
 		OGLRenderer::renderScene(vert, ind, texs, transs);
 	}
 
-	LSYSTEMRENDERER_API void LSystemRenderer::testTurtleRender()
+	void LSystemRenderer::testTurtleRender()
 	{
 		lsys::GraphicsTurtle turtle(nullptr);
 

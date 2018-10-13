@@ -1,10 +1,24 @@
 
 #include "LSystemContext.h"
-#include "TurtleDrawingFunctions.h"
+#include "TurtleActions.h"
 
 namespace lsys
 {
 
+	void LSystemContext::initTurtleFunctions()
+	{
+		turtle.setAction('[', saveTurtleState);
+		turtle.setAction(']', restoreTurtleState);
+		turtle.setAction('+', turnTurtleLeft);
+		turtle.setAction('-', turnTurtleRight);
+		turtle.setAction('^', pitchTurtleUp);
+		turtle.setAction('&', pitchTurtleDown);
+		turtle.setAction('\\', rollTurtleLeft);
+		turtle.setAction('/', rollTurtleRight);
+		turtle.setAction('|', turnTurtleAround);
+		turtle.setAction('$', rotateTurtleToVertical);
+	}
+	
 	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
 		:lSystem(lSys), turtle(lSystem, state) { }
 
@@ -34,41 +48,27 @@ namespace lsys
 		delete lSystem;
 	}
 
-	void LSystemContext::initTurtleFunctions()
-	{
-		turtle.setAction('[', saveTurtleState);
-		turtle.setAction(']', restoreTurtleState);
-		turtle.setAction('+', turnTurtleLeft);
-		turtle.setAction('-', turnTurtleRight);
-		turtle.setAction('^', pitchTurtleUp);
-		turtle.setAction('&', pitchTurtleDown);
-		turtle.setAction('\\', rollTurtleLeft);
-		turtle.setAction('/', rollTurtleRight);
-		turtle.setAction('|', turnTurtleAround);
-		turtle.setAction('$', rotateTurtleToVertical);
-	}
-
 	GraphicsTurtle& LSystemContext::getTurtle()
 	{
 		return turtle;
 	}
 
-	const std::vector<float> LSystemContext::getCurrentVertexBuffer() const
+	const std::vector<float> LSystemContext::getVertexBuffer() const
 	{
 		return turtle.getVertices();
 	}
 
-	const std::vector<unsigned>& LSystemContext::getCurrentElementBuffer() const
+	const std::vector<unsigned>& LSystemContext::getElementBuffer() const
 	{
 		return turtle.getElements();
 	}
 
-	const std::vector<glm::mat4>& LSystemContext::getCurrentTransformBuffer() const
+	const std::vector<glm::mat4>& LSystemContext::getTransformBuffer() const
 	{
 		return turtle.getTransforms();
 	}
 
-	void LSystemContext::drawLevel(size_t level)
+	void LSystemContext::generateModel(size_t level)
 	{
 		size_t curr = lSystem->getCurrentLevel();
 		if (level > curr)

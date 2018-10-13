@@ -15,13 +15,14 @@ namespace lrend
 
 	class LSystemRenderer
 	{
-	protected:
+	private:
 		lsys::LSystemContext *current;
 
-	public:
-		LSystemRenderer(lsys::LSystemContext *lCxt = nullptr);
+		LSystemRenderer(lsys::LSystemContext *lCxt);
 		LSystemRenderer(const LSystemRenderer&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
+
+	public:
 		~LSystemRenderer();
 
 		static LSYSTEMRENDERER_API void testOGLRender();

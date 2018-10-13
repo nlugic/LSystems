@@ -148,7 +148,6 @@
     <ClInclude Include="GraphicsTurtle.h" />
     <ClInclude Include="LSystem.h" />
     <ClInclude Include="LSystemContext.h" />
-    <ClInclude Include="LSystemGenerator.h" />
     <ClInclude Include="LSystemProduction.h" />
     <ClInclude Include="LSystemSymbol.h" />
     <ClInclude Include="PitchDownSymbol.h" />
@@ -161,16 +160,15 @@
     <ClInclude Include="TurnAroundSymbol.h" />
     <ClInclude Include="TurnLeftSymbol.h" />
     <ClInclude Include="TurnRightSymbol.h" />
-    <ClInclude Include="TurtleDrawingFunctions.h" />
+    <ClInclude Include="TurtleActions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsTurtle.cpp" />
     <ClCompile Include="LSystem.cpp" />
     <ClCompile Include="LSystemContext.cpp" />
-    <ClCompile Include="LSystemGenerator.cpp" />
     <ClCompile Include="LSystemProduction.cpp" />
     <ClCompile Include="LSystemSymbol.cpp" />
-    <ClCompile Include="TurtleDrawingFunctions.cpp" />
+    <ClCompile Include="TurtleActions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

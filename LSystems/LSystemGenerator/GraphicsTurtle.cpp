@@ -5,10 +5,13 @@
 namespace lsys
 {
 
+	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> emptyAction =
+		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>([](GraphicsTurtle *, LSystemSymbol *, LSystem *) {});
+
 	float GraphicsTurtle::transformPointer = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
-		:owner(owner), initialState(state), currentState(initialState), elemPointer(0U)
+		:owner(owner), initialState(state), currentState(initialState), elementPointer(0U)
 	{
 		updateTransform();
 	}
@@ -28,9 +31,11 @@ namespace lsys
 		return currentTransform;
 	}
 
-	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& GraphicsTurtle::getAction(char key)
+	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& GraphicsTurtle::getAction(char key) const
 	{
-		return actions[key];
+		if (actions.count(key))
+			return actions.at(key);
+		return emptyAction;
 	}
 
 	void GraphicsTurtle::setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
@@ -41,7 +46,6 @@ namespace lsys
 	std::vector<float> GraphicsTurtle::getVertices() const
 	{
 		std::vector<float> buffer;
-
 		for (Vertex vert : vertexBuffer)
 			buffer.insert(buffer.end(), &vert.x, &vert.x + sizeof(Vertex) / sizeof(float));
 
@@ -60,19 +64,35 @@ namespace lsys
 
 	void GraphicsTurtle::pushState()
 	{
-		statesStack.push(currentState);
+		stateStack.push(currentState);
 	}
 
 	void GraphicsTurtle::popState()
 	{
-		if (statesStack.empty())
+		if (stateStack.empty())
 			currentState = initialState;
 		else
 		{
-			currentState = statesStack.top();
-			statesStack.pop();
+			currentState = stateStack.top();
+			stateStack.pop();
 		}
 		updateTransform();
+	}
+
+	void GraphicsTurtle::updateTransform()
+	{
+		glm::mat4 mat(glm::translate(glm::mat4(1.0f), currentState.position));
+		glm::vec3 axis = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading);
+		float sine = glm::length(axis);
+
+		if (sine)
+			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.heading);
+		else
+		{
+			axis = glm::cross(glm::vec3(-1.0f, 0.0f, 0.0f), currentState.left);
+			sine = glm::length(axis);
+			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.left);
+		}
 	}
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
@@ -83,7 +103,7 @@ namespace lsys
 		updateTransform();
 	}
 
-	void GraphicsTurtle::rotateStateAroundUp(float angle)
+	void GraphicsTurtle::rotateAroundUp(float angle)
 	{
 		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up));
 		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
@@ -91,7 +111,7 @@ namespace lsys
 		updateTransform();
 	}
 
-	void GraphicsTurtle::rotateStateAroundLeft(float angle)
+	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
 		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left));
 		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
@@ -99,7 +119,7 @@ namespace lsys
 		updateTransform();
 	}
 
-	void GraphicsTurtle::rotateStateAroundHeading(float angle)
+	void GraphicsTurtle::rotateAroundHeading(float angle)
 	{
 		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading));
 		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
@@ -107,7 +127,7 @@ namespace lsys
 		updateTransform();
 	}
 
-	void GraphicsTurtle::rotateStateToVector(const glm::vec3& target)
+	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
 		glm::vec3 axis = glm::cross(currentState.heading, target);
 		float sine = glm::length(axis);
@@ -126,7 +146,7 @@ namespace lsys
 			if (pos >= static_cast<ptrdiff_t>(vertexBuffer.size()))
 			{
 				vertexBuffer.push_back(vert);
-				elementBuffer.push_back(elemPointer++);
+				elementBuffer.push_back(elementPointer++);
 			}
 			else
 				elementBuffer.push_back(static_cast<unsigned>(pos));
@@ -139,23 +159,6 @@ namespace lsys
 		for (LSystemSymbol *sym : symbols)
 			if (actions.count(sym->getKey()))
 				actions[sym->getKey()](this, sym, owner);
-	}
-
-	void GraphicsTurtle::updateTransform()
-	{
-		glm::mat4 mat(glm::translate(glm::mat4(1.0f), currentState.position));
-
-		glm::vec3 axis = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading);
-		float sine = glm::length(axis);
-
-		if (sine)
-			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.heading);
-		else
-		{
-			axis = glm::cross(glm::vec3(-1.0f, 0.0f, 0.0f), currentState.left);
-			sine = glm::length(axis);
-			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.left);
-		}
 	}
 
 	std::string GraphicsTurtle::toString() const

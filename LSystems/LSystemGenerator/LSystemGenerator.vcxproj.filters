@@ -9,14 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Symbols">
-      <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Productions">
-      <UniqueIdentifier>{d0e470b6-fa99-46ba-98f6-4d6a50342fc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{13a6940a-0b7a-4985-bd15-73392f959094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Predefined Symbols">
+      <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,13 +23,7 @@
     <ClInclude Include="LSystemSymbol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LSystemGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsTurtle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TurtleDrawingFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LSystemContext.h">
@@ -42,49 +33,49 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PitchDownSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="PitchUpSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="RestoreStateSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="SaveStateSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="TurnLeftSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="TurnRightSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="RollLeftSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="RollRightSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="TurnAroundSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="RotateToVerticalSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="GenericBranchSegmentSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="GenericBranchApexSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
     </ClInclude>
     <ClInclude Include="GenericLeafSymbol.h">
-      <Filter>Symbols</Filter>
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="TurtleActions.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LSystemGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,13 +85,13 @@
     <ClCompile Include="GraphicsTurtle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TurtleDrawingFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LSystemContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LSystemProduction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TurtleActions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

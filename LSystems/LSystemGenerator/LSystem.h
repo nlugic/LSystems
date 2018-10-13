@@ -38,7 +38,7 @@ namespace lsys
 		void setProductions(const std::vector<LSystemProduction *>& prods);
 		const std::vector<LSystemSymbol *>& operator[](size_t level);
 
-		const std::vector<LSystemSymbol *>& derive();
+		virtual const std::vector<LSystemSymbol *>& derive();
 		const std::vector<LSystemSymbol *>& derive(size_t level);
 		LSystemProduction* matchProduction(LSystemSymbol *pred);
 

@@ -26,7 +26,7 @@ namespace lsys
 
 	bool LSystemSymbol::operator==(const LSystemSymbol& lSym) const
 	{
-		return key == lSym.key && params == lSym.params;
+		return key == lSym.key;
 	}
 
 	bool LSystemSymbol::operator!=(const LSystemSymbol& lSym) const

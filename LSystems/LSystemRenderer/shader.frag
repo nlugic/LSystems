@@ -9,7 +9,7 @@ struct Light
 
 in vec3 vertNormal;
 in vec3 fragPosition;
-in vec3 texCoordinate;
+in vec3 texCoordinates;
 
 out vec4 gl_FragColor;
 
@@ -21,17 +21,17 @@ uniform int texLayers;
 
 void main()
 {
-	vec3 ambient = light.ambient * texture(textures, texCoordinate).rgb;
+	vec3 color = (texCoordinates.z < 0.0f) ? vec3(texCoordinates.xy, -texCoordinates.z) : texture(textures, texCoordinates).rgb;
+
+	vec3 ambient = light.ambient * color;
 
 	vec3 normalizedNormal = normalize(vertNormal);
 	vec3 lightDirection = normalize(light.position - fragPosition);
-	vec3 diffuse = light.diffuse * max(dot(normalizedNormal, lightDirection), 0.0f)
-		* texture(textures, texCoordinate).rgb;
+	vec3 diffuse = light.diffuse * max(dot(normalizedNormal, lightDirection), 0.0f) * color;
 
 	vec3 viewDirection = normalize(viewPosition - fragPosition);
 	vec3 reflectionDirection = reflect(-lightDirection, normalizedNormal);
-	vec3 specular = light.specular * pow(max(dot(viewDirection, reflectionDirection), 0.0f), light.shininess)
-		* texture(textures, texCoordinate).rgb;
+	vec3 specular = light.specular * pow(max(dot(viewDirection, reflectionDirection), 0.0f), light.shininess) * color;
 
 	float distanceToFragment = length(light.position - fragPosition);
 	float lightAttenuation = 1.0f / (light.attenuation.x + light.attenuation.y * distanceToFragment

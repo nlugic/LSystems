@@ -5,9 +5,9 @@
 namespace lrend
 {
 
-	OGLCamera::OGLCamera(glm::vec3 pos, glm::vec3 up, float yw, float pch)
+	OGLCamera::OGLCamera(glm::vec3 pos)
 		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f),
-		fov(45.0f), position(pos), worldUp(up), yaw(yw), pitch(pch)
+		fov(45.0f), position(pos), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), yaw(-90.0f), pitch(0.0f)
 	{
 		updateCameraVectors();
 	}

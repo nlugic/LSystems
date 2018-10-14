@@ -8,11 +8,13 @@ namespace lsys
 	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> emptyAction =
 		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>([](GraphicsTurtle *, LSystemSymbol *, LSystem *) {});
 
+	unsigned GraphicsTurtle::elementPointer = 0U;
 	float GraphicsTurtle::transformPointer = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
-		:owner(owner), initialState(state), currentState(initialState), elementPointer(0U)
+		:owner(owner), currentState(state)
 	{
+		stateStack.push(currentState);
 		updateTransform();
 	}
 
@@ -69,13 +71,21 @@ namespace lsys
 
 	void GraphicsTurtle::popState()
 	{
-		if (stateStack.empty())
-			currentState = initialState;
-		else
-		{
-			currentState = stateStack.top();
+		currentState = stateStack.top();
+		if (stateStack.size() > 1)
 			stateStack.pop();
-		}
+		updateTransform();
+	}
+
+	void GraphicsTurtle::resetState()
+	{
+		vertexBuffer.clear();
+		elementBuffer.clear();
+		transformBuffer.clear();
+		size_t stackSize = stateStack.size();
+		for (unsigned i = 1U; i < stackSize; ++i)
+			stateStack.pop();
+		currentState = stateStack.top();
 		updateTransform();
 	}
 
@@ -146,7 +156,7 @@ namespace lsys
 			if (pos >= static_cast<ptrdiff_t>(vertexBuffer.size()))
 			{
 				vertexBuffer.push_back(vert);
-				elementBuffer.push_back(elementPointer++);
+				elementBuffer.push_back(GraphicsTurtle::elementPointer++);
 			}
 			else
 				elementBuffer.push_back(static_cast<unsigned>(pos));
@@ -158,7 +168,7 @@ namespace lsys
 	{
 		for (LSystemSymbol *sym : symbols)
 			if (actions.count(sym->getKey()))
-				actions[sym->getKey()](this, sym, owner);
+				getAction(sym->getKey())(this, sym, owner);
 	}
 
 	std::string GraphicsTurtle::toString() const

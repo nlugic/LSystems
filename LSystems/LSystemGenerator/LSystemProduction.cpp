@@ -12,10 +12,10 @@ namespace lsys
 	}
 
 	LSystemProduction::LSystemProduction(LSystemSymbol *pred, float prob)
-		:predecessor(pred), probability(prob) { }
+		:predecessor(pred), probability((prob < 0.0f || prob > 1.0f) ? 1.0f : prob) { }
 
 	LSystemProduction::LSystemProduction(char pred, float prob)
-		: predecessor(new LSystemSymbol(pred)), probability(prob) { }
+		: predecessor(new LSystemSymbol(pred)), probability((prob < 0.0f || prob > 1.0f) ? 1.0f : prob) { }
 
 	LSystemProduction::LSystemProduction(const LSystemProduction& lProd)
 		: predecessor(new LSystemSymbol(*lProd.predecessor)), probability(lProd.probability)

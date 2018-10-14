@@ -9,11 +9,11 @@ namespace lrend
 {
 
 	LSystemRenderer::LSystemRenderer(lsys::LSystemContext *lCxt)
-		:current(lCxt) { }
+		:context(lCxt) { }
 
 	LSystemRenderer::~LSystemRenderer()
 	{
-		delete current;
+		delete context;
 	}
 
 	void LSystemRenderer::testOGLRender()

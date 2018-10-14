@@ -7,7 +7,7 @@ layout (location = 3) in float trPoint;
 
 out vec3 vertNormal;
 out vec3 fragPosition;
-out vec3 texCoordinate;
+out vec3 texCoordinates;
 
 uniform mat4 proj;
 uniform mat4 view;
@@ -24,7 +24,7 @@ void main()
 
 	vertNormal = mat3(transpose(inverse(combinedModel))) * vNorm;
 	fragPosition = vec3(combinedModel * vec4(vPos, 1.0f));
-	texCoordinate = tCoord;
+	texCoordinates = tCoord;
 
 	gl_Position = proj * view * vec4(fragPosition, 1.0f);
 }

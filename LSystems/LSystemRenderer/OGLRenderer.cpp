@@ -3,7 +3,7 @@
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 #include <iostream>
 
-#pragma comment (lib, "..\\..\\lib\\glfw3d.lib")
+#pragma comment (lib, "..\\..\\lib\\glfw3mr.lib")
 
 namespace lrend
 {
@@ -165,7 +165,7 @@ namespace lrend
 		OGLR::shaderProgram->setFloat("light.shininess", shininess);
 	}
 
-	void OGLRenderer::processInput(GLFWwindow *wnd)
+	void OGLRenderer::processKeyboard(GLFWwindow *wnd)
 	{
 		if (glfwGetKey(wnd, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(wnd, true);
@@ -239,7 +239,6 @@ namespace lrend
 			(float)OGLR::width / OGLR::height, 0.1f, 100.0f));
 		glm::mat4 view(OGLR::camera->getViewMatrix());
 		glm::mat4 model(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -3.0f)));
-		//glm::mat4 model(1.0f);
 
 		OGLR::shaderProgram->setFloatMx4("proj", projection);
 		OGLR::shaderProgram->setFloatMx4("view", view);
@@ -247,7 +246,7 @@ namespace lrend
 
 		while (!glfwWindowShouldClose(OGLR::glWindow))
 		{
-			processInput(OGLR::glWindow);
+			processKeyboard(OGLR::glWindow);
 
 			glClearColor(config.backgroundColor.x, config.backgroundColor.y, config.backgroundColor.z, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

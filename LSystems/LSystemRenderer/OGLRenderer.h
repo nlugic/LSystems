@@ -34,8 +34,8 @@ namespace lrend
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
-		"../LSystemRenderer/shader.vert",
-		"../LSystemRenderer/shader.frag",
+		"..\\LSystemRenderer\\shader.vert",
+		"..\\LSystemRenderer\\shader.frag",
 		"L-System Renderer"
 	};
 
@@ -58,25 +58,24 @@ namespace lrend
 		OGLRenderer() = default;
 		OGLRenderer(const OGLRenderer&) = delete;
 		OGLRenderer& operator=(const OGLRenderer&) = delete;
+		~OGLRenderer() = default;
 
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();
 		static void initBuffers(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
 			const std::vector<glm::mat4>& transformData);
-		static void initCamera(const glm::vec3& cameraPosition);
+		static void initCamera(const glm::vec3& position);
 		static void initShader(const char *vertexPath, const char *fragmentPath);
-		static void initLighting(const glm::vec3& lightPosition, const glm::vec3& lightAttenuation,
-			const glm::vec3& lightAmbient, const glm::vec3& lightDiffuse, const glm::vec3& lightSpecular, float shininess);
-		static void initTextures(const std::vector<const char *>& texturePaths, int w, int h);
+		static void initLighting(const glm::vec3& position, const glm::vec3& attenuation, const glm::vec3& ambient,
+			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
+		static void initTextures(const std::vector<const char *>& paths, int w, int h);
 
-		static void processInput(GLFWwindow *wnd);
+		static void processKeyboard(GLFWwindow *wnd);
 		static void onWindowResize(GLFWwindow *wnd, int w, int h);
 		static void onMouseMove(GLFWwindow *wnd, double xPos, double yPos);
 		static void onMouseScroll(GLFWwindow *wnd, double xOff, double yOff);
 
 	public:
-		~OGLRenderer() = default;
-
 		static void renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
 			const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
 			const OGLRendererConfig& config = defaultOGLRendererConfig);

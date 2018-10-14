@@ -18,12 +18,12 @@ namespace lsys
 		turtle.setAction('|', turnTurtleAround);
 		turtle.setAction('$', rotateTurtleToVertical);
 	}
-	
-	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
-		:lSystem(lSys), turtle(lSystem, state) { }
 
 	LSystemContext::LSystemContext(const TurtleState& state)
 		:lSystem(new LSystem), turtle(lSystem, state) { }
+
+	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
+		:lSystem(lSys), turtle(lSystem, state) { }
 
 	LSystemContext::LSystemContext(const LSystemContext& lCxt)
 		:lSystem(new LSystem(*lCxt.lSystem)), turtle(lCxt.turtle)
@@ -48,11 +48,6 @@ namespace lsys
 		delete lSystem;
 	}
 
-	GraphicsTurtle& LSystemContext::getTurtle()
-	{
-		return turtle;
-	}
-
 	const std::vector<float> LSystemContext::getVertexBuffer() const
 	{
 		return turtle.getVertices();
@@ -74,6 +69,7 @@ namespace lsys
 		if (level > curr)
 			lSystem->derive(level - curr);
 
+		turtle.resetState();
 		turtle.interpretSymbols((*lSystem)[level]);
 	}
 

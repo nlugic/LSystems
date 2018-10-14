@@ -98,7 +98,8 @@ namespace lsys
 
 	void LSystem::addSymbolToAxiom(LSystemSymbol *lSym)
 	{
-		axiom.push_back(lSym);
+		if (lSym)
+			axiom.push_back(lSym);
 	}
 
 	void LSystem::setAxiom(const std::vector<LSystemSymbol *>& ax)
@@ -114,7 +115,8 @@ namespace lsys
 
 	void LSystem::addProduction(LSystemProduction *prod)
 	{
-		productions.push_back(prod);
+		if (prod)
+			productions.push_back(prod);
 	}
 
 	void LSystem::setProductions(const std::vector<LSystemProduction *>& prods)

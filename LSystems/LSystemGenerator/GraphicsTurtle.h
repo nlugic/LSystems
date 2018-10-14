@@ -17,9 +17,7 @@ namespace lsys
 
 		bool operator==(const Vertex& v)
 		{
-			return x == v.x && y == v.y && z == v.z
-				&& nx == v.nx && ny == v.ny && nz == v.nz
-				&& s == v.s && t == v.t && d == v.d && tr == v.tr;
+			return !std::memcmp(this, &v, sizeof(Vertex));
 		}
 	};
 
@@ -41,16 +39,16 @@ namespace lsys
 		LSystem *owner;
 		std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>> actions;
 
-		TurtleState initialState, currentState;
+		TurtleState currentState;
 		glm::mat4 currentTransform;
 		std::stack<TurtleState> stateStack;
 
 		std::vector<Vertex> vertexBuffer;
-		unsigned elementPointer;
 		std::vector<unsigned> elementBuffer;
 		std::vector<glm::mat4> transformBuffer;
 		
 	public:
+		static unsigned elementPointer;
 		static float transformPointer;
 
 		GraphicsTurtle(LSystem *owner, const TurtleState& state = defaultTurtleState);
@@ -69,6 +67,7 @@ namespace lsys
 
 		void pushState();
 		void popState();
+		void resetState();
 		void updateTransform();
 		void translateState(const glm::vec3& offset);
 		void rotateAroundUp(float angle);

@@ -76,7 +76,8 @@ namespace lsys
 
 	size_t LSystem::getCurrentLevel() const
 	{
-		return products.size() - 1;
+		size_t level = products.size();
+		return (level > 0) ? level - 1 : level;
 	}
 
 	float LSystem::getParam(char param) const
@@ -88,7 +89,7 @@ namespace lsys
 
 	void LSystem::setParam(char param, float value)
 	{
-		params.emplace(param, value);
+		params[param] = value;
 	}
 
 	const std::vector<LSystemSymbol *>& LSystem::getAxiom() const
@@ -128,9 +129,8 @@ namespace lsys
 	const std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
 	{
 		try { return products.at(level); }
-		catch (const std::out_of_range& err)
+		catch (const std::out_of_range&)
 		{
-			std::cerr << err.what() << std::endl;
 			if (products.empty())
 				produceAxiom();
 

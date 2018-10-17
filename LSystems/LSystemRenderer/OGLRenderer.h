@@ -26,7 +26,7 @@ namespace lrend
 
 	const OGLRendererConfig defaultOGLRendererConfig =
 	{
-		1024U, 768U, 256U, 256U,
+		800U, 600U, 256U, 256U,
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.0f, 1.0f, 3.0f),
 		glm::vec3(0.0f, 5.0f, 3.0f),

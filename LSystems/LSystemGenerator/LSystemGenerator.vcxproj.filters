@@ -15,6 +15,21 @@
     <Filter Include="Predefined Symbols">
       <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\KochCurve">
+      <UniqueIdentifier>{66f78b53-dc60-4f10-982d-a6001cd80caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\SierpinskiGasket">
+      <UniqueIdentifier>{fd90db52-9685-42a9-bb9a-0b7136c82023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Generic3DTree">
+      <UniqueIdentifier>{2a284e2e-99bf-47a8-b17c-d813fe8ba66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Generic2DTree">
+      <UniqueIdentifier>{8ac41d62-4b87-43f2-b01b-ecfb267efe03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\HilbertCurve3D">
+      <UniqueIdentifier>{e2b39f9f-8017-4f2d-8e2b-5488ecb3f572}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LSystem.h">
@@ -62,17 +77,62 @@
     <ClInclude Include="RotateToVerticalSymbol.h">
       <Filter>Predefined Symbols</Filter>
     </ClInclude>
-    <ClInclude Include="GenericBranchSegmentSymbol.h">
-      <Filter>Predefined Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericBranchApexSymbol.h">
-      <Filter>Predefined Symbols</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericLeafSymbol.h">
-      <Filter>Predefined Symbols</Filter>
-    </ClInclude>
     <ClInclude Include="TurtleActions.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SierpinskiGasketLSystem.h">
+      <Filter>Systems\SierpinskiGasket</Filter>
+    </ClInclude>
+    <ClInclude Include="SierpinskiGasketContext.h">
+      <Filter>Systems\SierpinskiGasket</Filter>
+    </ClInclude>
+    <ClInclude Include="SierpinskiGasketProductions.h">
+      <Filter>Systems\SierpinskiGasket</Filter>
+    </ClInclude>
+    <ClInclude Include="KochCurveProductions.h">
+      <Filter>Systems\KochCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="StochasticHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeContext.h">
+      <Filter>Systems\Generic3DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeLSystem.h">
+      <Filter>Systems\Generic3DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeProductions.h">
+      <Filter>Systems\Generic3DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeSymbols.h">
+      <Filter>Systems\Generic3DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DTreeContexts.h">
+      <Filter>Systems\Generic2DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DTreeProductions.h">
+      <Filter>Systems\Generic2DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="KochCurveContexts.h">
+      <Filter>Systems\KochCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="KochCurveLSystem.h">
+      <Filter>Systems\KochCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DTreeLSystems.h">
+      <Filter>Systems\Generic2DTree</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DContext.h">
+      <Filter>Systems\HilbertCurve3D</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DLSystem.h">
+      <Filter>Systems\HilbertCurve3D</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DProductions.h">
+      <Filter>Systems\HilbertCurve3D</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DSymbols.h">
+      <Filter>Systems\HilbertCurve3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ namespace lsys
 		LSystem *lSystem;
 		GraphicsTurtle turtle;
 
-		virtual void initTurtleFunctions();
+		virtual void initTurtleActions();
 
 	public:
 		LSystemContext(const TurtleState& state = defaultTurtleState);

@@ -142,10 +142,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GenericBranchApexSymbol.h" />
-    <ClInclude Include="GenericBranchSegmentSymbol.h" />
-    <ClInclude Include="GenericLeafSymbol.h" />
+    <ClInclude Include="HilbertCurve3DContext.h" />
+    <ClInclude Include="HilbertCurve3DLSystem.h" />
+    <ClInclude Include="HilbertCurve3DProductions.h" />
+    <ClInclude Include="HilbertCurve3DSymbols.h" />
+    <ClInclude Include="Generic2DTreeContexts.h" />
+    <ClInclude Include="Generic2DTreeLSystems.h" />
+    <ClInclude Include="Generic2DTreeProductions.h" />
+    <ClInclude Include="Generic3DTreeContext.h" />
+    <ClInclude Include="Generic3DTreeLSystem.h" />
+    <ClInclude Include="Generic3DTreeProductions.h" />
+    <ClInclude Include="Generic3DTreeSymbols.h" />
     <ClInclude Include="GraphicsTurtle.h" />
+    <ClInclude Include="KochCurveContexts.h" />
+    <ClInclude Include="KochCurveLSystem.h" />
+    <ClInclude Include="KochCurveProductions.h" />
     <ClInclude Include="LSystem.h" />
     <ClInclude Include="LSystemContext.h" />
     <ClInclude Include="LSystemProduction.h" />
@@ -157,6 +168,10 @@
     <ClInclude Include="RollRightSymbol.h" />
     <ClInclude Include="RotateToVerticalSymbol.h" />
     <ClInclude Include="SaveStateSymbol.h" />
+    <ClInclude Include="SierpinskiGasketContext.h" />
+    <ClInclude Include="SierpinskiGasketLSystem.h" />
+    <ClInclude Include="SierpinskiGasketProductions.h" />
+    <ClInclude Include="StochasticHelpers.h" />
     <ClInclude Include="TurnAroundSymbol.h" />
     <ClInclude Include="TurnLeftSymbol.h" />
     <ClInclude Include="TurnRightSymbol.h" />

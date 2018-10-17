@@ -21,7 +21,12 @@ namespace lsys
 
 	void LSystemSymbol::setParam(char param, float value)
 	{
-		params.emplace(param, value);
+		params[param] = value;
+	}
+
+	void LSystemSymbol::setParams(const LSystemSymbol *lSym)
+	{
+		params = lSym->params;
 	}
 
 	bool LSystemSymbol::operator==(const LSystemSymbol& lSym) const

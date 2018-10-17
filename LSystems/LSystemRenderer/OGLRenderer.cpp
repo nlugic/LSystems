@@ -238,7 +238,7 @@ namespace lrend
 		glm::mat4 projection(glm::perspective(glm::radians(OGLR::camera->getFOV()),
 			(float)OGLR::width / OGLR::height, 0.1f, 100.0f));
 		glm::mat4 view(OGLR::camera->getViewMatrix());
-		glm::mat4 model(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.0f, -3.0f)));
+		glm::mat4 model(1.0f);
 
 		OGLR::shaderProgram->setFloatMx4("proj", projection);
 		OGLR::shaderProgram->setFloatMx4("view", view);

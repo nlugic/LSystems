@@ -2,6 +2,10 @@
 #include "GraphicsTurtle.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
+//#define GLM_ENABLE_EXPERIMENTAL
+//#include "..\..\include\glm\gtc\quaternion.hpp"
+//#include "..\..\include\glm\gtx\quaternion.hpp"
+
 namespace lsys
 {
 
@@ -12,10 +16,9 @@ namespace lsys
 	float GraphicsTurtle::transformPointer = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
-		:owner(owner), currentState(state)
+		:owner(owner), currentState(state), currentTransform(glm::mat4(1.0f))
 	{
 		stateStack.push(currentState);
-		updateTransform();
 	}
 
 	void GraphicsTurtle::setOwner(LSystem *lSys)
@@ -42,7 +45,7 @@ namespace lsys
 
 	void GraphicsTurtle::setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
 	{
-		actions.emplace(key, func);
+		actions[key] = func;
 	}
 
 	std::vector<float> GraphicsTurtle::getVertices() const
@@ -87,22 +90,19 @@ namespace lsys
 			stateStack.pop();
 		currentState = stateStack.top();
 		updateTransform();
+		GraphicsTurtle::elementPointer = 0U;
+		GraphicsTurtle::transformPointer = 0U;
 	}
 
 	void GraphicsTurtle::updateTransform()
 	{
-		glm::mat4 mat(glm::translate(glm::mat4(1.0f), currentState.position));
-		glm::vec3 axis = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading);
-		float sine = glm::length(axis);
+		//glm::quat rot(glm::vec3(glm::radians(-currentState.pitch), glm::radians(currentState.roll), glm::radians(currentState.yaw)));
+		//currentTransform = glm::translate(glm::mat4(1.0f), currentState.position) * glm::toMat4(rot);
+		glm::mat4 trans(glm::translate(glm::mat4(1.0f), currentState.position));
 
-		if (sine)
-			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.heading);
-		else
-		{
-			axis = glm::cross(glm::vec3(-1.0f, 0.0f, 0.0f), currentState.left);
-			sine = glm::length(axis);
-			currentTransform = glm::rotate(mat, glm::asin(sine), (sine) ? axis : currentState.left);
-		}
+		currentTransform = glm::rotate(trans, glm::radians(currentState.roll), glm::vec3(0.0f, 1.0f, 0.0f));
+		currentTransform = glm::rotate(currentTransform, glm::radians(currentState.yaw), glm::vec3(0.0f, 0.0f, 1.0f));
+		currentTransform = glm::rotate(currentTransform, glm::radians(currentState.pitch), glm::vec3(-1.0f, 0.0f, 0.0f));
 	}
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
@@ -115,36 +115,34 @@ namespace lsys
 
 	void GraphicsTurtle::rotateAroundUp(float angle)
 	{
-		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up));
-		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
-		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
+		currentState.yaw += angle;
 		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
-		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left));
-		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
-		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
+		currentState.pitch -= angle;
 		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateAroundHeading(float angle)
 	{
-		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading));
-		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
-		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
+		currentState.roll += angle;
 		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
-		glm::vec3 axis = glm::cross(currentState.heading, target);
+		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::radians(currentState.yaw), glm::vec3(0.0f, 0.0f, 1.0f)));
+		glm::vec3 heading = glm::vec3(glm::rotate(mat, glm::radians(currentState.pitch), glm::vec3(-1.0f, 0.0f, 0.0f))
+			* glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+		glm::vec3 axis = glm::cross(heading, target);
 		float sine = glm::length(axis);
-		glm::mat4 mat(glm::rotate(glm::mat4(1.0f), glm::asin(sine), axis));
-		currentState.heading = mat * glm::vec4(currentState.heading, 1.0f);
-		currentState.left = mat * glm::vec4(currentState.left, 1.0f);
-		currentState.up = mat * glm::vec4(currentState.up, 1.0f);
+		mat = (glm::rotate(currentTransform, glm::asin(sine), axis));
+		currentState.yaw = std::atan2(mat[1][0], mat[0][0]);
+		currentState.pitch = std::atan2(mat[2][1], mat[2][2]);
+		currentState.roll = std::atan2(-mat[2][0], std::sqrt(mat[2][1] * mat[2][1] + mat[2][2] * mat[2][2]));
 		updateTransform();
 	}
 

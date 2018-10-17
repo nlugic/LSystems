@@ -23,6 +23,7 @@ namespace lsys
 		char getKey() const;
 		float getParam(char param) const;
 		void setParam(char param, float value);
+		void setParams(const LSystemSymbol *lSym);
 		virtual bool operator==(const LSystemSymbol& lSym) const;
 		virtual bool operator!=(const LSystemSymbol& lSym) const;
 

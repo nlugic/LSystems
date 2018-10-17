@@ -5,7 +5,7 @@
 namespace lsys
 {
 
-	void LSystemContext::initTurtleFunctions()
+	void LSystemContext::initTurtleActions()
 	{
 		turtle.setAction('[', saveTurtleState);
 		turtle.setAction(']', restoreTurtleState);
@@ -20,10 +20,16 @@ namespace lsys
 	}
 
 	LSystemContext::LSystemContext(const TurtleState& state)
-		:lSystem(new LSystem), turtle(lSystem, state) { }
+		:lSystem(new LSystem), turtle(lSystem, state)
+	{
+		initTurtleActions();
+	}
 
 	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
-		:lSystem(lSys), turtle(lSystem, state) { }
+		:lSystem(lSys), turtle(lSystem, state)
+	{
+		initTurtleActions();
+	}
 
 	LSystemContext::LSystemContext(const LSystemContext& lCxt)
 		:lSystem(new LSystem(*lCxt.lSystem)), turtle(lCxt.turtle)

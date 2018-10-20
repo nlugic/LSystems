@@ -1,6 +1,7 @@
 
-#include "OGLRenderer.h"
+#include "LSystemRenderer.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
+#include "..\..\include\stb_image_write.h"
 #include <iostream>
 
 #pragma comment (lib, "..\\..\\lib\\glfw3mr.lib")
@@ -10,6 +11,7 @@ namespace lrend
 
 	using OGLR = OGLRenderer;
 
+	void *OGLR::owner = nullptr;
 	int OGLR::width = defaultOGLRendererConfig.windowWidth;
 	int OGLR::height = defaultOGLRendererConfig.windowHeight;
 	GLFWwindow *OGLR::glWindow = nullptr;
@@ -57,6 +59,7 @@ namespace lrend
 
 		glfwSwapInterval(1);
 		glfwSetInputMode(tWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetKeyCallback(tWnd, OGLR::onKeyPress);
 		glfwSetWindowSizeCallback(tWnd, OGLR::onWindowResize);
 		glfwSetCursorPosCallback(tWnd, OGLR::onMouseMove);
 		glfwSetScrollCallback(tWnd, OGLR::onMouseScroll);
@@ -79,6 +82,7 @@ namespace lrend
 		glDeleteVertexArrays(1, &OGLR::vao);
 		glfwTerminate();
 
+		OGLR::owner = nullptr;
 		OGLR::width = defaultOGLRendererConfig.windowWidth;
 		OGLR::height = defaultOGLRendererConfig.windowHeight;
 		OGLR::glWindow = nullptr;
@@ -165,11 +169,22 @@ namespace lrend
 		OGLR::shaderProgram->setFloat("light.shininess", shininess);
 	}
 
-	void OGLRenderer::processKeyboard(GLFWwindow *wnd)
+	void OGLRenderer::takeScreenshot()
 	{
-		if (glfwGetKey(wnd, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(wnd, true);
+		unsigned char *data = new unsigned char[OGLR::width * OGLR::height * 3];
 
+		glReadPixels(0, 0, OGLR::width, OGLR::height, GL_RGB, GL_UNSIGNED_BYTE, data);
+		
+		std::string time(std::to_string(glfwGetTime()));
+		time += ".jpg";
+
+		stbi_write_jpg(time.c_str(), OGLR::width, OGLR::height, 3, data, 0);
+
+		delete[] data;
+	}
+
+	void OGLRenderer::processMoveKeys(GLFWwindow *wnd)
+	{
 		if (glfwGetKey(wnd, GLFW_KEY_W) == GLFW_PRESS)
 			OGLR::camera->move(FORWARD, OGLR::deltaTime);
 		if (glfwGetKey(wnd, GLFW_KEY_S) == GLFW_PRESS)
@@ -178,6 +193,20 @@ namespace lrend
 			OGLR::camera->move(LEFT, OGLR::deltaTime);
 		if (glfwGetKey(wnd, GLFW_KEY_D) == GLFW_PRESS)
 			OGLR::camera->move(RIGHT, OGLR::deltaTime);
+	}
+
+	void OGLRenderer::onKeyPress(GLFWwindow *wnd, int key, int scancode, int action, int mode)
+	{
+		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+			glfwSetWindowShouldClose(wnd, true);
+
+		if (key == GLFW_KEY_PRINT_SCREEN && action == GLFW_PRESS)
+			takeScreenshot();
+
+		if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
+			static_cast<LSystemRenderer *>(OGLR::owner)->levelUp();
+		if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
+			static_cast<LSystemRenderer *>(OGLR::owner)->levelDown();
 	}
 
 	void OGLRenderer::onWindowResize(GLFWwindow *wnd, int w, int h)
@@ -211,9 +240,32 @@ namespace lrend
 		OGLR::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
+	void OGLRenderer::updateVertexData(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
+		const std::vector<glm::mat4>& transformData)
+	{
+		OGLR::vertexBufSize = vertData.size();
+		OGLR::elementBufSize = elemData.size();
+		OGLR::shaderStorageBufSize = transformData.size();
+
+		glBindVertexArray(OGLR::vao);
+		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, OGLR::ebo);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
+
+		glBufferSubData(GL_ARRAY_BUFFER, 0, OGLR::vertexBufSize * sizeof(float), vertData.data());
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, OGLR::elementBufSize * sizeof(unsigned), elemData.data());
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data());
+
+		glBindVertexArray(0U);
+		glBindBuffer(GL_ARRAY_BUFFER, 0U);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
+	}
+
+	void OGLRenderer::renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
 		const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
 	{
+		OGLR::owner = owner;
 		OGLR::width = config.windowWidth;
 		OGLR::height = config.windowHeight;
 		OGLR::lastXPos = OGLR::width / 2.0;
@@ -221,7 +273,6 @@ namespace lrend
 
 		OGLR::initGLWindow(config.windowCaption);
 		OGLR::initBuffers(vBuf, eBuf, transMats);
-		glBindVertexArray(OGLR::vao);
 		OGLR::initCamera(config.cameraPosition);
 		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();
@@ -236,7 +287,7 @@ namespace lrend
 		glPolygonMode(GL_FRONT, GL_FILL);
 
 		glm::mat4 projection(glm::perspective(glm::radians(OGLR::camera->getFOV()),
-			(float)OGLR::width / OGLR::height, 0.1f, 100.0f));
+			static_cast<float>(OGLR::width) / OGLR::height, 0.1f, 100.0f));
 		glm::mat4 view(OGLR::camera->getViewMatrix());
 		glm::mat4 model(1.0f);
 
@@ -246,13 +297,15 @@ namespace lrend
 
 		while (!glfwWindowShouldClose(OGLR::glWindow))
 		{
-			processKeyboard(OGLR::glWindow);
+			processMoveKeys(OGLR::glWindow);
 
 			glClearColor(config.backgroundColor.x, config.backgroundColor.y, config.backgroundColor.z, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			glBindVertexArray(OGLR::vao);
+
 			projection = glm::perspective(glm::radians(OGLR::camera->getFOV()),
-				(float)OGLR::width / OGLR::height, 0.1f, 100.0f);
+				static_cast<float>(OGLR::width) / OGLR::height, 0.1f, 100.0f);
 			view = OGLR::camera->getViewMatrix();
 
 			OGLR::shaderProgram->setFloatMx4("proj", projection);
@@ -260,7 +313,7 @@ namespace lrend
 
 			OGLR::shaderProgram->setFloatVx3("viewPosition", OGLR::camera->getPosition());
 
-			float currentFrame = (float)glfwGetTime();
+			float currentFrame = static_cast<float>(glfwGetTime());
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
 

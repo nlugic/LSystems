@@ -16,21 +16,28 @@ namespace lrend
 	class LSystemRenderer
 	{
 	private:
+		size_t maxLevel;
+
 		lsys::LSystemContext *context;
 
-		LSystemRenderer(lsys::LSystemContext *lCxt);
+		LSystemRenderer(size_t maxL, lsys::LSystemContext *lCxt);
 		LSystemRenderer(const LSystemRenderer&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 
 	public:
-		static LSYSTEMRENDERER_API void drawKochCurveA(size_t level, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawKochCurveB(size_t level, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawKochCurveC(size_t level, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawKochCurveD(size_t level, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawKochCurveE(size_t level, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawKochCurveF(size_t level, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawKochCurveG(size_t level, float length, float angle = 90.0f);
+		void levelUp();
+		void levelDown();
+
+		static LSYSTEMRENDERER_API void drawKochSnowflake(size_t level, float length, float angle = 60.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandA(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandB(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandC(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandD(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandE(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandF(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawKochIslandG(size_t level, float length, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawDragonCurve(size_t level, float length, float angle = 90.0f);
 		static LSYSTEMRENDERER_API void drawSierpinskiGasket(size_t level, float length, float angle = 60.0f);
 		static LSYSTEMRENDERER_API void drawGeneric2DTreeA(size_t level, float length, float angle = 25.7f);
 		static LSYSTEMRENDERER_API void drawGeneric2DTreeB(size_t level, float length, float angle = 20.0f);

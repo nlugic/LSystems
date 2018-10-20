@@ -2,6 +2,7 @@
 #define SIERPINSKIGASKETPRODUCTIONS_H
 
 #include "LSystemProduction.h"
+#include "GenericLineSymbol.h"
 #include "TurnLeftSymbol.h"
 #include "TurnRightSymbol.h"
 
@@ -11,28 +12,40 @@ namespace lsys
 	class SierpinskiGasketProductionL : public LSystemProduction
 	{
 	public:
-		SierpinskiGasketProductionL(float angle)
-			:LSystemProduction('L')
+		SierpinskiGasketProductionL()
+			:LSystemProduction('L') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('R'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('L'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('R'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('R', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('L', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('R', length));
 		}
 	};
 
 	class SierpinskiGasketProductionR : public LSystemProduction
 	{
 	public:
-		SierpinskiGasketProductionR(float angle)
-			:LSystemProduction('R')
+		SierpinskiGasketProductionR()
+			:LSystemProduction('R') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('L'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('R'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('L'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('L', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('R', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('L', length));
 		}
 	};
 

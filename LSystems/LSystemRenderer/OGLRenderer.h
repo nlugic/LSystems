@@ -42,6 +42,8 @@ namespace lrend
 	class OGLRenderer
 	{
 	private:
+		static void *owner;
+
 		static int width, height;
 		static GLFWwindow *glWindow;
 
@@ -70,13 +72,17 @@ namespace lrend
 			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
 		static void initTextures(const std::vector<const char *>& paths, int w, int h);
 
-		static void processKeyboard(GLFWwindow *wnd);
+		static void takeScreenshot();
+		static void processMoveKeys(GLFWwindow *wnd);
+		static void onKeyPress(GLFWwindow *wnd, int key, int scancode, int action, int mode);
 		static void onWindowResize(GLFWwindow *wnd, int w, int h);
 		static void onMouseMove(GLFWwindow *wnd, double xPos, double yPos);
 		static void onMouseScroll(GLFWwindow *wnd, double xOff, double yOff);
 
 	public:
-		static void renderScene(const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
+		static void updateVertexData(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
+			const std::vector<glm::mat4>& transformData);
+		static void renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
 			const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
 			const OGLRendererConfig& config = defaultOGLRendererConfig);
 	};

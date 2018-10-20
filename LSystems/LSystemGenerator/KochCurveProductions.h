@@ -2,149 +2,215 @@
 #define KOCHCURVEPRODUCTIONS_H
 
 #include "LSystemProduction.h"
+#include "GenericLineSymbol.h"
 #include "TurnLeftSymbol.h"
 #include "TurnRightSymbol.h"
 
 namespace lsys
 {
 
-	class KochCurveProductionA : public LSystemProduction
+	class KochSnowflakeProduction : public LSystemProduction
 	{
 	public:
-		KochCurveProductionA(float angle)
-			:LSystemProduction('F')
+		KochSnowflakeProduction()
+			:LSystemProduction('F') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h') / globalParams.at('s');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 
-	class KochCurveProductionB : public LSystemProduction
+	class KochIslandProductionA : public LSystemProduction
 	{
 	public:
-		KochCurveProductionB(float angle)
-			:LSystemProduction('F')
+		KochIslandProductionA()
+			:LSystemProduction('F') { }
+		
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h') / globalParams.at('s');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 
-	class KochCurveProductionC : public LSystemProduction
+	class KochIslandProductionB : public LSystemProduction
 	{
 	public:
-		KochCurveProductionC(float angle)
-			:LSystemProduction('F')
+		KochIslandProductionB()
+			:LSystemProduction('F') { }
+		
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 
-	class KochCurveProductionD : public LSystemProduction
+	class KochIslandProductionC : public LSystemProduction
 	{
 	public:
-		KochCurveProductionD(float angle)
-			:LSystemProduction('F')
+		KochIslandProductionC()
+			:LSystemProduction('F') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 
-	class KochCurveProductionE : public LSystemProduction
+	class KochIslandProductionD : public LSystemProduction
 	{
 	public:
-		KochCurveProductionE(float angle)
-			:LSystemProduction('F')
+		KochIslandProductionD()
+			:LSystemProduction('F') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 
-	class KochCurveProductionF : public LSystemProduction
+	class KochIslandProductionE : public LSystemProduction
 	{
 	public:
-		KochCurveProductionF(float angle)
-			:LSystemProduction('F')
+		KochIslandProductionE()
+			:LSystemProduction('F') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 
-	class KochCurveProductionG : public LSystemProduction
+	class KochIslandProductionF : public LSystemProduction
 	{
 	public:
-		KochCurveProductionG(float angle)
-			:LSystemProduction('F')
+		KochIslandProductionF()
+			:LSystemProduction('F') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+		}
+	};
+
+	class KochIslandProductionG : public LSystemProduction
+	{
+	public:
+		KochIslandProductionG()
+			:LSystemProduction('F') { }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+			std::vector<LSystemSymbol *>& word) const override
+		{
+			float length = pred->getParam('h');
+			float angle = globalParams.at('a');
+
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnLeftSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
+			word.push_back(new TurnRightSymbol(angle));
+			word.push_back(new GenericLineSymbol('F', length));
 		}
 	};
 

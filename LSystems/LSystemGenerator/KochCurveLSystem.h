@@ -10,26 +10,19 @@ namespace lsys
 	class KochCurveLSystem : public LSystem
 	{
 	public:
-		KochCurveLSystem(LSystemProduction *prod, float length, float angle)
+		KochCurveLSystem(LSystemProduction *prod, float length, float angle, float segments = 4.0f)
 		{
-			setParam('d', length);
+			setParam('a', angle);
+			setParam('s', segments);
 
-			addSymbolToAxiom(new LSystemSymbol('F'));
-			addSymbolToAxiom(new TurnRightSymbol(angle));
-			addSymbolToAxiom(new LSystemSymbol('F'));
-			addSymbolToAxiom(new TurnRightSymbol(angle));
-			addSymbolToAxiom(new LSystemSymbol('F'));
-			addSymbolToAxiom(new TurnRightSymbol(angle));
-			addSymbolToAxiom(new LSystemSymbol('F'));
+			unsigned char segs = static_cast<unsigned char>(segments);
+			for (unsigned char i = 0U; i < segs; ++i)
+			{
+				addSymbolToAxiom(new GenericLineSymbol('F', length));
+				addSymbolToAxiom(new TurnRightSymbol((segs == 4U) ? angle : 2.0f * angle));
+			}
 
 			addProduction(prod);
-		}
-
-		virtual const std::vector<LSystemSymbol *>& derive() override
-		{
-			const std::vector<LSystemSymbol *>& ret = LSystem::derive();
-			setParam('d', getParam('d') / 4.0f);
-			return ret;
 		}
 	};
 

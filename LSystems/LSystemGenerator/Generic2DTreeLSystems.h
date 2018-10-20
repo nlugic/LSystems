@@ -12,13 +12,11 @@ namespace lsys
 	public:
 		Generic2DTreeLSystem(char axiom, LSystemProduction *prod, float length, bool elongation = false)
 		{
-			setParam('d', length);
-
-			addSymbolToAxiom(new LSystemSymbol(axiom));
+			addSymbolToAxiom(new GenericLineSymbol(axiom, length));
 			
 			addProduction(prod);
 			if (elongation)
-				addProduction(new Generic2DTreeElongationProduction());
+				addProduction(new Generic2DTreeElongationProduction(length));
 		}
 	};
 

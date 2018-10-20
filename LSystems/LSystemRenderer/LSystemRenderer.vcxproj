@@ -35,7 +35,6 @@
     <ClInclude Include="OGLRenderer.h" />
     <ClInclude Include="OGLShader.h" />
     <ClInclude Include="OGLTexture.h" />
-    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />

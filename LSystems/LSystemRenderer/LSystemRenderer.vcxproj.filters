@@ -56,9 +56,6 @@
     <ClInclude Include="OGLTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OGLArrayTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>

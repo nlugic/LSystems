@@ -142,6 +142,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DragonCurveContext.h" />
+    <ClInclude Include="DragonCurveLSystem.h" />
+    <ClInclude Include="DragonCurveProductions.h" />
     <ClInclude Include="HilbertCurve3DContext.h" />
     <ClInclude Include="HilbertCurve3DLSystem.h" />
     <ClInclude Include="HilbertCurve3DProductions.h" />
@@ -157,6 +160,7 @@
     <ClInclude Include="KochCurveContexts.h" />
     <ClInclude Include="KochCurveLSystem.h" />
     <ClInclude Include="KochCurveProductions.h" />
+    <ClInclude Include="GenericLineSymbol.h" />
     <ClInclude Include="LSystem.h" />
     <ClInclude Include="LSystemContext.h" />
     <ClInclude Include="LSystemProduction.h" />

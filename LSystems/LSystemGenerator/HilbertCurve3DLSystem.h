@@ -14,10 +14,10 @@ namespace lsys
 		{
 			addSymbolToAxiom(new LSystemSymbol('A'));
 
-			addProduction(new HilbertCurve3DProductionA(slices, radius, length, angle));
-			addProduction(new HilbertCurve3DProductionB(slices, radius, length, angle));
-			addProduction(new HilbertCurve3DProductionC(slices, radius, length, angle));
-			addProduction(new HilbertCurve3DProductionD(slices, radius, length, angle));
+			addProduction(new HilbertCurve3DProductionA(static_cast<float>(slices), radius, length, angle));
+			addProduction(new HilbertCurve3DProductionB(static_cast<float>(slices), radius, length, angle));
+			addProduction(new HilbertCurve3DProductionC(static_cast<float>(slices), radius, length, angle));
+			addProduction(new HilbertCurve3DProductionD(static_cast<float>(slices), radius, length, angle));
 		}
 	};
 

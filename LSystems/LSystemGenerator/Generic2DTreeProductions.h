@@ -2,6 +2,7 @@
 #define GENERIC2DTREEPRODUCTIONS_H
 
 #include "LSystemProduction.h"
+#include "GenericLineSymbol.h"
 #include "SaveStateSymbol.h"
 #include "RestoreStateSymbol.h"
 #include "TurnLeftSymbol.h"
@@ -13,41 +14,41 @@ namespace lsys
 	class Generic2DTreeProductionA : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionA(float angle)
+		Generic2DTreeProductionA(float length, float angle)
 			:LSystemProduction('F')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 	};
 
 	class Generic2DTreeProductionB : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionB(float angle)
+		Generic2DTreeProductionB(float length, float angle)
 			:LSystemProduction('F')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new SaveStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 		}
 	};
@@ -55,28 +56,28 @@ namespace lsys
 	class Generic2DTreeProductionC : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionC(float angle)
+		Generic2DTreeProductionC(float length, float angle)
 			:LSystemProduction('F')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 		}
 	};
@@ -84,129 +85,129 @@ namespace lsys
 	class Generic2DTreeProductionD : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionD(float angle)
+		Generic2DTreeProductionD(float length, float angle)
 			:LSystemProduction('X')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 		}
 	};
 
 	class Generic2DTreeProductionE : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionE(float angle)
+		Generic2DTreeProductionE(float length, float angle)
 			:LSystemProduction('X')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 		}
 	};
 
 	class Generic2DTreeProductionF : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionF(float angle)
+		Generic2DTreeProductionF(float length, float angle)
 			:LSystemProduction('X')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new SaveStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('X'));
+			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 		}
 	};
 
 	class Generic2DTreeElongationProduction : public LSystemProduction
 	{
 	public:
-		Generic2DTreeElongationProduction()
+		Generic2DTreeElongationProduction(float length)
 			:LSystemProduction('F')
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 	};
 
 	class Generic2DTreeProductionS1 : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionS1(float angle)
+		Generic2DTreeProductionS1(float length, float angle)
 			:LSystemProduction('F', 0.34f)
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 	};
 
 	class Generic2DTreeProductionS2 : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionS2(float angle)
+		Generic2DTreeProductionS2(float length, float angle)
 			:LSystemProduction('F', 0.33f)
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 	};
 
 	class Generic2DTreeProductionS3 : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionS3(float angle)
+		Generic2DTreeProductionS3(float length, float angle)
 			:LSystemProduction('F', 0.33f)
 		{
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new SaveStateSymbol());
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
-			addSymbolToSuccessor(new LSystemSymbol('F'));
+			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 	};
 
@@ -220,13 +221,11 @@ namespace lsys
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			float angle = globalParams.at('a');
-			LSystemSymbol *branch = new LSystemSymbol('F');
-			branch->setParam('s', pred->getParam('s'));
 
 			LSystemSymbol *apex = new LSystemSymbol('A');
 			apex->setParam('s', pred->getParam('s') / globalParams.at('R'));
 
-			word.push_back(branch);
+			word.push_back(new GenericLineSymbol('F', pred->getParam('s')));
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new TurnLeftSymbol(angle));
 			word.push_back(apex);

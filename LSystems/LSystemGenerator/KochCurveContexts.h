@@ -8,71 +8,81 @@
 namespace lsys
 {
 
-	class KochCurveContextA : public LSystemContext
+	class KochSnowflakeContext : public LSystemContext
 	{
 	public:
-		KochCurveContextA(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionA(angle), length, angle))
+		KochSnowflakeContext(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(), length, angle, 3.0f))
 		{
 			turtle.setAction('F', drawLine);
 		}
 	};
 
-	class KochCurveContextB : public LSystemContext
+	class KochIslandContextA : public LSystemContext
 	{
 	public:
-		KochCurveContextB(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionB(angle), length, angle))
+		KochIslandContextA(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(), length, angle))
 		{
 			turtle.setAction('F', drawLine);
 		}
 	};
 
-	class KochCurveContextC : public LSystemContext
+	class KochIslandContextB : public LSystemContext
 	{
 	public:
-		KochCurveContextC(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionC(angle), length, angle))
+		KochIslandContextB(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionB(), length, angle))
 		{
 			turtle.setAction('F', drawLine);
 		}
 	};
 
-	class KochCurveContextD : public LSystemContext
+	class KochIslandContextC : public LSystemContext
 	{
 	public:
-		KochCurveContextD(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionD(angle), length, angle))
+		KochIslandContextC(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionC(), length, angle))
 		{
 			turtle.setAction('F', drawLine);
 		}
 	};
 
-	class KochCurveContextE : public LSystemContext
+	class KochIslandContextD : public LSystemContext
 	{
 	public:
-		KochCurveContextE(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionE(angle), length, angle))
+		KochIslandContextD(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionD(), length, angle))
 		{
 			turtle.setAction('F', drawLine);
 		}
 	};
 
-	class KochCurveContextF : public LSystemContext
+	class KochIslandContextE : public LSystemContext
 	{
 	public:
-		KochCurveContextF(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionF(angle), length, angle))
+		KochIslandContextE(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionE(), length, angle))
 		{
 			turtle.setAction('F', drawLine);
 		}
 	};
 
-	class KochCurveContextG : public LSystemContext
+	class KochIslandContextF : public LSystemContext
 	{
 	public:
-		KochCurveContextG(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochCurveProductionG(angle), length, angle))
+		KochIslandContextF(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionF(), length, angle))
+		{
+			turtle.setAction('F', drawLine);
+		}
+	};
+
+	class KochIslandContextG : public LSystemContext
+	{
+	public:
+		KochIslandContextG(float length, float angle)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionG(), length, angle))
 		{
 			turtle.setAction('F', drawLine);
 		}

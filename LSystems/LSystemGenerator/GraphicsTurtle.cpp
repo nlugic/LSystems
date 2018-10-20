@@ -2,9 +2,9 @@
 #include "GraphicsTurtle.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
-//#define GLM_ENABLE_EXPERIMENTAL
-//#include "..\..\include\glm\gtc\quaternion.hpp"
-//#include "..\..\include\glm\gtx\quaternion.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "..\..\include\glm\gtc\quaternion.hpp"
+#include "..\..\include\glm\gtx\quaternion.hpp"
 
 namespace lsys
 {
@@ -90,19 +90,12 @@ namespace lsys
 			stateStack.pop();
 		currentState = stateStack.top();
 		updateTransform();
-		GraphicsTurtle::elementPointer = 0U;
-		GraphicsTurtle::transformPointer = 0U;
 	}
 
 	void GraphicsTurtle::updateTransform()
 	{
-		//glm::quat rot(glm::vec3(glm::radians(-currentState.pitch), glm::radians(currentState.roll), glm::radians(currentState.yaw)));
-		//currentTransform = glm::translate(glm::mat4(1.0f), currentState.position) * glm::toMat4(rot);
-		glm::mat4 trans(glm::translate(glm::mat4(1.0f), currentState.position));
-
-		currentTransform = glm::rotate(trans, glm::radians(currentState.roll), glm::vec3(0.0f, 1.0f, 0.0f));
-		currentTransform = glm::rotate(currentTransform, glm::radians(currentState.yaw), glm::vec3(0.0f, 0.0f, 1.0f));
-		currentTransform = glm::rotate(currentTransform, glm::radians(currentState.pitch), glm::vec3(-1.0f, 0.0f, 0.0f));
+		glm::quat rot(glm::vec3(glm::radians(-currentState.pitch), glm::radians(currentState.roll), glm::radians(currentState.yaw)));
+		currentTransform = glm::translate(glm::mat4(1.0f), currentState.position) * glm::toMat4(rot);
 	}
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
@@ -121,7 +114,7 @@ namespace lsys
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
-		currentState.pitch -= angle;
+		currentState.pitch += angle;
 		updateTransform();
 	}
 

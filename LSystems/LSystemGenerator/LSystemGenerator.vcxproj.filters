@@ -30,6 +30,12 @@
     <Filter Include="Systems\HilbertCurve3D">
       <UniqueIdentifier>{e2b39f9f-8017-4f2d-8e2b-5488ecb3f572}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems\DragonCurve">
+      <UniqueIdentifier>{5a52f797-c9fb-4421-b183-c5c156875751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Generic Symbols">
+      <UniqueIdentifier>{532fa1ae-c51a-4d7f-b4fc-7aef060aace2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LSystem.h">
@@ -133,6 +139,18 @@
     </ClInclude>
     <ClInclude Include="HilbertCurve3DSymbols.h">
       <Filter>Systems\HilbertCurve3D</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonCurveLSystem.h">
+      <Filter>Systems\DragonCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonCurveContext.h">
+      <Filter>Systems\DragonCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonCurveProductions.h">
+      <Filter>Systems\DragonCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericLineSymbol.h">
+      <Filter>Systems\Generic Symbols</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

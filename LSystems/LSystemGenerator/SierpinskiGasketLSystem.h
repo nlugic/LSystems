@@ -12,18 +12,12 @@ namespace lsys
 	public:
 		SierpinskiGasketLSystem(float length, float angle)
 		{
-			setParam('d', length);
+			setParam('a', angle);
 
-			addSymbolToAxiom(new LSystemSymbol('R'));
-			addProduction(new SierpinskiGasketProductionL(angle));
-			addProduction(new SierpinskiGasketProductionR(angle));
-		}
+			addSymbolToAxiom(new GenericLineSymbol('R', length));
 
-		virtual const std::vector<LSystemSymbol *>& derive() override
-		{
-			const std::vector<LSystemSymbol *>& ret = LSystem::derive();
-			setParam('d', getParam('d') / 1.5f);
-			return ret;
+			addProduction(new SierpinskiGasketProductionL());
+			addProduction(new SierpinskiGasketProductionR());
 		}
 	};
 

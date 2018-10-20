@@ -20,19 +20,19 @@ namespace lsys
 	}
 
 	LSystemContext::LSystemContext(const TurtleState& state)
-		:lSystem(new LSystem), turtle(lSystem, state)
+		:currentLevel(0U), lSystem(new LSystem), turtle(lSystem, state)
 	{
 		initTurtleActions();
 	}
 
 	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
-		:lSystem(lSys), turtle(lSystem, state)
+		:currentLevel(0U), lSystem(lSys), turtle(lSystem, state)
 	{
 		initTurtleActions();
 	}
 
 	LSystemContext::LSystemContext(const LSystemContext& lCxt)
-		:lSystem(new LSystem(*lCxt.lSystem)), turtle(lCxt.turtle)
+		:currentLevel(lCxt.currentLevel), lSystem(new LSystem(*lCxt.lSystem)), turtle(lCxt.turtle)
 	{
 		turtle.setOwner(lSystem);
 	}
@@ -41,6 +41,7 @@ namespace lsys
 	{
 		if (this != &lCxt)
 		{
+			currentLevel = lCxt.currentLevel;
 			delete lSystem;
 			lSystem = new LSystem(*lCxt.lSystem);
 			turtle = lCxt.turtle;
@@ -52,6 +53,16 @@ namespace lsys
 	LSystemContext::~LSystemContext()
 	{
 		delete lSystem;
+	}
+
+	size_t LSystemContext::getCurrentLevel() const
+	{
+		return currentLevel;
+	}
+
+	size_t LSystemContext::getMaxLevel() const
+	{
+		return lSystem->getCurrentLevel();
 	}
 
 	const std::vector<float> LSystemContext::getVertexBuffer() const
@@ -71,12 +82,17 @@ namespace lsys
 
 	void LSystemContext::generateModel(size_t level)
 	{
+		currentLevel = level;
+
 		size_t curr = lSystem->getCurrentLevel();
 		if (level > curr)
 			lSystem->derive(level - curr);
 
 		turtle.resetState();
 		turtle.interpretSymbols((*lSystem)[level]);
+
+		GraphicsTurtle::elementPointer = 0U;
+		GraphicsTurtle::transformPointer = 0U;
 	}
 
 	std::string LSystemContext::toString() const

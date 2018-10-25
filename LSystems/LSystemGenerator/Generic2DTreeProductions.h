@@ -2,11 +2,11 @@
 #define GENERIC2DTREEPRODUCTIONS_H
 
 #include "LSystemProduction.h"
-#include "GenericLineSymbol.h"
 #include "SaveStateSymbol.h"
 #include "RestoreStateSymbol.h"
 #include "TurnLeftSymbol.h"
 #include "TurnRightSymbol.h"
+#include "GenericLineSymbol.h"
 
 namespace lsys
 {
@@ -221,11 +221,12 @@ namespace lsys
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			float angle = globalParams.at('a');
+			float scale = pred->getParam('s');
 
 			LSystemSymbol *apex = new LSystemSymbol('A');
-			apex->setParam('s', pred->getParam('s') / globalParams.at('R'));
+			apex->setParam('s', scale / globalParams.at('R'));
 
-			word.push_back(new GenericLineSymbol('F', pred->getParam('s')));
+			word.push_back(new GenericLineSymbol('F', scale));
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new TurnLeftSymbol(angle));
 			word.push_back(apex);

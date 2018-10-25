@@ -2,9 +2,9 @@
 #define SIERPINSKIGASKETPRODUCTIONS_H
 
 #include "LSystemProduction.h"
-#include "GenericLineSymbol.h"
 #include "TurnLeftSymbol.h"
 #include "TurnRightSymbol.h"
+#include "GenericLineSymbol.h"
 
 namespace lsys
 {

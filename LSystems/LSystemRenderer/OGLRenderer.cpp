@@ -178,6 +178,7 @@ namespace lrend
 		std::string time(std::to_string(glfwGetTime()));
 		time += ".jpg";
 
+		stbi_flip_vertically_on_write(true);
 		stbi_write_jpg(time.c_str(), OGLR::width, OGLR::height, 3, data, 0);
 
 		delete[] data;

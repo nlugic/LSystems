@@ -25,8 +25,8 @@ namespace lsys
 			float angle = globalParams.at('a');
 			float slices = pred->getParam('n');
 			float rStart = pred->getParam('r');
-			float rEnd = 0.85f * rStart;
-			float height = 0.95f * pred->getParam('h');
+			float rEnd = 0.8f * rStart;
+			float height = 1.1f * pred->getParam('h');
 			float wrap = pred->getParam('w');
 
 			word.push_back(new SaveStateSymbol());
@@ -36,7 +36,7 @@ namespace lsys
 
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
-			word.push_back(new Generic3DTreeLeafSymbol(0.15f, 0.065f, 0.075f, 0.2f, 0.6f));
+			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 
 			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
@@ -52,7 +52,7 @@ namespace lsys
 
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
-			word.push_back(new Generic3DTreeLeafSymbol(0.15f, 0.065f, 0.075f, 0.2f, 0.6f));
+			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 
 			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
@@ -68,7 +68,7 @@ namespace lsys
 			
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
-			word.push_back(new Generic3DTreeLeafSymbol(0.15f, 0.065f, 0.075f, 0.2f, 0.6f));
+			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 
 			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
@@ -109,7 +109,7 @@ namespace lsys
 
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * globalParams.at('a')));
-			word.push_back(new Generic3DTreeLeafSymbol(0.15f, 0.065f, 0.075f, 0.2f, 0.6f));
+			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 		}
 	};

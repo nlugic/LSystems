@@ -2,6 +2,8 @@
 #include "GraphicsTurtle.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
+#include <fstream>
+
 namespace lsys
 {
 
@@ -11,10 +13,14 @@ namespace lsys
 	unsigned GraphicsTurtle::elementPointer = 0U;
 	float GraphicsTurtle::transformPointer = 0.0f;
 
+	std::ofstream str;
+
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
 		:owner(owner), currentState(state), currentTransform(glm::mat4(1.0f))
 	{
 		stateStack.push(currentState);
+
+		str.open("test.txt", std::ios::app);
 	}
 
 	void GraphicsTurtle::setOwner(LSystem *lSys)
@@ -90,22 +96,20 @@ namespace lsys
 
 	void GraphicsTurtle::updateTransform()
 	{
-		glm::mat4 trans(glm::translate(glm::mat4(1.0f), currentState.position));
+		float eps = 1E-5f;
+		currentTransform = glm::translate(glm::mat4(1.0f), currentState.position);
 
 		glm::vec3 axis(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading));
-		float angle = glm::asin(glm::length(axis));
+		float angle = glm::acos(glm::clamp(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading), -1.0f, 1.0f));
 
-		if (angle)
-			currentTransform = glm::rotate(trans, angle, axis);
+		if (std::fabs(angle) > eps)
+			currentTransform = glm::rotate(currentTransform, angle, (glm::length(axis) > eps) ? axis : currentState.up);
 		else
 		{
-			axis = glm::cross(glm::vec3(-1.0f, 0.0f, 0.0f), currentState.left);
-			angle = glm::asin(glm::length(axis));
+			angle = glm::acos(glm::clamp(glm::dot(glm::vec3(0.0f, 0.0f, 1.0f), currentState.up), -1.0f, 1.0f));
 
-			if (angle)
-				currentTransform = glm::rotate(trans, angle, axis);
-			else
-				currentTransform = trans;
+			if (std::fabs(angle) > eps)
+				currentTransform = glm::rotate(currentTransform, angle, currentState.heading);
 		}
 	}
 
@@ -144,14 +148,13 @@ namespace lsys
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
 		glm::vec3 axis = glm::cross(currentState.heading, target);
-		float sine = glm::length(axis);
+		float angle = glm::acos(glm::clamp(glm::dot(currentState.heading, target), -1.0f, 1.0f));
 
-		if (sine)
+		if (glm::length(axis) > 0.0f)
 		{
-			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), glm::asin(sine), axis));
+			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, axis));
 			currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
 			currentState.left = rot * glm::vec4(currentState.left, 1.0f);
-			//currentState.up = rot * glm::vec4(currentState.up, 1.0f);
 			currentState.up = glm::cross(currentState.heading, currentState.left);
 			updateTransform();
 		}

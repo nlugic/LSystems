@@ -43,6 +43,8 @@
   <ItemGroup>
     <Image Include="test.png" />
     <Image Include="tree.jpg" />
+    <Image Include="tree2.jpg" />
+    <Image Include="tree3.jpg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3CB67474-CDA8-424C-A39A-011EC3552E58}</ProjectGuid>

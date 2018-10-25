@@ -2,8 +2,6 @@
 #include "GraphicsTurtle.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
-#include <fstream>
-
 namespace lsys
 {
 
@@ -13,14 +11,10 @@ namespace lsys
 	unsigned GraphicsTurtle::elementPointer = 0U;
 	float GraphicsTurtle::transformPointer = 0.0f;
 
-	std::ofstream str;
-
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
 		:owner(owner), currentState(state), currentTransform(glm::mat4(1.0f))
 	{
 		stateStack.push(currentState);
-
-		str.open("test.txt", std::ios::app);
 	}
 
 	void GraphicsTurtle::setOwner(LSystem *lSys)

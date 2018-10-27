@@ -143,30 +143,45 @@ namespace lsys
 		if (products.empty())
 			produceAxiom();
 
-		const std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1];
+		const std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1ULL];
 		std::vector<LSystemSymbol *> newLevel;
+
+		float eps = 1E-5f;
+		unsigned progressMarker = 0U;
+		float progress = 0.0f, progressIncrement = 100.0f / currentLevel.size();
 
 		for (LSystemSymbol *sym : currentLevel)
 		{
 			LSystemProduction *matchedProd = matchProduction(sym);
 
 			if (!matchedProd)
-			{
 				newLevel.push_back(new LSystemSymbol(*sym));
-				continue;
-			}
 			else
 				matchedProd->generateSuccessor(sym, params, newLevel);
+
+			progress += progressIncrement;
+			progressMarker = static_cast<unsigned>(std::floorf(progress / 4.0f));
+			if (std::floorf(progress) - std::floorf(progress - progressIncrement) > eps)
+				std::cout << "\r[" << std::string(progressMarker, '#') << std::string(25U - progressMarker, ' ')
+					<< "] [" << std::floorf(progress) << "%]";
 		}
+		std::cout << "\r[" << std::string(25U, '#') << "] [100%]" << std::endl;
 
 		products.push_back(newLevel);
-		return products[products.size() - 1];
+		return products[products.size() - 1ULL];
 	}
 
 	const std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
 	{
+		size_t curr = getCurrentLevel() + 1ULL;
+
 		while (--level)
+		{
+			std::cout << "Deriving level " << curr++ << "..." << std::endl;
 			derive();
+		}
+
+		std::cout << "Deriving level " << curr << "..." << std::endl;
 		return derive();
 	}
 

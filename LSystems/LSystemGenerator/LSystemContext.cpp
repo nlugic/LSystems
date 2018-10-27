@@ -86,7 +86,11 @@ namespace lsys
 
 		size_t curr = lSystem->getCurrentLevel();
 		if (level > curr)
+		{
+			std::cout << "Deriving the L-system to level " << level << "..." << std::endl;
 			lSystem->derive(level - curr);
+			std::cout << "L-system derivation finished!" << std::endl;
+		}
 
 		turtle.resetState();
 		turtle.interpretSymbols((*lSystem)[level]);

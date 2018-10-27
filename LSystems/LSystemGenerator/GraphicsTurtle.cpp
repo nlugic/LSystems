@@ -12,7 +12,7 @@ namespace lsys
 	float GraphicsTurtle::transformPointer = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
-		:owner(owner), currentState(state), currentTransform(glm::mat4(1.0f))
+		:owner(owner), initialState(state), currentState(state), currentTransform(glm::mat4(1.0f))
 	{
 		stateStack.push(currentState);
 	}
@@ -93,14 +93,14 @@ namespace lsys
 		float eps = 1E-5f;
 		currentTransform = glm::translate(glm::mat4(1.0f), currentState.position);
 
-		glm::vec3 axis(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading));
-		float angle = glm::acos(glm::clamp(glm::dot(glm::vec3(0.0f, 1.0f, 0.0f), currentState.heading), -1.0f, 1.0f));
+		glm::vec3 axis(glm::cross(initialState.heading, currentState.heading));
+		float angle = glm::acos(glm::clamp(glm::dot(initialState.heading, currentState.heading), -1.0f, 1.0f));
 
 		if (std::fabs(angle) > eps)
 			currentTransform = glm::rotate(currentTransform, angle, (glm::length(axis) > eps) ? axis : currentState.up);
 		else
 		{
-			angle = glm::acos(glm::clamp(glm::dot(glm::vec3(0.0f, 0.0f, 1.0f), currentState.up), -1.0f, 1.0f));
+			angle = glm::acos(glm::clamp(glm::dot(initialState.up, currentState.up), -1.0f, 1.0f));
 
 			if (std::fabs(angle) > eps)
 				currentTransform = glm::rotate(currentTransform, angle, currentState.heading);
@@ -109,9 +109,8 @@ namespace lsys
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
 	{
-		glm::mat4 currentRotation(currentTransform);
-		std::memset(&currentRotation[3], 0, 3 * sizeof(float));
-		currentState.position += glm::vec3(currentRotation * glm::vec4(offset, 1.0f));
+		std::memset(&currentTransform[3], 0, 3 * sizeof(float));
+		currentState.position += glm::vec3(currentTransform * glm::vec4(offset, 1.0f));
 		updateTransform();
 	}
 
@@ -125,28 +124,30 @@ namespace lsys
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
-		glm::mat4 rot(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left));
-		currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
-		currentState.up = rot * glm::vec4(currentState.up, 1.0f);
+		currentState.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left)
+			* glm::vec4(currentState.heading, 1.0f);
+		currentState.up = glm::cross(currentState.heading, currentState.left);
 		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateAroundHeading(float angle)
 	{
-		glm::mat4 rot(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading));
-		currentState.left = rot * glm::vec4(currentState.left, 1.0f);
-		currentState.up = rot * glm::vec4(currentState.up, 1.0f);
+		currentState.left = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading)
+			* glm::vec4(currentState.left, 1.0f);
+		currentState.up = glm::cross(currentState.heading, currentState.left);
 		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
+		float eps = 1E-5f;
+
 		glm::vec3 axis = glm::cross(currentState.heading, target);
 		float angle = glm::acos(glm::clamp(glm::dot(currentState.heading, target), -1.0f, 1.0f));
 
-		if (glm::length(axis) > 0.0f)
+		if (std::fabs(angle) > eps)
 		{
-			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, axis));
+			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, (glm::length(axis) > eps) ? axis : currentState.up));
 			currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
 			currentState.left = rot * glm::vec4(currentState.left, 1.0f);
 			currentState.up = glm::cross(currentState.heading, currentState.left);
@@ -156,7 +157,7 @@ namespace lsys
 
 	void GraphicsTurtle::addVertices(const std::vector<Vertex>& vertices)
 	{
-		for (Vertex vert : vertices)
+		for (const Vertex& vert : vertices)
 		{
 			ptrdiff_t pos = std::distance(vertexBuffer.begin(), std::find(vertexBuffer.begin(), vertexBuffer.end(), vert));
 			if (pos >= static_cast<ptrdiff_t>(vertexBuffer.size()))
@@ -172,18 +173,35 @@ namespace lsys
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
+		float eps = 1E-5f;
+		size_t symbolCount = symbols.size();
+		unsigned progressMarker = 0U;
+		float progress = 0.0f, progressIncrement = 100.0f / symbolCount;
+
+		std::cout << "Interpreting " << symbolCount << " symbols..." << std::endl;
+
 		for (LSystemSymbol *sym : symbols)
+		{
 			if (actions.count(sym->getKey()))
 				getAction(sym->getKey())(this, sym, owner);
+
+			progress += progressIncrement;
+			progressMarker = static_cast<unsigned>(std::floorf(progress / 4.0f));
+			if (std::floorf(progress) - std::floorf(progress - progressIncrement) > eps)
+				std::cout << "\r[" << std::string(progressMarker, '#') << std::string(25U - progressMarker, ' ')
+				<< "] [" << std::floorf(progress) << "%]";
+		}
+		std::cout << "\r[" << std::string(25U, '#') << "] [100%]" << std::endl;
 	}
 
 	std::string GraphicsTurtle::toString() const
 	{
 		std::string ret("Turtle's symbols = { ");
-		for (std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>>::const_iterator& iter = actions.begin(); iter != actions.end(); ++iter)
+		for (std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>>::const_iterator& iter = actions.begin();
+			iter != actions.end(); ++iter)
 			ret += iter->first + (std::distance(iter, actions.end()) > 1) ? ", " : " ";
 		ret += '}';
-
+		
 		return ret;
 	}
 	

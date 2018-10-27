@@ -39,7 +39,7 @@ namespace lsys
 		LSystem *owner;
 		std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>> actions;
 
-		TurtleState currentState;
+		TurtleState initialState, currentState;
 		glm::mat4 currentTransform;
 		std::stack<TurtleState> stateStack;
 

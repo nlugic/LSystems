@@ -1,5 +1,6 @@
 
 #include "GraphicsTurtle.h"
+#include "ConsoleProgressBar.h"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
 
 namespace lsys
@@ -20,6 +21,11 @@ namespace lsys
 	void GraphicsTurtle::setOwner(LSystem *lSys)
 	{
 		owner = lSys;
+	}
+
+	const TurtleState& GraphicsTurtle::getInitialState() const
+	{
+		return initialState;
 	}
 
 	TurtleState& GraphicsTurtle::getCurrentState()
@@ -90,19 +96,18 @@ namespace lsys
 
 	void GraphicsTurtle::updateTransform()
 	{
-		float eps = 1E-5f;
 		currentTransform = glm::translate(glm::mat4(1.0f), currentState.position);
 
 		glm::vec3 axis(glm::cross(initialState.heading, currentState.heading));
 		float angle = glm::acos(glm::clamp(glm::dot(initialState.heading, currentState.heading), -1.0f, 1.0f));
 
-		if (std::fabs(angle) > eps)
-			currentTransform = glm::rotate(currentTransform, angle, (glm::length(axis) > eps) ? axis : currentState.up);
+		if (std::fabs(angle) > epsilon)
+			currentTransform = glm::rotate(currentTransform, angle, (glm::length(axis) > epsilon) ? axis : currentState.up);
 		else
 		{
 			angle = glm::acos(glm::clamp(glm::dot(initialState.up, currentState.up), -1.0f, 1.0f));
 
-			if (std::fabs(angle) > eps)
+			if (std::fabs(angle) > epsilon)
 				currentTransform = glm::rotate(currentTransform, angle, currentState.heading);
 		}
 	}
@@ -140,14 +145,12 @@ namespace lsys
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
-		float eps = 1E-5f;
-
 		glm::vec3 axis = glm::cross(currentState.heading, target);
 		float angle = glm::acos(glm::clamp(glm::dot(currentState.heading, target), -1.0f, 1.0f));
 
-		if (std::fabs(angle) > eps)
+		if (std::fabs(angle) > epsilon)
 		{
-			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, (glm::length(axis) > eps) ? axis : currentState.up));
+			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, (glm::length(axis) > epsilon) ? axis : currentState.up));
 			currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
 			currentState.left = rot * glm::vec4(currentState.left, 1.0f);
 			currentState.up = glm::cross(currentState.heading, currentState.left);
@@ -173,25 +176,19 @@ namespace lsys
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
-		float eps = 1E-5f;
 		size_t symbolCount = symbols.size();
-		unsigned progressMarker = 0U;
-		float progress = 0.0f, progressIncrement = 100.0f / symbolCount;
-
+		
 		std::cout << "Interpreting " << symbolCount << " symbols..." << std::endl;
+		lsysh::ConsoleProgressBar symbolInterpretation(symbolCount);
 
 		for (LSystemSymbol *sym : symbols)
 		{
 			if (actions.count(sym->getKey()))
 				getAction(sym->getKey())(this, sym, owner);
 
-			progress += progressIncrement;
-			progressMarker = static_cast<unsigned>(std::floorf(progress / 4.0f));
-			if (std::floorf(progress) - std::floorf(progress - progressIncrement) > eps)
-				std::cout << "\r[" << std::string(progressMarker, '#') << std::string(25U - progressMarker, ' ')
-				<< "] [" << std::floorf(progress) << "%]";
+			symbolInterpretation.step();
 		}
-		std::cout << "\r[" << std::string(25U, '#') << "] [100%]" << std::endl;
+		symbolInterpretation.finish();
 	}
 
 	std::string GraphicsTurtle::toString() const

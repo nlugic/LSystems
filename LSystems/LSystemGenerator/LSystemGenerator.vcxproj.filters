@@ -36,6 +36,9 @@
     <Filter Include="Systems\Generic Symbols">
       <UniqueIdentifier>{532fa1ae-c51a-4d7f-b4fc-7aef060aace2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{66cec9b2-a11d-4a3a-b7a9-be47842c0094}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LSystem.h">
@@ -98,9 +101,6 @@
     <ClInclude Include="KochCurveProductions.h">
       <Filter>Systems\KochCurve</Filter>
     </ClInclude>
-    <ClInclude Include="StochasticHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Generic3DTreeContext.h">
       <Filter>Systems\Generic3DTree</Filter>
     </ClInclude>
@@ -152,6 +152,12 @@
     <ClInclude Include="GenericLineSymbol.h">
       <Filter>Systems\Generic Symbols</Filter>
     </ClInclude>
+    <ClInclude Include="StochasticHelpers.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleProgressBar.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LSystem.cpp">
@@ -171,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="TurtleActions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleProgressBar.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

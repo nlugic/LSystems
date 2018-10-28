@@ -10,14 +10,14 @@ namespace lsys
 	class HilbertCurve3DLSystem : public LSystem
 	{
 	public:
-		HilbertCurve3DLSystem(int slices, float radius, float length, float angle)
+		HilbertCurve3DLSystem(float width, float length, float angle, const glm::vec3& color)
 		{
 			addSymbolToAxiom(new LSystemSymbol('A'));
 
-			addProduction(new HilbertCurve3DProductionA(static_cast<float>(slices), radius, length, angle));
-			addProduction(new HilbertCurve3DProductionB(static_cast<float>(slices), radius, length, angle));
-			addProduction(new HilbertCurve3DProductionC(static_cast<float>(slices), radius, length, angle));
-			addProduction(new HilbertCurve3DProductionD(static_cast<float>(slices), radius, length, angle));
+			addProduction(new HilbertCurve3DProductionA(width, length, angle, color));
+			addProduction(new HilbertCurve3DProductionB(width, length, angle, color));
+			addProduction(new HilbertCurve3DProductionC(width, length, angle, color));
+			addProduction(new HilbertCurve3DProductionD(width, length, angle, color));
 		}
 	};
 

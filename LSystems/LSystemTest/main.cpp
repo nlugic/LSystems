@@ -25,8 +25,8 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(8, 0.5f);
-	lrend::LSystemRenderer::drawHilbertCurve3D(4, 4, 0.01f, 0.1f);
-	lrend::LSystemRenderer::drawGeneric3DTree(4, 8, 0.05f, 0.2f);
+	lrend::LSystemRenderer::drawHilbertCurve3D(4, 0.025f, 0.25f, 0.3f, 0.6f, 0.4f);
+	//lrend::LSystemRenderer::drawGeneric3DTree(4, 8, 0.05f, 0.2f);
 
 	return 0;
 }

@@ -57,6 +57,7 @@ namespace lsys
 		~GraphicsTurtle() = default;
 
 		void setOwner(LSystem *lSys);
+		const TurtleState& getInitialState() const;
 		TurtleState& getCurrentState();
 		glm::mat4& getCurrentTransform();
 		const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& getAction(char key) const;

@@ -1,5 +1,6 @@
 
 #include "LSystem.h"
+#include "ConsoleProgressBar.h"
 
 namespace lsys
 {
@@ -146,9 +147,7 @@ namespace lsys
 		const std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1ULL];
 		std::vector<LSystemSymbol *> newLevel;
 
-		float eps = 1E-5f;
-		unsigned progressMarker = 0U;
-		float progress = 0.0f, progressIncrement = 100.0f / currentLevel.size();
+		lsysh::ConsoleProgressBar symbolDerivation(currentLevel.size());
 
 		for (LSystemSymbol *sym : currentLevel)
 		{
@@ -159,13 +158,9 @@ namespace lsys
 			else
 				matchedProd->generateSuccessor(sym, params, newLevel);
 
-			progress += progressIncrement;
-			progressMarker = static_cast<unsigned>(std::floorf(progress / 4.0f));
-			if (std::floorf(progress) - std::floorf(progress - progressIncrement) > eps)
-				std::cout << "\r[" << std::string(progressMarker, '#') << std::string(25U - progressMarker, ' ')
-					<< "] [" << std::floorf(progress) << "%]";
+			symbolDerivation.step();
 		}
-		std::cout << "\r[" << std::string(25U, '#') << "] [100%]" << std::endl;
+		symbolDerivation.finish();
 
 		products.push_back(newLevel);
 		return products[products.size() - 1ULL];

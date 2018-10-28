@@ -204,13 +204,13 @@ namespace lrend
 			std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawHilbertCurve3D(size_t level, int slices, float radius, float length, float angle)
+	void LSystemRenderer::drawHilbertCurve3D(size_t level, float width, float length, float red, float green, float blue, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::HilbertCurve3DContext(slices, radius, length, angle));
+		LSystemRenderer rend(level, new lsys::HilbertCurve3DContext(width, length, angle, red, green, blue));
 		rend.context->generateModel(level);
 
 		OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-			std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, rend.context->getTransformBuffer());
+			std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric3DTree(size_t level, int slices, float radius, float height, float angle)

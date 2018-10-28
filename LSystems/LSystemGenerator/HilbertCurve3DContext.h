@@ -11,10 +11,10 @@ namespace lsys
 	class HilbertCurve3DContext : public LSystemContext
 	{
 	public:
-		HilbertCurve3DContext(int slices, float radius, float length, float angle)
-			:LSystemContext(new HilbertCurve3DLSystem(slices, radius, length, angle))
+		HilbertCurve3DContext(float width, float length, float angle, float red, float green, float blue)
+			:LSystemContext(new HilbertCurve3DLSystem(width, length, angle, glm::vec3(red, green, blue)))
 		{
-			turtle.setAction('F', drawGenericBranchSegment);
+			turtle.setAction('F', drawBox);
 		}
 	};
 

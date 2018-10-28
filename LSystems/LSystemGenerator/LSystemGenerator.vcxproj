@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleProgressBar.h" />
     <ClInclude Include="DragonCurveContext.h" />
     <ClInclude Include="DragonCurveLSystem.h" />
     <ClInclude Include="DragonCurveProductions.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="TurtleActions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleProgressBar.cpp" />
     <ClCompile Include="GraphicsTurtle.cpp" />
     <ClCompile Include="LSystem.cpp" />
     <ClCompile Include="LSystemContext.cpp" />

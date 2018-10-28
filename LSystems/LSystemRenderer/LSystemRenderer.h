@@ -46,9 +46,12 @@ namespace lrend
 		static LSYSTEMRENDERER_API void drawGeneric2DTreeE(size_t level, float length, float angle = 25.7f);
 		static LSYSTEMRENDERER_API void drawGeneric2DTreeF(size_t level, float length, float angle = 22.5f);
 		static LSYSTEMRENDERER_API void drawGeneric2DTreeS(size_t level, float length, float angle = 22.5f);
-		static LSYSTEMRENDERER_API void drawGeneric2DTreeSD(size_t level, float length, float reduction = 1.456f, float angle = 85.0f);
-		static LSYSTEMRENDERER_API void drawHilbertCurve3D(size_t level, int slices, float radius, float length, float angle = 90.0f);
-		static LSYSTEMRENDERER_API void drawGeneric3DTree(size_t level, int slices, float radius, float height, float angle = 22.5f);
+		static LSYSTEMRENDERER_API void drawGeneric2DTreeSD(size_t level, float length,
+			float reduction = 1.456f, float angle = 85.0f);
+		static LSYSTEMRENDERER_API void drawHilbertCurve3D(size_t level, float width, float length,
+			float red = 0.0f, float green = 0.0f, float blue = 0.0f, float angle = 90.0f);
+		static LSYSTEMRENDERER_API void drawGeneric3DTree(size_t level, int slices, float radius,
+			float height, float angle = 22.5f);
 	};
 
 }

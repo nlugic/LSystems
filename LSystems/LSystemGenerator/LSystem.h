@@ -6,6 +6,8 @@
 namespace lsys
 {
 
+	const float epsilon = 1e-5f;
+
 	class LSystem
 	{
 	private:

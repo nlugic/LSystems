@@ -3,7 +3,7 @@
 
 #include <random>
 
-namespace lsys
+namespace lsysh
 {
 
 	float randomVariation(float totalAmount = 1.0f)

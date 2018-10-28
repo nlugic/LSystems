@@ -9,16 +9,14 @@ namespace lsys
 	class HilbertCurve3DPipeSymbol : public LSystemSymbol
 	{
 	public:
-		HilbertCurve3DPipeSymbol(float slices, float radius, float length, float angle)
+		HilbertCurve3DPipeSymbol(float width, float length, const glm::vec3& color)
 			:LSystemSymbol('F')
 		{
-			setParam('n', static_cast<float>(slices));
-			setParam('R', radius);
-			setParam('r', radius);
+			setParam('a', width);
 			setParam('h', length);
-			setParam('a', angle);
-			setParam('t', 0.0f);
-			setParam('w', 1.0f);
+			setParam('r', color.r);
+			setParam('g', color.g);
+			setParam('b', color.b);
 		}
 	};
 

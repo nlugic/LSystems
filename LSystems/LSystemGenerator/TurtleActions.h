@@ -24,7 +24,7 @@ namespace lsys
 	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
 
 	void drawLine(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
-
+	void drawBox(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
 	void drawGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
 	void drawGenericBranchApex(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);
 	void drawGenericLeaf(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys);

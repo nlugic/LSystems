@@ -1,6 +1,8 @@
 #ifndef CONSOLEPROGRESSBAR_H
 #define CONSOLEPROGRESSBAR_H
 
+#include <chrono>
+
 namespace lsysh
 {
 
@@ -12,6 +14,8 @@ namespace lsysh
 		float progress, progressIncrement;
 		unsigned markerCount;
 		float progressMarker;
+
+		std::chrono::steady_clock::time_point start, end;
 
 	public:
 		ConsoleProgressBar(size_t units, unsigned markers = 25U);

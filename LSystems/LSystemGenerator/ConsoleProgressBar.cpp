@@ -7,8 +7,8 @@ namespace lsysh
 {
 
 	ConsoleProgressBar::ConsoleProgressBar(size_t units, unsigned markers)
-		:progress(0.0f), progressIncrement(100.0f / units),
-			markerCount(markers), progressMarker(0.0f) { }
+		:progress(0.0f), progressIncrement(100.0f / units), markerCount(markers), progressMarker(0.0f),
+			start(std::chrono::steady_clock::now()) { }
 
 	float ConsoleProgressBar::getProgress() const
 	{
@@ -29,6 +29,9 @@ namespace lsysh
 		progress = 100.0f;
 		progressMarker = static_cast<float>(markerCount);
 		std::cout << "\r[" << std::string(markerCount, '#') << "] [100%]" << std::endl;
+		end = std::chrono::steady_clock::now();
+		std::cout << "Operation took " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0f
+			<< " seconds." << std::endl;
 	}
 
 	void ConsoleProgressBar::reset()

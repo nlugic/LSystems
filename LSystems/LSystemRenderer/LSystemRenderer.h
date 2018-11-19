@@ -17,7 +17,6 @@ namespace lrend
 	{
 	private:
 		size_t maxLevel;
-
 		lsys::LSystemContext *context;
 
 		LSystemRenderer(size_t maxL, lsys::LSystemContext *lCxt);
@@ -28,6 +27,8 @@ namespace lrend
 	public:
 		void levelUp();
 		void levelDown();
+
+		static LSYSTEMRENDERER_API void setTestMode(bool test);
 
 		static LSYSTEMRENDERER_API void drawKochSnowflake(size_t level, float length, float angle = 60.0f);
 		static LSYSTEMRENDERER_API void drawKochIslandA(size_t level, float length, float angle = 90.0f);

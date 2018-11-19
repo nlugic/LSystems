@@ -1,6 +1,7 @@
 #ifndef CONSOLEPROGRESSBAR_H
 #define CONSOLEPROGRESSBAR_H
 
+#include <fstream>
 #include <chrono>
 
 namespace lsysh
@@ -16,16 +17,17 @@ namespace lsysh
 		float progressMarker;
 
 		std::chrono::steady_clock::time_point start, end;
+		std::ofstream log;
 
 	public:
-		ConsoleProgressBar(size_t units, unsigned markers = 25U);
+		ConsoleProgressBar(size_t units, unsigned markers = 25U, const char *logPath = "./benchmark.csv");
 		ConsoleProgressBar(const ConsoleProgressBar&) = delete;
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;
 		~ConsoleProgressBar() = default;
 
 		float getProgress() const;
 		void step();
-		void finish();
+		void finish(bool newLine = false);
 		void reset();
 	};
 

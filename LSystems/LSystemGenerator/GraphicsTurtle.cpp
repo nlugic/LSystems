@@ -188,7 +188,7 @@ namespace lsys
 
 			symbolInterpretation.step();
 		}
-		symbolInterpretation.finish();
+		symbolInterpretation.finish(true);
 	}
 
 	std::string GraphicsTurtle::toString() const

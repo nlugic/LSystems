@@ -64,7 +64,7 @@ namespace lrend
 		glAttachShader(programId, fragmentId);
 		glLinkProgram(programId);
 
-		glGetProgramiv(programId, GL_COMPILE_STATUS, &success);
+		glGetProgramiv(programId, GL_LINK_STATUS, &success);
 		if (!success)
 		{
 			glGetProgramInfoLog(programId, msg_buf_size, nullptr, errorMsg);

@@ -6,7 +6,7 @@
 namespace lsysh
 {
 
-	ConsoleProgressBar::ConsoleProgressBar(size_t units, unsigned markers, const char *logPath)
+	ConsoleProgressBar::ConsoleProgressBar(std::size_t units, unsigned markers, const char *logPath)
 		:progress(0.0f), progressIncrement(100.0f / units), markerCount(markers), progressMarker(0.0f),
 			start(std::chrono::steady_clock::now()), log(logPath, std::ios::app) { }
 

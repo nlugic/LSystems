@@ -29,7 +29,7 @@ namespace lsys
 		LSystem& operator=(const LSystem& lSys);
 		virtual ~LSystem();
 
-		size_t getCurrentLevel() const;
+		std::size_t getCurrentLevel() const;
 		float getParam(char param) const;
 		void setParam(char param, float value);
 		const std::vector<LSystemSymbol *>& getAxiom() const;
@@ -38,10 +38,10 @@ namespace lsys
 		const std::vector<LSystemProduction *>& getProductions() const;
 		void addProduction(LSystemProduction *prod);
 		void setProductions(const std::vector<LSystemProduction *>& prods);
-		const std::vector<LSystemSymbol *>& operator[](size_t level);
+		const std::vector<LSystemSymbol *>& operator[](std::size_t level);
 
 		virtual const std::vector<LSystemSymbol *>& derive();
-		const std::vector<LSystemSymbol *>& derive(size_t level);
+		const std::vector<LSystemSymbol *>& derive(std::size_t level);
 		LSystemProduction* matchProduction(LSystemSymbol *pred);
 
 		virtual std::string toString() const;

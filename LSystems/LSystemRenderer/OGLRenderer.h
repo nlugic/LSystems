@@ -53,7 +53,7 @@ namespace lrend
 		static OGLCamera *camera;
 
 		static unsigned vao, vbo, ebo, ssbo;
-		static size_t vertexBufSize, elementBufSize, shaderStorageBufSize;
+		static std::size_t vertexBufSize, elementBufSize, shaderStorageBufSize;
 		static OGLShader *shaderProgram;
 		static OGLArrayTexture *textures;
 

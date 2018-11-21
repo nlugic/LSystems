@@ -4,7 +4,11 @@
 #include "..\..\include\stb_image_write.h"
 #include <iostream>
 
-#pragma comment (lib, "..\\..\\lib\\glfw3mr.lib")
+#ifdef _DEBUG
+#pragma comment (lib, "..\\..\\lib\\glfw3d.lib")
+#else
+#pragma comment (lib, "..\\..\\lib\\glfw3r.lib")
+#endif
 
 namespace lrend
 {
@@ -25,9 +29,9 @@ namespace lrend
 	unsigned OGLR::vbo = 0U;
 	unsigned OGLR::ebo = 0U;
 	unsigned OGLR::ssbo = 0U;
-	size_t OGLR::vertexBufSize = 0ULL;
-	size_t OGLR::elementBufSize = 0ULL;
-	size_t OGLR::shaderStorageBufSize = 0ULL;
+	std::size_t OGLR::vertexBufSize = 0ULL;
+	std::size_t OGLR::elementBufSize = 0ULL;
+	std::size_t OGLR::shaderStorageBufSize = 0ULL;
 	OGLShader *OGLR::shaderProgram = nullptr;
 	OGLArrayTexture *OGLR::textures = nullptr;
 

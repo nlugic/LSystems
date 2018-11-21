@@ -9,14 +9,18 @@
 #include "..\LSystemGenerator\HilbertCurve3DContext.h"
 #include "..\LSystemGenerator\Generic3DTreeContext.h"
 
+#ifdef _DEBUG
 #pragma comment (lib, "..\\x64\\Debug\\LSystemGenerator.lib")
+#else
+#pragma comment (lib, "..\\x64\\Release\\LSystemGenerator.lib")
+#endif
 
 namespace lrend
 {
 
 	static bool testMode = false;
 
-	LSystemRenderer::LSystemRenderer(size_t maxL, lsys::LSystemContext *lCxt)
+	LSystemRenderer::LSystemRenderer(std::size_t maxL, lsys::LSystemContext *lCxt)
 		:maxLevel(maxL), context(lCxt) { }
 
 	LSystemRenderer::~LSystemRenderer()
@@ -49,7 +53,7 @@ namespace lrend
 		lrend::testMode = test;
 	}
 
-	void LSystemRenderer::drawKochSnowflake(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochSnowflake(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochSnowflakeContext(length, angle));
 		rend.context->generateModel(level);
@@ -59,7 +63,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandA(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandA(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextA(length, angle));
 		rend.context->generateModel(level);
@@ -69,7 +73,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandB(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandB(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextB(length, angle));
 		rend.context->generateModel(level);
@@ -79,7 +83,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandC(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandC(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextC(length, angle));
 		rend.context->generateModel(level);
@@ -89,7 +93,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandD(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandD(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextD(length, angle));
 		rend.context->generateModel(level);
@@ -99,7 +103,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandE(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandE(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextE(length, angle));
 		rend.context->generateModel(level);
@@ -109,7 +113,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandF(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandF(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextF(length, angle));
 		rend.context->generateModel(level);
@@ -119,7 +123,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawKochIslandG(size_t level, float length, float angle)
+	void LSystemRenderer::drawKochIslandG(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::KochIslandContextG(length, angle));
 		rend.context->generateModel(level);
@@ -129,7 +133,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawDragonCurve(size_t level, float length, float angle)
+	void LSystemRenderer::drawDragonCurve(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::DragonCurveContext(length, angle));
 		rend.context->generateModel(level);
@@ -139,7 +143,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawSierpinskiGasket(size_t level, float length, float angle)
+	void LSystemRenderer::drawSierpinskiGasket(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::SierpinskiGasketContext(length, angle));
 		rend.context->generateModel(level);
@@ -149,7 +153,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeA(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeA(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextA(length, angle));
 		rend.context->generateModel(level);
@@ -159,7 +163,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeB(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeB(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextB(length, angle));
 		rend.context->generateModel(level);
@@ -169,7 +173,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeC(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeC(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextC(length, angle));
 		rend.context->generateModel(level);
@@ -179,7 +183,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeD(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeD(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextD(length, angle));
 		rend.context->generateModel(level);
@@ -189,7 +193,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeE(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeE(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextE(length, angle));
 		rend.context->generateModel(level);
@@ -199,7 +203,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeF(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeF(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextF(length, angle));
 		rend.context->generateModel(level);
@@ -209,7 +213,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeS(size_t level, float length, float angle)
+	void LSystemRenderer::drawGeneric2DTreeS(std::size_t level, float length, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreContextS(length, angle));
 		rend.context->generateModel(level);
@@ -219,7 +223,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric2DTreeSD(size_t level, float length, float reduction, float angle)
+	void LSystemRenderer::drawGeneric2DTreeSD(std::size_t level, float length, float reduction, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic2DTreeContextSD(length, reduction, angle));
 		rend.context->generateModel(level);
@@ -229,7 +233,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawHilbertCurve3D(size_t level, float width, float length, float red, float green, float blue, float angle)
+	void LSystemRenderer::drawHilbertCurve3D(std::size_t level, float width, float length, float red, float green, float blue, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::HilbertCurve3DContext(width, length, angle, red, green, blue));
 		rend.context->generateModel(level);
@@ -239,7 +243,7 @@ namespace lrend
 				std::vector<const char *> { }, rend.context->getTransformBuffer());
 	}
 
-	void LSystemRenderer::drawGeneric3DTree(size_t level, int slices, float radius, float height, float angle)
+	void LSystemRenderer::drawGeneric3DTree(std::size_t level, int slices, float radius, float height, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic3DTreeContext(slices, radius, height, angle));
 		rend.context->generateModel(level);

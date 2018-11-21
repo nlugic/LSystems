@@ -75,9 +75,9 @@ namespace lsys
 		clearSymbols();
 	}
 
-	size_t LSystem::getCurrentLevel() const
+	std::size_t LSystem::getCurrentLevel() const
 	{
-		size_t level = products.size();
+		std::size_t level = products.size();
 		return (level > 0) ? level - 1 : level;
 	}
 
@@ -127,7 +127,7 @@ namespace lsys
 		productions = prods;
 	}
 
-	const std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
+	const std::vector<LSystemSymbol *>& LSystem::operator[](std::size_t level)
 	{
 		try { return products.at(level); }
 		catch (const std::out_of_range&)
@@ -166,9 +166,9 @@ namespace lsys
 		return products[products.size() - 1ULL];
 	}
 
-	const std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
+	const std::vector<LSystemSymbol *>& LSystem::derive(std::size_t level)
 	{
-		size_t curr = getCurrentLevel() + 1ULL;
+		std::size_t curr = getCurrentLevel() + 1ULL;
 
 		while (--level)
 		{

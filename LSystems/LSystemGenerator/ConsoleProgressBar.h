@@ -20,7 +20,7 @@ namespace lsysh
 		std::ofstream log;
 
 	public:
-		ConsoleProgressBar(size_t units, unsigned markers = 25U, const char *logPath = "./benchmark.csv");
+		ConsoleProgressBar(std::size_t units, unsigned markers = 25U, const char *logPath = "./benchmark.csv");
 		ConsoleProgressBar(const ConsoleProgressBar&) = delete;
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;
 		~ConsoleProgressBar() = default;

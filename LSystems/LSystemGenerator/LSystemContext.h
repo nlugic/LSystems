@@ -10,7 +10,7 @@ namespace lsys
 	class LSystemContext
 	{
 	protected:
-		size_t currentLevel;
+		std::size_t currentLevel;
 
 		LSystem *lSystem;
 		GraphicsTurtle turtle;
@@ -24,12 +24,12 @@ namespace lsys
 		LSystemContext& operator=(const LSystemContext& lCxt);
 		virtual ~LSystemContext();
 
-		size_t getCurrentLevel() const;
-		size_t getMaxLevel() const;
+		std::size_t getCurrentLevel() const;
+		std::size_t getMaxLevel() const;
 		const std::vector<float> getVertexBuffer() const;
 		const std::vector<unsigned>& getElementBuffer() const;
 		const std::vector<glm::mat4>& getTransformBuffer() const;
-		void generateModel(size_t level);
+		void generateModel(std::size_t level);
 
 		virtual std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& out, const LSystemContext& lCxt);

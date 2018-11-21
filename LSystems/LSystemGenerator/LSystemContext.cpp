@@ -55,12 +55,12 @@ namespace lsys
 		delete lSystem;
 	}
 
-	size_t LSystemContext::getCurrentLevel() const
+	std::size_t LSystemContext::getCurrentLevel() const
 	{
 		return currentLevel;
 	}
 
-	size_t LSystemContext::getMaxLevel() const
+	std::size_t LSystemContext::getMaxLevel() const
 	{
 		return lSystem->getCurrentLevel();
 	}
@@ -80,11 +80,11 @@ namespace lsys
 		return turtle.getTransforms();
 	}
 
-	void LSystemContext::generateModel(size_t level)
+	void LSystemContext::generateModel(std::size_t level)
 	{
 		currentLevel = level;
 
-		size_t curr = lSystem->getCurrentLevel();
+		std::size_t curr = lSystem->getCurrentLevel();
 		if (level > curr)
 		{
 			std::cout << "Deriving the L-system to level " << level << "..." << std::endl;

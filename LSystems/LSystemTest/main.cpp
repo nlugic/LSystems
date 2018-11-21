@@ -1,6 +1,12 @@
 
 #include "..\LSystemRenderer\LSystemRenderer.h"
 
+#ifdef _DEBUG
+#pragma comment (lib, "..\\x64\\Debug\\LSystemGenerator.lib")
+#else
+#pragma comment (lib, "..\\x64\\Release\\LSystemGenerator.lib")
+#endif
+
 void benchmark(unsigned char repeat = 3U)
 {
 	lrend::LSystemRenderer::setTestMode(true);
@@ -89,7 +95,7 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(15, 0.5f);
-	//lrend::LSystemRenderer::drawHilbertCurve3D(4, 0.025f, 0.25f, 0.3f, 0.6f, 0.4f);
+	lrend::LSystemRenderer::drawHilbertCurve3D(4, 0.025f, 0.25f, 0.3f, 0.6f, 0.4f);
 	//lrend::LSystemRenderer::drawGeneric3DTree(7, 4, 0.05f, 0.2f);
 
 	//benchmark(); // 17.11.2018. ~02:30h - 19.11.2018. 18:21h = ~64h

@@ -1,5 +1,6 @@
 
 #include "LSystemSymbol.h"
+#include <sstream>
 
 namespace lsys
 {
@@ -44,9 +45,18 @@ namespace lsys
 		std::string ret;
 		ret += key;
 		if (!params.empty())
-			ret += '(';
-		for (std::map<char, float>::const_iterator& iter = params.begin(); iter != params.end(); ++iter)
-			ret += (!std::isnan(iter->second) ? iter->second : iter->first) + (std::distance(iter, params.end()) == 1) ? ", " : ")";
+		{
+			std::ostringstream out;
+			out.precision(4LL);
+			out << "(";
+
+			for (std::map<char, float>::const_iterator& iter = params.begin(); iter != params.end(); ++iter)
+			{
+				out << iter->second;
+				out << ((std::distance(iter, params.end()) == 1LL) ? ")" : ", ");
+			}
+			ret += out.str();
+		}
 
 		return ret;
 	}

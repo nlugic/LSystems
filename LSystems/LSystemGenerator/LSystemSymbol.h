@@ -16,9 +16,6 @@ namespace lsys
 
 	public:
 		LSystemSymbol(char key);
-		LSystemSymbol(const LSystemSymbol&) = default;
-		LSystemSymbol& operator=(const LSystemSymbol&) = default;
-		virtual ~LSystemSymbol() = default;
 
 		char getKey() const;
 		float getParam(char param) const;

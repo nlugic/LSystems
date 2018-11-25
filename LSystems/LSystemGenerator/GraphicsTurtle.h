@@ -51,10 +51,7 @@ namespace lsys
 		static unsigned elementPointer;
 		static float transformPointer;
 
-		GraphicsTurtle(LSystem *owner, const TurtleState& state = defaultTurtleState);
-		GraphicsTurtle(const GraphicsTurtle&) = default;
-		GraphicsTurtle& operator=(const GraphicsTurtle&) = default;
-		~GraphicsTurtle() = default;
+		GraphicsTurtle(LSystem *owner = nullptr, const TurtleState& state = defaultTurtleState);
 
 		void setOwner(LSystem *lSys);
 		const TurtleState& getInitialState() const;

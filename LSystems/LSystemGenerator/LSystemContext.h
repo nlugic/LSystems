@@ -20,8 +20,10 @@ namespace lsys
 	public:
 		LSystemContext(const TurtleState& state = defaultTurtleState);
 		LSystemContext(LSystem *lSys, const TurtleState& state = defaultTurtleState);
+		friend void swap(LSystemContext& lCxt1, LSystemContext& lCxt2);
 		LSystemContext(const LSystemContext& lCxt);
-		LSystemContext& operator=(const LSystemContext& lCxt);
+		LSystemContext(LSystemContext&& lCxt) noexcept;
+		LSystemContext& operator=(LSystemContext lCxt) noexcept;
 		virtual ~LSystemContext();
 
 		std::size_t getCurrentLevel() const;

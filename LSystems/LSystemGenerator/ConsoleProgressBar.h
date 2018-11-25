@@ -23,7 +23,6 @@ namespace lsysh
 		ConsoleProgressBar(std::size_t units, unsigned markers = 25U, const char *logPath = "./benchmark.csv");
 		ConsoleProgressBar(const ConsoleProgressBar&) = delete;
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;
-		~ConsoleProgressBar() = default;
 
 		float getProgress() const;
 		void step();

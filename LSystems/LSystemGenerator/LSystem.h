@@ -13,8 +13,6 @@ namespace lsys
 	private:
 		void clearAxiom();
 		void clearProductions();
-		void clearSymbols();
-		void copySymbols(const LSystem& lSys);
 		void produceAxiom();
 
 	protected:
@@ -25,8 +23,10 @@ namespace lsys
 
 	public:
 		LSystem() = default;
+		friend void swap(LSystem& lSys1, LSystem& lSys2);
 		LSystem(const LSystem& lSys);
-		LSystem& operator=(const LSystem& lSys);
+		LSystem(LSystem&& lSys) noexcept;
+		LSystem& operator=(LSystem lSys) noexcept;
 		virtual ~LSystem();
 
 		std::size_t getCurrentLevel() const;

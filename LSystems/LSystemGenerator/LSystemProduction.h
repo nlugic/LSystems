@@ -20,8 +20,10 @@ namespace lsys
 	public:
 		LSystemProduction(LSystemSymbol *pred, float prob = 1.0f);
 		LSystemProduction(char pred, float prob = 1.0f);
+		friend void swap(LSystemProduction& lProd1, LSystemProduction& lProd2);
 		LSystemProduction(const LSystemProduction& lProd);
-		LSystemProduction& operator=(const LSystemProduction& lProd);
+		LSystemProduction(LSystemProduction&& lProd) noexcept;
+		LSystemProduction& operator=(LSystemProduction lProd) noexcept;
 		virtual ~LSystemProduction();
 
 		const LSystemSymbol* getPredecessor() const;

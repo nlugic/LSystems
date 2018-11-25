@@ -57,10 +57,8 @@ namespace lrend
 		static OGLShader *shaderProgram;
 		static OGLArrayTexture *textures;
 
-		OGLRenderer() = default;
 		OGLRenderer(const OGLRenderer&) = delete;
 		OGLRenderer& operator=(const OGLRenderer&) = delete;
-		~OGLRenderer() = default;
 
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();

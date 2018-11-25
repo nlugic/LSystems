@@ -19,17 +19,24 @@ namespace lsys
 		productions.clear();
 	}
 
-	void LSystem::clearSymbols()
+	void LSystem::produceAxiom()
 	{
-		clearAxiom();
-		clearProductions();
-		for (std::vector<LSystemSymbol *>& product : products)
-			for (LSystemSymbol *sym : product)
-				delete sym;
-		products.clear();
+		std::vector<LSystemSymbol *> prod;
+		for (LSystemSymbol *sym : axiom)
+			prod.push_back(new LSystemSymbol(*sym));
+		products.push_back(prod);
 	}
 
-	void LSystem::copySymbols(const LSystem& lSys)
+	void swap(LSystem& lSys1, LSystem& lSys2)
+	{
+		std::swap(lSys1.params, lSys2.params);
+		std::swap(lSys1.axiom, lSys2.axiom);
+		std::swap(lSys1.productions, lSys2.productions);
+		std::swap(lSys1.products, lSys2.products);
+	}
+
+	LSystem::LSystem(const LSystem& lSys)
+		:params(lSys.params)
 	{
 		for (const LSystemSymbol *sym : lSys.axiom)
 			axiom.push_back(new LSystemSymbol(*sym));
@@ -44,35 +51,25 @@ namespace lsys
 		}
 	}
 
-	void LSystem::produceAxiom()
+	LSystem::LSystem(LSystem&& lSys) noexcept
 	{
-		std::vector<LSystemSymbol *> prod;
-		for (LSystemSymbol *sym : axiom)
-			prod.push_back(new LSystemSymbol(*sym));
-		products.push_back(prod);
+		swap(*this, lSys);
 	}
 
-	LSystem::LSystem(const LSystem& lSys)
-		:params(lSys.params)
+	LSystem& LSystem::operator=(LSystem lSys) noexcept
 	{
-		copySymbols(lSys);
-	}
-
-	LSystem& LSystem::operator=(const LSystem& lSys)
-	{
-		if (this != &lSys)
-		{
-			clearSymbols();
-			copySymbols(lSys);
-
-			params = lSys.params;
-		}
+		swap(*this, lSys);
 		return *this;
 	}
 
 	LSystem::~LSystem()
 	{
-		clearSymbols();
+		clearAxiom();
+		clearProductions();
+		for (std::vector<LSystemSymbol *>& product : products)
+			for (LSystemSymbol *sym : product)
+				delete sym;
+		products.clear();
 	}
 
 	std::size_t LSystem::getCurrentLevel() const

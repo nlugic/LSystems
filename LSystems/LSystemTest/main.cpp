@@ -95,11 +95,12 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(15, 0.5f);
-	lrend::LSystemRenderer::drawHilbertCurve3D(4, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
+	//lrend::LSystemRenderer::drawHilbertCurve3D(4, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
 	//lrend::LSystemRenderer::drawGeneric3DTree(7, 16, 0.05f, 0.2f);
 
-	//benchmark(); // Debug, no optimization - 17.11.2018. ~02:30h - 19.11.2018. 18:21h = ~64h
+	//benchmark(); // Debug, no optimization - 17.11.2018. ~02:30 - 19.11.2018. 18:21 = ~64h
 	//benchmark(); // Release, no optimization - 25.11.2018. ~01:10 - 25.11.2018. 12:07 = ~11h
+	benchmark(); // Release, copy&swap + actions optimizations - 26.11.2018. 
 
 	return 0;
 }

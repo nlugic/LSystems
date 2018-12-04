@@ -46,7 +46,7 @@ namespace lsys
 		std::vector<Vertex> vertexBuffer;
 		std::vector<unsigned> elementBuffer;
 		std::vector<glm::mat4> transformBuffer;
-		
+
 	public:
 		static unsigned elementPointer;
 		static float transformPointer;

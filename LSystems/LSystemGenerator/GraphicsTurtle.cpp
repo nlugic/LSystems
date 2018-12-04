@@ -162,14 +162,14 @@ namespace lsys
 	{
 		for (const Vertex& vert : vertices)
 		{
-			std::ptrdiff_t pos = std::distance(vertexBuffer.begin(), std::find(vertexBuffer.begin(), vertexBuffer.end(), vert));
+			std::ptrdiff_t pos = std::distance(vertexBuffer.rbegin(), std::find(vertexBuffer.rbegin(), vertexBuffer.rend(), vert));
 			if (pos >= static_cast<std::ptrdiff_t>(vertexBuffer.size()))
 			{
 				vertexBuffer.push_back(vert);
 				elementBuffer.push_back(GraphicsTurtle::elementPointer++);
 			}
 			else
-				elementBuffer.push_back(static_cast<unsigned>(pos));
+				elementBuffer.push_back(static_cast<unsigned>(vertexBuffer.size() - pos - 1LL));
 		}
 		transformBuffer.push_back(currentTransform);
 	}

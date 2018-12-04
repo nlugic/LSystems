@@ -100,7 +100,10 @@ int main(int argc, char **argv)
 
 	//benchmark(); // Debug, no optimization - 17.11.2018. ~02:30 - 19.11.2018. 18:21 = ~64h
 	//benchmark(); // Release, no optimization - 25.11.2018. ~01:10 - 25.11.2018. 12:07 = ~11h
-	benchmark(); // Release, copy&swap + actions optimizations - 26.11.2018. 
+	benchmark(); // Release, copy&swap + actions + reverse search - 02.12.2018. 02:45 - 02.12.2018. ~10:10 = ~7.4h
+
+	// napraviti odvojeno pamcenje vertexa i transform pointera
+	// razdvojiti vertexe na lines, linestrip, triangles, trianglestrip i triangleFan
 
 	return 0;
 }

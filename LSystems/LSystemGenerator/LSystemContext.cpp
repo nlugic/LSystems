@@ -31,22 +31,27 @@ namespace lsys
 		initTurtleActions();
 	}
 
+	void swap(LSystemContext& lCxt1, LSystemContext& lCxt2)
+	{
+		std::swap(lCxt1.currentLevel, lCxt2.currentLevel);
+		std::swap(lCxt1.lSystem, lCxt2.lSystem);
+		std::swap(lCxt1.turtle, lCxt2.turtle);
+	}
+
 	LSystemContext::LSystemContext(const LSystemContext& lCxt)
 		:currentLevel(lCxt.currentLevel), lSystem(new LSystem(*lCxt.lSystem)), turtle(lCxt.turtle)
 	{
 		turtle.setOwner(lSystem);
 	}
 
-	LSystemContext& LSystemContext::operator=(const LSystemContext& lCxt)
+	LSystemContext::LSystemContext(LSystemContext&& lCxt) noexcept
 	{
-		if (this != &lCxt)
-		{
-			currentLevel = lCxt.currentLevel;
-			delete lSystem;
-			lSystem = new LSystem(*lCxt.lSystem);
-			turtle = lCxt.turtle;
-			turtle.setOwner(lSystem);
-		}
+		swap(*this, lCxt);
+	}
+
+	LSystemContext& LSystemContext::operator=(LSystemContext lCxt) noexcept
+	{
+		swap(*this, lCxt);
 		return *this;
 	}
 
@@ -55,12 +60,12 @@ namespace lsys
 		delete lSystem;
 	}
 
-	size_t LSystemContext::getCurrentLevel() const
+	std::size_t LSystemContext::getCurrentLevel() const
 	{
 		return currentLevel;
 	}
 
-	size_t LSystemContext::getMaxLevel() const
+	std::size_t LSystemContext::getMaxLevel() const
 	{
 		return lSystem->getCurrentLevel();
 	}
@@ -80,11 +85,11 @@ namespace lsys
 		return turtle.getTransforms();
 	}
 
-	void LSystemContext::generateModel(size_t level)
+	void LSystemContext::generateModel(std::size_t level)
 	{
 		currentLevel = level;
 
-		size_t curr = lSystem->getCurrentLevel();
+		std::size_t curr = lSystem->getCurrentLevel();
 		if (level > curr)
 		{
 			std::cout << "Deriving the L-system to level " << level << "..." << std::endl;

@@ -19,17 +19,24 @@ namespace lsys
 		productions.clear();
 	}
 
-	void LSystem::clearSymbols()
+	void LSystem::produceAxiom()
 	{
-		clearAxiom();
-		clearProductions();
-		for (std::vector<LSystemSymbol *>& product : products)
-			for (LSystemSymbol *sym : product)
-				delete sym;
-		products.clear();
+		std::vector<LSystemSymbol *> prod;
+		for (LSystemSymbol *sym : axiom)
+			prod.push_back(new LSystemSymbol(*sym));
+		products.push_back(prod);
 	}
 
-	void LSystem::copySymbols(const LSystem& lSys)
+	void swap(LSystem& lSys1, LSystem& lSys2)
+	{
+		std::swap(lSys1.params, lSys2.params);
+		std::swap(lSys1.axiom, lSys2.axiom);
+		std::swap(lSys1.productions, lSys2.productions);
+		std::swap(lSys1.products, lSys2.products);
+	}
+
+	LSystem::LSystem(const LSystem& lSys)
+		:params(lSys.params)
 	{
 		for (const LSystemSymbol *sym : lSys.axiom)
 			axiom.push_back(new LSystemSymbol(*sym));
@@ -44,40 +51,30 @@ namespace lsys
 		}
 	}
 
-	void LSystem::produceAxiom()
+	LSystem::LSystem(LSystem&& lSys) noexcept
 	{
-		std::vector<LSystemSymbol *> prod;
-		for (LSystemSymbol *sym : axiom)
-			prod.push_back(new LSystemSymbol(*sym));
-		products.push_back(prod);
+		swap(*this, lSys);
 	}
 
-	LSystem::LSystem(const LSystem& lSys)
-		:params(lSys.params)
+	LSystem& LSystem::operator=(LSystem lSys) noexcept
 	{
-		copySymbols(lSys);
-	}
-
-	LSystem& LSystem::operator=(const LSystem& lSys)
-	{
-		if (this != &lSys)
-		{
-			clearSymbols();
-			copySymbols(lSys);
-
-			params = lSys.params;
-		}
+		swap(*this, lSys);
 		return *this;
 	}
 
 	LSystem::~LSystem()
 	{
-		clearSymbols();
+		clearAxiom();
+		clearProductions();
+		for (std::vector<LSystemSymbol *>& product : products)
+			for (LSystemSymbol *sym : product)
+				delete sym;
+		products.clear();
 	}
 
-	size_t LSystem::getCurrentLevel() const
+	std::size_t LSystem::getCurrentLevel() const
 	{
-		size_t level = products.size();
+		std::size_t level = products.size();
 		return (level > 0) ? level - 1 : level;
 	}
 
@@ -127,7 +124,7 @@ namespace lsys
 		productions = prods;
 	}
 
-	const std::vector<LSystemSymbol *>& LSystem::operator[](size_t level)
+	const std::vector<LSystemSymbol *>& LSystem::operator[](std::size_t level)
 	{
 		try { return products.at(level); }
 		catch (const std::out_of_range&)
@@ -166,9 +163,9 @@ namespace lsys
 		return products[products.size() - 1ULL];
 	}
 
-	const std::vector<LSystemSymbol *>& LSystem::derive(size_t level)
+	const std::vector<LSystemSymbol *>& LSystem::derive(std::size_t level)
 	{
-		size_t curr = getCurrentLevel() + 1ULL;
+		std::size_t curr = getCurrentLevel() + 1ULL;
 
 		while (--level)
 		{

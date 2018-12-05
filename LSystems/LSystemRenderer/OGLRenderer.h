@@ -53,14 +53,12 @@ namespace lrend
 		static OGLCamera *camera;
 
 		static unsigned vao, vbo, ebo, ssbo;
-		static size_t vertexBufSize, elementBufSize, shaderStorageBufSize;
+		static std::size_t vertexBufSize, elementBufSize, shaderStorageBufSize;
 		static OGLShader *shaderProgram;
 		static OGLArrayTexture *textures;
 
-		OGLRenderer() = default;
 		OGLRenderer(const OGLRenderer&) = delete;
 		OGLRenderer& operator=(const OGLRenderer&) = delete;
-		~OGLRenderer() = default;
 
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();

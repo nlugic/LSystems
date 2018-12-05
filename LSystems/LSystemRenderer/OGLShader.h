@@ -6,7 +6,7 @@
 namespace lrend
 {
 
-	const size_t msg_buf_size = 512;
+	const std::size_t msg_buf_size = 512;
 
 	class OGLShader
 	{

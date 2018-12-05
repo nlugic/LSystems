@@ -17,6 +17,12 @@ namespace lsys
 	LSystemProduction::LSystemProduction(char pred, float prob)
 		: predecessor(new LSystemSymbol(pred)), probability((prob < 0.0f || prob > 1.0f) ? 1.0f : prob) { }
 
+	void swap(LSystemProduction& lProd1, LSystemProduction& lProd2)
+	{
+		std::swap(lProd1.predecessor, lProd2.predecessor);
+		std::swap(lProd1.successor, lProd2.successor);
+	}
+
 	LSystemProduction::LSystemProduction(const LSystemProduction& lProd)
 		: predecessor(new LSystemSymbol(*lProd.predecessor)), probability(lProd.probability)
 	{
@@ -24,18 +30,14 @@ namespace lsys
 			successor.push_back(new LSystemSymbol(*sym));
 	}
 
-	LSystemProduction& LSystemProduction::operator=(const LSystemProduction& lProd)
+	LSystemProduction::LSystemProduction(LSystemProduction&& lProd) noexcept
 	{
-		if (this != &lProd)
-		{
-			delete predecessor;
-			clearSuccessor();
+		swap(*this, lProd);
+	}
 
-			predecessor = new LSystemSymbol(*lProd.predecessor);
-			for (const LSystemSymbol* sym : lProd.successor)
-				successor.push_back(new LSystemSymbol(*sym));
-			probability = lProd.probability;
-		}
+	LSystemProduction& LSystemProduction::operator=(LSystemProduction lProd) noexcept
+	{
+		swap(*this, lProd);
 		return *this;
 	}
 

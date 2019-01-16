@@ -29,7 +29,6 @@ namespace lsys
 		std::size_t getCurrentLevel() const;
 		std::size_t getMaxLevel() const;
 		const std::vector<float> getVertexBuffer() const;
-		const std::vector<unsigned>& getElementBuffer() const;
 		const std::vector<glm::mat4>& getTransformBuffer() const;
 		void generateModel(std::size_t level);
 

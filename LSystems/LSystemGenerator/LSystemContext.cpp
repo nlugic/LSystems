@@ -75,11 +75,6 @@ namespace lsys
 		return turtle.getVertices();
 	}
 
-	const std::vector<unsigned>& LSystemContext::getElementBuffer() const
-	{
-		return turtle.getElements();
-	}
-
 	const std::vector<glm::mat4>& LSystemContext::getTransformBuffer() const
 	{
 		return turtle.getTransforms();
@@ -100,7 +95,6 @@ namespace lsys
 		turtle.resetState();
 		turtle.interpretSymbols((*lSystem)[level]);
 
-		GraphicsTurtle::elementPointer = 0U;
 		GraphicsTurtle::transformPointer = 0U;
 	}
 

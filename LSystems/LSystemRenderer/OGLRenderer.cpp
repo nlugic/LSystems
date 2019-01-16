@@ -27,10 +27,8 @@ namespace lrend
 	OGLCamera *OGLR::camera = nullptr;
 	unsigned OGLR::vao = 0U;
 	unsigned OGLR::vbo = 0U;
-	unsigned OGLR::ebo = 0U;
 	unsigned OGLR::ssbo = 0U;
 	std::size_t OGLR::vertexBufSize = 0ULL;
-	std::size_t OGLR::elementBufSize = 0ULL;
 	std::size_t OGLR::shaderStorageBufSize = 0ULL;
 	OGLShader *OGLR::shaderProgram = nullptr;
 	OGLArrayTexture *OGLR::textures = nullptr;
@@ -81,7 +79,6 @@ namespace lrend
 			delete OGLR::textures;
 
 		glDeleteBuffers(1, &OGLR::ssbo);
-		glDeleteBuffers(1, &OGLR::ebo);
 		glDeleteBuffers(1, &OGLR::vbo);
 		glDeleteVertexArrays(1, &OGLR::vao);
 		glfwTerminate();
@@ -95,17 +92,15 @@ namespace lrend
 		OGLR::lastYPos = OGLR::height / 2.0;
 		OGLR::deltaTime = OGLR::lastFrame = 0.0f;
 		OGLR::camera = nullptr;
-		OGLR::vao = OGLR::vbo = OGLR::ebo = OGLR::ssbo = 0U;
-		OGLR::vertexBufSize = OGLR::elementBufSize = OGLR::shaderStorageBufSize = 0ULL;
+		OGLR::vao = OGLR::vbo = OGLR::ssbo = 0U;
+		OGLR::vertexBufSize = OGLR::shaderStorageBufSize = 0ULL;
 		OGLR::shaderProgram = nullptr;
 		OGLR::textures = nullptr;
 	}
 
-	void OGLRenderer::initBuffers(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
-		const std::vector<glm::mat4>& transformData)
+	void OGLRenderer::initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData)
 	{
 		OGLR::vertexBufSize = vertData.size();
-		OGLR::elementBufSize = elemData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
 
 		glGenVertexArrays(1, &OGLR::vao);
@@ -124,10 +119,6 @@ namespace lrend
 		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(9 * sizeof(float)));
 		glEnableVertexAttribArray(3);
 
-		glGenBuffers(1, &OGLR::ebo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, OGLR::elementBufSize * sizeof(float), elemData.data(), GL_STATIC_DRAW);
-		
 		glGenBuffers(1, &OGLR::ssbo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data(), GL_STATIC_DRAW);
@@ -135,7 +126,6 @@ namespace lrend
 
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
@@ -245,30 +235,25 @@ namespace lrend
 		OGLR::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::updateVertexData(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
-		const std::vector<glm::mat4>& transformData)
+	void OGLRenderer::updateVertexData(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData)
 	{
 		OGLR::vertexBufSize = vertData.size();
-		OGLR::elementBufSize = elemData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
 
 		glBindVertexArray(OGLR::vao);
 		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, OGLR::ebo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, OGLR::vertexBufSize * sizeof(float), vertData.data());
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, OGLR::elementBufSize * sizeof(unsigned), elemData.data());
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data());
 
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
-	void OGLRenderer::renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
-		const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
+	void OGLRenderer::renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
+		const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
 	{
 		OGLR::owner = owner;
 		OGLR::width = config.windowWidth;
@@ -277,7 +262,7 @@ namespace lrend
 		OGLR::lastYPos = OGLR::height / 2.0;
 
 		OGLR::initGLWindow(config.windowCaption);
-		OGLR::initBuffers(vBuf, eBuf, transMats);
+		OGLR::initBuffers(vBuf, transMats);
 		OGLR::initCamera(config.cameraPosition);
 		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();
@@ -322,7 +307,8 @@ namespace lrend
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
 
-			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(OGLR::elementBufSize), GL_UNSIGNED_INT, nullptr);
+			glDrawArrays(GL_TRIANGLES, 0,
+				static_cast<GLsizei>(OGLR::vertexBufSize / (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
 
 			glfwSwapBuffers(OGLR::glWindow);
 			glfwPollEvents();

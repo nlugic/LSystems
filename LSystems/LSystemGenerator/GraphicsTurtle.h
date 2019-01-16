@@ -13,12 +13,18 @@ namespace lsys
 	{
 		float x, y, z;
 		float nx, ny, nz;
-		float s, t, d, tr;
+		float s, t, d;
 
 		bool operator==(const Vertex& v)
 		{
 			return !std::memcmp(this, &v, sizeof(Vertex));
 		}
+	};
+	
+	struct VertexInstance
+	{
+		unsigned vert;
+		float tr;
 	};
 
 	struct TurtleState
@@ -43,12 +49,11 @@ namespace lsys
 		glm::mat4 currentTransform;
 		std::stack<TurtleState> stateStack;
 
-		std::vector<Vertex> vertexBuffer;
-		std::vector<unsigned> elementBuffer;
+		std::vector<Vertex> distinctVertices;
+		std::vector<VertexInstance> vertexBuffer;
 		std::vector<glm::mat4> transformBuffer;
 
 	public:
-		static unsigned elementPointer;
 		static float transformPointer;
 
 		GraphicsTurtle(LSystem *owner = nullptr, const TurtleState& state = defaultTurtleState);
@@ -60,7 +65,6 @@ namespace lsys
 		const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& getAction(char key) const;
 		void setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
 		std::vector<float> getVertices() const;
-		const std::vector<unsigned>& getElements() const;
 		const std::vector<glm::mat4>& getTransforms() const;
 
 		void pushState();

@@ -30,7 +30,7 @@ namespace lrend
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.0f, 1.0f, 3.0f),
 		glm::vec3(0.0f, 5.0f, 3.0f),
-		glm::vec3(1.0f, 0.0f, 0.0f), // 05, 015
+		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
@@ -52,8 +52,8 @@ namespace lrend
 		static float deltaTime, lastFrame;
 		static OGLCamera *camera;
 
-		static unsigned vao, vbo, ebo, ssbo;
-		static std::size_t vertexBufSize, elementBufSize, shaderStorageBufSize;
+		static unsigned vao, vbo, ssbo;
+		static std::size_t vertexBufSize, shaderStorageBufSize;
 		static OGLShader *shaderProgram;
 		static OGLArrayTexture *textures;
 
@@ -62,8 +62,7 @@ namespace lrend
 
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();
-		static void initBuffers(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
-			const std::vector<glm::mat4>& transformData);
+		static void initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData);
 		static void initCamera(const glm::vec3& position);
 		static void initShader(const char *vertexPath, const char *fragmentPath);
 		static void initLighting(const glm::vec3& position, const glm::vec3& attenuation, const glm::vec3& ambient,
@@ -78,11 +77,9 @@ namespace lrend
 		static void onMouseScroll(GLFWwindow *wnd, double xOff, double yOff);
 
 	public:
-		static void updateVertexData(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
-			const std::vector<glm::mat4>& transformData);
-		static void renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
-			const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats,
-			const OGLRendererConfig& config = defaultOGLRendererConfig);
+		static void updateVertexData(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData);
+		static void renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
+			const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config = defaultOGLRendererConfig);
 	};
 
 }

@@ -9,7 +9,6 @@ namespace lsys
 	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> emptyAction =
 		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>([](GraphicsTurtle *, LSystemSymbol *, LSystem *) {});
 
-	unsigned GraphicsTurtle::elementPointer = 0U;
 	float GraphicsTurtle::transformPointer = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
@@ -53,15 +52,14 @@ namespace lsys
 	std::vector<float> GraphicsTurtle::getVertices() const
 	{
 		std::vector<float> buffer;
-		for (Vertex vert : vertexBuffer)
-			buffer.insert(buffer.end(), &vert.x, &vert.x + sizeof(Vertex) / sizeof(float));
+		for (const VertexInstance &vi : vertexBuffer)
+		{
+			buffer.insert(buffer.end(), reinterpret_cast<const float *>(&distinctVertices[vi.vert]),
+				reinterpret_cast<const float *>(&distinctVertices[vi.vert]) + sizeof(Vertex) / sizeof(float));
+			buffer.push_back(vi.tr);
+		}
 
 		return buffer;
-	}
-
-	const std::vector<unsigned>& GraphicsTurtle::getElements() const
-	{
-		return elementBuffer;
 	}
 
 	const std::vector<glm::mat4>& GraphicsTurtle::getTransforms() const
@@ -84,8 +82,8 @@ namespace lsys
 
 	void GraphicsTurtle::resetState()
 	{
+		distinctVertices.clear();
 		vertexBuffer.clear();
-		elementBuffer.clear();
 		transformBuffer.clear();
 		std::size_t stackSize = stateStack.size();
 		for (unsigned i = 1U; i < stackSize; ++i)
@@ -162,16 +160,17 @@ namespace lsys
 	{
 		for (const Vertex& vert : vertices)
 		{
-			std::ptrdiff_t pos = std::distance(vertexBuffer.rbegin(), std::find(vertexBuffer.rbegin(), vertexBuffer.rend(), vert));
-			if (pos >= static_cast<std::ptrdiff_t>(vertexBuffer.size()))
+			std::ptrdiff_t pos = std::distance(distinctVertices.begin(), std::find(distinctVertices.begin(), distinctVertices.end(), vert));
+			if (pos >= static_cast<std::ptrdiff_t>(distinctVertices.size()))
 			{
-				vertexBuffer.push_back(vert);
-				elementBuffer.push_back(GraphicsTurtle::elementPointer++);
+				distinctVertices.push_back(vert);
+				vertexBuffer.push_back({ static_cast<unsigned>(distinctVertices.size() - 1U), GraphicsTurtle::transformPointer });
 			}
 			else
-				elementBuffer.push_back(static_cast<unsigned>(vertexBuffer.size() - pos - 1LL));
+				vertexBuffer.push_back({ static_cast<unsigned>(pos), GraphicsTurtle::transformPointer });
 		}
 		transformBuffer.push_back(currentTransform);
+		++GraphicsTurtle::transformPointer;
 	}
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)

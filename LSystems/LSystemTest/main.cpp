@@ -96,14 +96,14 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(15, 0.5f);
 	//lrend::LSystemRenderer::drawHilbertCurve3D(4, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
-	lrend::LSystemRenderer::drawGeneric3DTree(10, 8, 0.05f, 0.15f);
+	lrend::LSystemRenderer::drawGeneric3DTree(10, 4, 0.25f, 0.05f);
 
 	//benchmark(); // Debug, no optimization - 17.11.2018. ~02:30 - 19.11.2018. 18:21 = ~64h
 	//benchmark(); // Release, no optimization - 25.11.2018. ~01:10 - 25.11.2018. 12:07 = ~11h
 	//benchmark(); // Release, copy&swap + actions + reverse search - 02.12.2018. 02:45 - 02.12.2018. ~10:10 = ~7.4h
 	//benchmark(); // Release, prev + vertexInstance + no indexed rendering - 17.01.2019. 00:20 - 17.01.2019. ~00:25 = ~0.08h
 
-	// napraviti odvojeno pamcenje vertexa i transform pointera
+	// dodati ebo a id matrica pamtiti u drugom vbo-u
 	// razdvojiti vertexe na lines, linestrip, triangles, trianglestrip i triangleFan
 
 	return 0;

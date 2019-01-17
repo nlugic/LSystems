@@ -261,7 +261,7 @@ namespace lrend
 		OGLR::lastXPos = OGLR::width / 2.0;
 		OGLR::lastYPos = OGLR::height / 2.0;
 
-		OGLR::initGLWindow(config.windowCaption);
+		OGLR::initGLWindow(config.windowCaption.c_str());
 		OGLR::initBuffers(vBuf, transMats);
 		OGLR::initCamera(config.cameraPosition);
 		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
@@ -306,6 +306,11 @@ namespace lrend
 			float currentFrame = static_cast<float>(glfwGetTime());
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
+			std::string fps(" [");
+			fps += std::to_string(static_cast<unsigned>(std::roundf(1.0f / deltaTime)));
+			fps += " FPS]";
+
+			glfwSetWindowTitle(OGLR::glWindow, (config.windowCaption + fps).c_str());
 
 			glDrawArrays(GL_TRIANGLES, 0,
 				static_cast<GLsizei>(OGLR::vertexBufSize / (sizeof(lsys::Vertex) / sizeof(float) + 1U)));

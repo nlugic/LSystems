@@ -21,7 +21,7 @@ namespace lrend
 		glm::vec3 lightAmbient, lightDiffuse, lightSpecular;
 		float specularShininess;
 		const char *vertShaderPath, *fragShaderPath;
-		const char *windowCaption;
+		std::string windowCaption;
 	};
 
 	const OGLRendererConfig defaultOGLRendererConfig =

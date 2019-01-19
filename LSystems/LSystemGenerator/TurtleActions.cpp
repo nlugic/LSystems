@@ -205,7 +205,7 @@ namespace lsys
 		glm::vec3 nm(h / p * cf, r / p, h / p * sf);
 		glm::vec3 nmu(h / p * cfu, r / p, h / p * sfu);
 
-		Vertex vx[3]{
+		Vertex vx[3] {
 			{ 0.0f, h, 0.0f, (nm.x + nmu.x) / 2.0f, (nm.y + nmu.y) / 2.0f, (nm.z + nmu.z) / 2.0f,
 				s, 1.0f, t },
 			{ r * cf, 0.0f, r * sf, nmu.x, nmu.y, nmu.z, s - ds, 0.0f, t },

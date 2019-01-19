@@ -20,10 +20,10 @@ namespace lsys
 			return !std::memcmp(this, &v, sizeof(Vertex));
 		}
 	};
-	
+
 	struct VertexInstance
 	{
-		unsigned vert;
+		unsigned v;
 		float tr;
 	};
 
@@ -49,8 +49,8 @@ namespace lsys
 		glm::mat4 currentTransform;
 		std::stack<TurtleState> stateStack;
 
-		std::vector<Vertex> distinctVertices;
-		std::vector<VertexInstance> vertexBuffer;
+		std::vector<VertexInstance> vertexInstances;
+		std::vector<Vertex> vertexBuffer;
 		std::vector<glm::mat4> transformBuffer;
 
 	public:

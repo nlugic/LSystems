@@ -52,10 +52,9 @@ namespace lsys
 	std::vector<float> GraphicsTurtle::getVertices() const
 	{
 		std::vector<float> buffer;
-		for (const VertexInstance &vi : vertexBuffer)
+		for (const VertexInstance &vi : vertexInstances)
 		{
-			buffer.insert(buffer.end(), reinterpret_cast<const float *>(&distinctVertices[vi.vert]),
-				reinterpret_cast<const float *>(&distinctVertices[vi.vert]) + sizeof(Vertex) / sizeof(float));
+			buffer.insert(buffer.end(), &vertexBuffer[vi.v].x, &vertexBuffer[vi.v].x + sizeof(Vertex) / sizeof(float));
 			buffer.push_back(vi.tr);
 		}
 
@@ -82,7 +81,7 @@ namespace lsys
 
 	void GraphicsTurtle::resetState()
 	{
-		distinctVertices.clear();
+		vertexInstances.clear();
 		vertexBuffer.clear();
 		transformBuffer.clear();
 		std::size_t stackSize = stateStack.size();
@@ -160,14 +159,14 @@ namespace lsys
 	{
 		for (const Vertex& vert : vertices)
 		{
-			std::ptrdiff_t pos = std::distance(distinctVertices.begin(), std::find(distinctVertices.begin(), distinctVertices.end(), vert));
-			if (pos >= static_cast<std::ptrdiff_t>(distinctVertices.size()))
+			std::ptrdiff_t pos = std::distance(vertexBuffer.begin(), std::find(vertexBuffer.begin(), vertexBuffer.end(), vert));
+			unsigned vIndex = static_cast<unsigned>(pos);
+			if (pos >= static_cast<std::ptrdiff_t>(vertexBuffer.size()))
 			{
-				distinctVertices.push_back(vert);
-				vertexBuffer.push_back({ static_cast<unsigned>(distinctVertices.size() - 1U), GraphicsTurtle::transformPointer });
+				vertexBuffer.push_back(vert);
+				vIndex = static_cast<unsigned>(vertexBuffer.size() - 1U);
 			}
-			else
-				vertexBuffer.push_back({ static_cast<unsigned>(pos), GraphicsTurtle::transformPointer });
+			vertexInstances.push_back({ vIndex, GraphicsTurtle::transformPointer });
 		}
 		transformBuffer.push_back(currentTransform);
 		++GraphicsTurtle::transformPointer;

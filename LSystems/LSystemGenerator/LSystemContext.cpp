@@ -26,7 +26,7 @@ namespace lsys
 	}
 
 	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
-		:currentLevel(0U), lSystem(lSys), turtle(lSystem, state)
+		: currentLevel(0U), lSystem(lSys), turtle(lSystem, state)
 	{
 		initTurtleActions();
 	}

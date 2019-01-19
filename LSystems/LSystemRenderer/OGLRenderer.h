@@ -21,7 +21,7 @@ namespace lrend
 		glm::vec3 lightAmbient, lightDiffuse, lightSpecular;
 		float specularShininess;
 		const char *vertShaderPath, *fragShaderPath;
-		std::string windowCaption;
+		const char *windowCaption;
 	};
 
 	const OGLRendererConfig defaultOGLRendererConfig =
@@ -69,6 +69,7 @@ namespace lrend
 			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
 		static void initTextures(const std::vector<const char *>& paths, int w, int h);
 
+		static void __stdcall processDebugMessage(GLenum src, GLenum type, GLenum id, GLenum sev, GLsizei len, const GLchar *msg, const void *prm);
 		static void takeScreenshot();
 		static void processMoveKeys(GLFWwindow *wnd);
 		static void onKeyPress(GLFWwindow *wnd, int key, int scancode, int action, int mode);

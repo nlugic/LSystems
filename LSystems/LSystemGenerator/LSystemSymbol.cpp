@@ -15,7 +15,7 @@ namespace lsys
 
 	float LSystemSymbol::getParam(char param) const
 	{
-		if (params.count(param))
+		if (params.find(param) != params.end())
 			return params.at(param);
 		return NAN;
 	}

@@ -26,7 +26,7 @@ namespace lrend
 		}
 		catch (const std::ifstream::failure& e)
 		{
-			std::cout << "An error ocurred while reading shader code." << std::endl
+			std::cerr << "An error ocurred while reading shader code." << std::endl
 				<< e.what() << std::endl;
 		}
 
@@ -44,7 +44,7 @@ namespace lrend
 		if (!success)
 		{
 			glGetShaderInfoLog(id, msg_buf_size, nullptr, errorMsg);
-			std::cout << "An error ocurred while compiling the " << ((type == GL_VERTEX_SHADER) ? "vertex" : "fragment")
+			std::cerr << "An error ocurred while compiling the " << ((type == GL_VERTEX_SHADER) ? "vertex" : "fragment")
 				<< " shader." << std::endl << errorMsg << std::endl;
 		}
 
@@ -68,7 +68,7 @@ namespace lrend
 		if (!success)
 		{
 			glGetProgramInfoLog(programId, msg_buf_size, nullptr, errorMsg);
-			std::cout << "An error ocurred while linking the shader program." << std::endl
+			std::cerr << "An error ocurred while linking the shader program." << std::endl
 				<< errorMsg << std::endl;
 		}
 

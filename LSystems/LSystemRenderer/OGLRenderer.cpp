@@ -45,7 +45,7 @@ namespace lrend
 		GLFWwindow *tWnd = glfwCreateWindow(OGLR::width, OGLR::height, caption, nullptr, nullptr);
 		if (!tWnd)
 		{
-			std::cout << "An error ocurred while creating the GLFW window." << std::endl;
+			std::cerr << "An error ocurred while creating the GLFW window." << std::endl;
 			glfwTerminate();
 			return;
 		}
@@ -54,7 +54,7 @@ namespace lrend
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			std::cout << "An error ocurred while loading functions with GLAD." << std::endl;
+			std::cerr << "An error ocurred while loading functions with GLAD." << std::endl;
 			return;
 		}
 
@@ -278,7 +278,8 @@ namespace lrend
 		OGLR::shaderProgram->use();
 		OGLR::initLighting(config.lightPosition, config.lightAttenuation, config.lightAmbient,
 			config.lightDiffuse, config.lightSpecular, config.specularShininess);
-		OGLR::initTextures(texPaths, config.textureWidth, config.textureHeight);
+		if (!texPaths.empty())
+			OGLR::initTextures(texPaths, config.textureWidth, config.textureHeight);
 
 		glEnable(GL_DEPTH_TEST);
 		glFrontFace(GL_CCW);

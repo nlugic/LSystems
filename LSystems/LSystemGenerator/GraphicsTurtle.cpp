@@ -39,7 +39,7 @@ namespace lsys
 
 	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& GraphicsTurtle::getAction(char key) const
 	{
-		if (actions.count(key))
+		if (actions.find(key) != actions.end())
 			return actions.at(key);
 		return emptyAction;
 	}
@@ -76,7 +76,6 @@ namespace lsys
 		currentState = stateStack.top();
 		if (stateStack.size() > 1ULL)
 			stateStack.pop();
-		updateTransform();
 	}
 
 	void GraphicsTurtle::resetState()
@@ -88,7 +87,7 @@ namespace lsys
 		for (unsigned i = 1U; i < stackSize; ++i)
 			stateStack.pop();
 		currentState = stateStack.top();
-		updateTransform();
+		currentTransform = glm::mat4(1.0f);
 	}
 
 	void GraphicsTurtle::updateTransform()
@@ -113,7 +112,6 @@ namespace lsys
 	{
 		std::memset(&currentTransform[3], 0, 3 * sizeof(float));
 		currentState.position += glm::vec3(currentTransform * glm::vec4(offset, 1.0f));
-		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateAroundUp(float angle)
@@ -121,7 +119,6 @@ namespace lsys
 		glm::mat4 rot(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up));
 		currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
 		currentState.left = rot * glm::vec4(currentState.left, 1.0f);
-		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
@@ -129,7 +126,6 @@ namespace lsys
 		currentState.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left)
 			* glm::vec4(currentState.heading, 1.0f);
 		currentState.up = glm::cross(currentState.heading, currentState.left);
-		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateAroundHeading(float angle)
@@ -137,7 +133,6 @@ namespace lsys
 		currentState.left = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading)
 			* glm::vec4(currentState.left, 1.0f);
 		currentState.up = glm::cross(currentState.heading, currentState.left);
-		updateTransform();
 	}
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
@@ -151,7 +146,6 @@ namespace lsys
 			currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
 			currentState.left = rot * glm::vec4(currentState.left, 1.0f);
 			currentState.up = glm::cross(currentState.heading, currentState.left);
-			updateTransform();
 		}
 	}
 
@@ -168,6 +162,7 @@ namespace lsys
 			}
 			vertexInstances.push_back({ vIndex, GraphicsTurtle::transformPointer });
 		}
+		updateTransform();
 		transformBuffer.push_back(currentTransform);
 		++GraphicsTurtle::transformPointer;
 	}
@@ -176,12 +171,12 @@ namespace lsys
 	{
 		std::size_t symbolCount = symbols.size();
 		
-		std::cout << "Interpreting " << symbolCount << " symbols..." << std::endl;
+		std::clog << "Interpreting " << symbolCount << " symbols..." << std::endl;
 		lsysh::ConsoleProgressBar symbolInterpretation(symbolCount);
 
 		for (LSystemSymbol *sym : symbols)
 		{
-			if (actions.count(sym->getKey()))
+			if (actions.find(sym->getKey()) != actions.end())
 				getAction(sym->getKey())(this, sym, owner);
 
 			symbolInterpretation.step();

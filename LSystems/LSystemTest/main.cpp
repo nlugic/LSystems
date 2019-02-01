@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(15, 0.5f);
 	//lrend::LSystemRenderer::drawHilbertCurve3D(6, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
-	//lrend::LSystemRenderer::drawGeneric3DTree(10, 4, 0.2f, 0.1f);
+	lrend::LSystemRenderer::drawGeneric3DTree(10, 4, 0.2f, 0.1f);
 
 	//benchmark(); // Debug, no optimization - 17.11.2018. ~02:30 - 19.11.2018. 18:21 = ~64h
 	//benchmark(); // Release, no optimization - 25.11.2018. ~01:10 - 25.11.2018. 12:07 = ~11h
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 	//benchmark(); // Release, prev + changed addVertices loop - 19.01.2019. 15:30 - 19.01.2019. ~15:34 = ~0.066h
 	//benchmark(); // Release, prev + updateTransform + no map.count - 24.01.2019. 01:08 - 24.01.2019. 01:11 = ~0.066h = ~0.05h
 
-	// direkciono svetlo umesto tackastog
+	// uzasni hakovi vezani za direkciono svetlo
 	// tropism vector
 
 #ifdef _DEBUG

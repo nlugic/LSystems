@@ -52,7 +52,7 @@ namespace lrend
 
 		glfwMakeContextCurrent(tWnd);
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
 		{
 			std::cerr << "An error ocurred while loading functions with GLAD." << std::endl;
 			return;
@@ -155,10 +155,10 @@ namespace lrend
 		OGLR::shaderProgram->setInt("texLayers", static_cast<int>(texturePaths.size()));
 	}
 
-	void OGLRenderer::initLighting(const glm::vec3& lightPosition, const glm::vec3& lightAttenuation, 
+	void OGLRenderer::initLighting(const glm::vec4& lightPosition, const glm::vec3& lightAttenuation, 
 		const glm::vec3& lightAmbient, const glm::vec3& lightDiffuse, const glm::vec3& lightSpecular, float shininess)
 	{
-		OGLR::shaderProgram->setFloatVx3("light.position", lightPosition);
+		OGLR::shaderProgram->setFloatVx4("light.position", lightPosition);
 		OGLR::shaderProgram->setFloatVx3("light.attenuation", lightAttenuation);
 		OGLR::shaderProgram->setFloatVx3("light.ambient", lightAmbient);
 		OGLR::shaderProgram->setFloatVx3("light.diffuse", lightDiffuse);

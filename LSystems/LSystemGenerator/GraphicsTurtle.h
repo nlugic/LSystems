@@ -64,7 +64,7 @@ namespace lsys
 		glm::mat4& getCurrentTransform();
 		const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& getAction(char key) const;
 		void setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
-		std::vector<float> getVertices() const;
+		const std::vector<float> getVertices() const;
 		const std::vector<glm::mat4>& getTransforms() const;
 
 		void pushState();

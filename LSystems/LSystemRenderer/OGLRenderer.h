@@ -17,7 +17,9 @@ namespace lrend
 		unsigned windowWidth, windowHeight;
 		unsigned textureWidth, textureHeight;
 		glm::vec3 backgroundColor;
-		glm::vec3 cameraPosition, lightPosition, lightAttenuation;
+		glm::vec3 cameraPosition;
+		glm::vec4 lightPosition;
+		glm::vec3 lightAttenuation;
 		glm::vec3 lightAmbient, lightDiffuse, lightSpecular;
 		float specularShininess;
 		const char *vertShaderPath, *fragShaderPath;
@@ -29,7 +31,7 @@ namespace lrend
 		1280U, 720U, 256U, 256U,
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.0f, 1.0f, 3.0f),
-		glm::vec3(0.0f, 5.0f, 3.0f),
+		glm::vec4(0.0f, 10.0f, 5.0f, 0.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
@@ -65,7 +67,7 @@ namespace lrend
 		static void initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData);
 		static void initCamera(const glm::vec3& position);
 		static void initShader(const char *vertexPath, const char *fragmentPath);
-		static void initLighting(const glm::vec3& position, const glm::vec3& attenuation, const glm::vec3& ambient,
+		static void initLighting(const glm::vec4& position, const glm::vec3& attenuation, const glm::vec3& ambient,
 			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
 		static void initTextures(const std::vector<const char *>& paths, int w, int h);
 

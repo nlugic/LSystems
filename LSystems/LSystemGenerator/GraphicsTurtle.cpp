@@ -49,7 +49,7 @@ namespace lsys
 		actions[key] = func;
 	}
 
-	std::vector<float> GraphicsTurtle::getVertices() const
+	const std::vector<float> GraphicsTurtle::getVertices() const
 	{
 		std::vector<float> buffer;
 		for (const VertexInstance &vi : vertexInstances)

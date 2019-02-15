@@ -108,9 +108,6 @@ int main(int argc, char **argv)
 	//benchmark(); // Release, prev + changed addVertices loop - 19.01.2019. 15:30 - 19.01.2019. ~15:34 = ~0.066h
 	//benchmark(); // Release, prev + updateTransform + no map.count - 24.01.2019. 01:08 - 24.01.2019. 01:11 = ~0.066h = ~0.05h
 
-	// uzasni hakovi vezani za direkciono svetlo
-	// tropism vector
-
 #ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
 #endif

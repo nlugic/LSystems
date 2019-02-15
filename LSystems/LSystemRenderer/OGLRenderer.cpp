@@ -262,7 +262,7 @@ namespace lrend
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
-	void OGLRenderer::renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
+	void OGLRenderer::renderScene(void *owner, std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
 		const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
 	{
 		OGLR::owner = owner;
@@ -273,6 +273,8 @@ namespace lrend
 
 		OGLR::initGLWindow(config.windowCaption);
 		OGLR::initBuffers(vBuf, transMats);
+		std::swap(vBuf, std::vector<float> { });
+
 		OGLR::initCamera(config.cameraPosition);
 		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();

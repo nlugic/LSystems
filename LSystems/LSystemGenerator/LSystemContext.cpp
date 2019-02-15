@@ -70,7 +70,7 @@ namespace lsys
 		return lSystem->getCurrentLevel();
 	}
 
-	const std::vector<float> LSystemContext::getVertexBuffer() const
+	std::vector<float> LSystemContext::getVertexBuffer() const
 	{
 		return turtle.getVertices();
 	}

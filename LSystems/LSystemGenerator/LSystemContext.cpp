@@ -26,7 +26,7 @@ namespace lsys
 	}
 
 	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
-		:currentLevel(0U), lSystem(lSys), turtle(lSystem, state)
+		: currentLevel(0U), lSystem(lSys), turtle(lSystem, state)
 	{
 		initTurtleActions();
 	}
@@ -70,14 +70,9 @@ namespace lsys
 		return lSystem->getCurrentLevel();
 	}
 
-	const std::vector<float> LSystemContext::getVertexBuffer() const
+	std::vector<float> LSystemContext::getVertexBuffer() const
 	{
 		return turtle.getVertices();
-	}
-
-	const std::vector<unsigned>& LSystemContext::getElementBuffer() const
-	{
-		return turtle.getElements();
 	}
 
 	const std::vector<glm::mat4>& LSystemContext::getTransformBuffer() const
@@ -92,15 +87,14 @@ namespace lsys
 		std::size_t curr = lSystem->getCurrentLevel();
 		if (level > curr)
 		{
-			std::cout << "Deriving the L-system to level " << level << "..." << std::endl;
+			std::clog << "Deriving the L-system to level " << level << "..." << std::endl;
 			lSystem->derive(level - curr);
-			std::cout << "L-system derivation finished!" << std::endl;
+			std::clog << "L-system derivation finished!" << std::endl;
 		}
 
 		turtle.resetState();
 		turtle.interpretSymbols((*lSystem)[level]);
 
-		GraphicsTurtle::elementPointer = 0U;
 		GraphicsTurtle::transformPointer = 0U;
 	}
 

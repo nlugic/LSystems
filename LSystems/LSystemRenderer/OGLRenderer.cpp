@@ -27,10 +27,8 @@ namespace lrend
 	OGLCamera *OGLR::camera = nullptr;
 	unsigned OGLR::vao = 0U;
 	unsigned OGLR::vbo = 0U;
-	unsigned OGLR::ebo = 0U;
 	unsigned OGLR::ssbo = 0U;
 	std::size_t OGLR::vertexBufSize = 0ULL;
-	std::size_t OGLR::elementBufSize = 0ULL;
 	std::size_t OGLR::shaderStorageBufSize = 0ULL;
 	OGLShader *OGLR::shaderProgram = nullptr;
 	OGLArrayTexture *OGLR::textures = nullptr;
@@ -40,22 +38,23 @@ namespace lrend
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 		GLFWwindow *tWnd = glfwCreateWindow(OGLR::width, OGLR::height, caption, nullptr, nullptr);
 		if (!tWnd)
 		{
-			std::cout << "An error ocurred while creating the GLFW window." << std::endl;
+			std::cerr << "An error ocurred while creating the GLFW window." << std::endl;
 			glfwTerminate();
 			return;
 		}
 
 		glfwMakeContextCurrent(tWnd);
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
 		{
-			std::cout << "An error ocurred while loading functions with GLAD." << std::endl;
+			std::cerr << "An error ocurred while loading functions with GLAD." << std::endl;
 			return;
 		}
 
@@ -63,6 +62,8 @@ namespace lrend
 
 		glfwSwapInterval(1);
 		glfwSetInputMode(tWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glDebugMessageCallback(OGLR::processDebugMessage, nullptr);
+
 		glfwSetKeyCallback(tWnd, OGLR::onKeyPress);
 		glfwSetWindowSizeCallback(tWnd, OGLR::onWindowResize);
 		glfwSetCursorPosCallback(tWnd, OGLR::onMouseMove);
@@ -81,7 +82,6 @@ namespace lrend
 			delete OGLR::textures;
 
 		glDeleteBuffers(1, &OGLR::ssbo);
-		glDeleteBuffers(1, &OGLR::ebo);
 		glDeleteBuffers(1, &OGLR::vbo);
 		glDeleteVertexArrays(1, &OGLR::vao);
 		glfwTerminate();
@@ -95,17 +95,15 @@ namespace lrend
 		OGLR::lastYPos = OGLR::height / 2.0;
 		OGLR::deltaTime = OGLR::lastFrame = 0.0f;
 		OGLR::camera = nullptr;
-		OGLR::vao = OGLR::vbo = OGLR::ebo = OGLR::ssbo = 0U;
-		OGLR::vertexBufSize = OGLR::elementBufSize = OGLR::shaderStorageBufSize = 0ULL;
+		OGLR::vao = OGLR::vbo = OGLR::ssbo = 0U;
+		OGLR::vertexBufSize = OGLR::shaderStorageBufSize = 0ULL;
 		OGLR::shaderProgram = nullptr;
 		OGLR::textures = nullptr;
 	}
 
-	void OGLRenderer::initBuffers(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
-		const std::vector<glm::mat4>& transformData)
+	void OGLRenderer::initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData)
 	{
 		OGLR::vertexBufSize = vertData.size();
-		OGLR::elementBufSize = elemData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
 
 		glGenVertexArrays(1, &OGLR::vao);
@@ -115,19 +113,15 @@ namespace lrend
 		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
 		glBufferData(GL_ARRAY_BUFFER, OGLR::vertexBufSize * sizeof(float), vertData.data(), GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), nullptr);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), nullptr);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(3 * sizeof(float)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), reinterpret_cast<const void *>(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(6 * sizeof(float)));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), reinterpret_cast<const void *>(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (const void *)(9 * sizeof(float)));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), reinterpret_cast<const void *>(9 * sizeof(float)));
 		glEnableVertexAttribArray(3);
 
-		glGenBuffers(1, &OGLR::ebo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, OGLR::elementBufSize * sizeof(float), elemData.data(), GL_STATIC_DRAW);
-		
 		glGenBuffers(1, &OGLR::ssbo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data(), GL_STATIC_DRAW);
@@ -135,7 +129,6 @@ namespace lrend
 
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
@@ -162,15 +155,22 @@ namespace lrend
 		OGLR::shaderProgram->setInt("texLayers", static_cast<int>(texturePaths.size()));
 	}
 
-	void OGLRenderer::initLighting(const glm::vec3& lightPosition, const glm::vec3& lightAttenuation, 
+	void OGLRenderer::initLighting(const glm::vec4& lightPosition, const glm::vec3& lightAttenuation, 
 		const glm::vec3& lightAmbient, const glm::vec3& lightDiffuse, const glm::vec3& lightSpecular, float shininess)
 	{
-		OGLR::shaderProgram->setFloatVx3("light.position", lightPosition);
+		OGLR::shaderProgram->setFloatVx4("light.position", lightPosition);
 		OGLR::shaderProgram->setFloatVx3("light.attenuation", lightAttenuation);
 		OGLR::shaderProgram->setFloatVx3("light.ambient", lightAmbient);
 		OGLR::shaderProgram->setFloatVx3("light.diffuse", lightDiffuse);
 		OGLR::shaderProgram->setFloatVx3("light.specular", lightSpecular);
 		OGLR::shaderProgram->setFloat("light.shininess", shininess);
+	}
+
+	void __stdcall OGLRenderer::processDebugMessage(GLenum src, GLenum type, GLenum id, GLenum sev, GLsizei len,
+		const GLchar *msg, const void *prm)
+	{
+		std::cerr << std::hex << ((type == GL_DEBUG_TYPE_ERROR) ? "Error [" : "Message [") << "src = " << src
+			<< ", type = " << type << ", severity = " << sev << "]:" << std::endl << msg << std::endl;
 	}
 
 	void OGLRenderer::takeScreenshot()
@@ -233,7 +233,7 @@ namespace lrend
 
 		double xOff = xPos - OGLR::lastXPos;
 		double yOff = OGLR::lastYPos - yPos;
-
+		
 		OGLR::lastXPos = xPos;
 		OGLR::lastYPos = yPos;
 
@@ -245,30 +245,25 @@ namespace lrend
 		OGLR::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::updateVertexData(const std::vector<float>& vertData, const std::vector<unsigned>& elemData,
-		const std::vector<glm::mat4>& transformData)
+	void OGLRenderer::updateVertexData(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData)
 	{
 		OGLR::vertexBufSize = vertData.size();
-		OGLR::elementBufSize = elemData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
 
 		glBindVertexArray(OGLR::vao);
 		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, OGLR::ebo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, OGLR::vertexBufSize * sizeof(float), vertData.data());
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, OGLR::elementBufSize * sizeof(unsigned), elemData.data());
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data());
 
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
-	void OGLRenderer::renderScene(void *owner, const std::vector<float>& vBuf, const std::vector<unsigned>& eBuf,
-		const std::vector<const char *>& texPaths, const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
+	void OGLRenderer::renderScene(void *owner, std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
+		const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
 	{
 		OGLR::owner = owner;
 		OGLR::width = config.windowWidth;
@@ -277,19 +272,21 @@ namespace lrend
 		OGLR::lastYPos = OGLR::height / 2.0;
 
 		OGLR::initGLWindow(config.windowCaption);
-		OGLR::initBuffers(vBuf, eBuf, transMats);
+		OGLR::initBuffers(vBuf, transMats);
+		std::swap(vBuf, std::vector<float> { });
+
 		OGLR::initCamera(config.cameraPosition);
 		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();
 		OGLR::initLighting(config.lightPosition, config.lightAttenuation, config.lightAmbient,
 			config.lightDiffuse, config.lightSpecular, config.specularShininess);
-		OGLR::initTextures(texPaths, config.textureWidth, config.textureHeight);
+		if (!texPaths.empty())
+			OGLR::initTextures(texPaths, config.textureWidth, config.textureHeight);
 
 		glEnable(GL_DEPTH_TEST);
 		glFrontFace(GL_CCW);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		glPolygonMode(GL_FRONT, GL_FILL);
 
 		glm::mat4 projection(glm::perspective(glm::radians(OGLR::camera->getFOV()),
 			static_cast<float>(OGLR::width) / OGLR::height, 0.1f, 100.0f));
@@ -321,8 +318,8 @@ namespace lrend
 			float currentFrame = static_cast<float>(glfwGetTime());
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
-
-			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(OGLR::elementBufSize), GL_UNSIGNED_INT, nullptr);
+			
+			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(OGLR::vertexBufSize / (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
 
 			glfwSwapBuffers(OGLR::glWindow);
 			glfwPollEvents();

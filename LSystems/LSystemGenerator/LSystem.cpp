@@ -80,7 +80,7 @@ namespace lsys
 
 	float LSystem::getParam(char param) const
 	{
-		if (params.count(param))
+		if (params.find(param) != params.end())
 			return params.at(param);
 		return NAN;
 	}
@@ -169,11 +169,11 @@ namespace lsys
 
 		while (--level)
 		{
-			std::cout << "Deriving level " << curr++ << "..." << std::endl;
+			std::clog << "Deriving level " << curr++ << "..." << std::endl;
 			derive();
 		}
 
-		std::cout << "Deriving level " << curr << "..." << std::endl;
+		std::clog << "Deriving level " << curr << "..." << std::endl;
 		return derive();
 	}
 

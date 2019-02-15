@@ -38,7 +38,7 @@ namespace lrend
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else
-			std::cout << "An error ocurred while loading the texture image." << std::endl;
+			std::cerr << "An error ocurred while loading the texture image." << std::endl;
 		stbi_image_free(image);
 	}
 
@@ -53,7 +53,7 @@ namespace lrend
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 		else
-			std::cout << "An error ocurred while loading the texture image." << std::endl;
+			std::cerr << "An error ocurred while loading the texture image." << std::endl;
 
 		delete[] data;
 	}

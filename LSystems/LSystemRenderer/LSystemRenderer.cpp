@@ -34,8 +34,7 @@ namespace lrend
 			return;
 
 		context->generateModel(context->getCurrentLevel() + 1ULL);
-		OGLRenderer::updateVertexData(context->getVertexBuffer(), context->getElementBuffer(),
-			context->getTransformBuffer());
+		OGLRenderer::updateVertexData(context->getVertexBuffer(), context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::levelDown()
@@ -44,8 +43,7 @@ namespace lrend
 			return;
 
 		context->generateModel(context->getCurrentLevel() - 1ULL);
-		OGLRenderer::updateVertexData(context->getVertexBuffer(), context->getElementBuffer(),
-			context->getTransformBuffer());
+		OGLRenderer::updateVertexData(context->getVertexBuffer(), context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::setTestMode(bool test)
@@ -59,8 +57,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandA(std::size_t level, float length, float angle)
@@ -69,8 +67,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandB(std::size_t level, float length, float angle)
@@ -79,8 +77,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandC(std::size_t level, float length, float angle)
@@ -89,8 +87,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandD(std::size_t level, float length, float angle)
@@ -99,8 +97,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandE(std::size_t level, float length, float angle)
@@ -109,8 +107,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandF(std::size_t level, float length, float angle)
@@ -119,8 +117,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandG(std::size_t level, float length, float angle)
@@ -129,8 +127,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawDragonCurve(std::size_t level, float length, float angle)
@@ -139,8 +137,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawSierpinskiGasket(std::size_t level, float length, float angle)
@@ -149,8 +147,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeA(std::size_t level, float length, float angle)
@@ -159,8 +157,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeB(std::size_t level, float length, float angle)
@@ -169,8 +167,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeC(std::size_t level, float length, float angle)
@@ -179,8 +177,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeD(std::size_t level, float length, float angle)
@@ -189,8 +187,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeE(std::size_t level, float length, float angle)
@@ -199,8 +197,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeF(std::size_t level, float length, float angle)
@@ -209,8 +207,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeS(std::size_t level, float length, float angle)
@@ -219,8 +217,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeSD(std::size_t level, float length, float reduction, float angle)
@@ -229,8 +227,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawHilbertCurve3D(std::size_t level, float width, float length, float red, float green, float blue, float angle)
@@ -239,8 +237,8 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
-				std::vector<const char *> { }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
+				rend.context->getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric3DTree(std::size_t level, int slices, float radius, float height, float angle)
@@ -249,7 +247,7 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), rend.context->getElementBuffer(),
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(),
 				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, rend.context->getTransformBuffer());
 	}
 

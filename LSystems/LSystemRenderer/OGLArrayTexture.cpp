@@ -37,7 +37,7 @@ namespace lrend
 			if (image)
 				glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, layer++, width, height, 1, format, GL_UNSIGNED_BYTE, image);
 			else
-				std::cout << "An error ocurred while loading the texture image: " << path << std::endl;
+				std::cerr << "An error ocurred while loading the texture image: " << path << std::endl;
 
 			stbi_image_free(image);
 		}
@@ -51,13 +51,12 @@ namespace lrend
 		initArrayTexture();
 
 		int layer = 0;
-
 		for (unsigned char *image : data)
 		{
 			if (image)
-				glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, layer++, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image);
+				glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, layer, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image);
 			else
-				std::cout << "An error ocurred while loading the texture image." << std::endl;
+				std::cerr << "An error ocurred while loading the texture image." << std::endl;
 			
 			delete[] image;
 		}

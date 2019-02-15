@@ -20,7 +20,7 @@ namespace lsysh
 		progress += progressIncrement;
 		progressMarker = std::floorf(progress / (100.0f / markerCount));
 		if (std::floorf(progress) - std::floorf(progress - progressIncrement) > epsilon)
-			std::cout << "\r[" << std::string(static_cast<unsigned>(progressMarker), '#')
+			std::clog << "\r[" << std::string(static_cast<unsigned>(progressMarker), '#')
 			<< std::string(markerCount - static_cast<unsigned>(progressMarker), ' ') << "] [" << std::floorf(progress) << "%]";
 	}
 
@@ -28,10 +28,10 @@ namespace lsysh
 	{
 		progress = 100.0f;
 		progressMarker = static_cast<float>(markerCount);
-		std::cout << "\r[" << std::string(markerCount, '#') << "] [100%]" << std::endl;
+		std::clog << "\r[" << std::string(markerCount, '#') << "] [100%]" << std::endl;
 		end = std::chrono::steady_clock::now();
 		float executionTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0f;
-		std::cout << "Operation took " << executionTime << " seconds." << std::endl;
+		std::clog << "Operation took " << executionTime << " seconds." << std::endl;
 		if (newLine)
 			log << std::ceil(100.0f / progressIncrement) << ',';
 		log << executionTime << ((newLine) ? '\n' : ',');

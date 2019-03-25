@@ -61,10 +61,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.vert">
+    <None Include="default.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shader.frag">
+    <None Include="default.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

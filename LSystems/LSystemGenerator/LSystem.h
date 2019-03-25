@@ -6,8 +6,6 @@
 namespace lsys
 {
 
-	const float epsilon = 1e-5f;
-
 	class LSystem
 	{
 	private:
@@ -42,7 +40,7 @@ namespace lsys
 
 		virtual const std::vector<LSystemSymbol *>& derive();
 		const std::vector<LSystemSymbol *>& derive(std::size_t level);
-		LSystemProduction* matchProduction(LSystemSymbol *pred);
+		LSystemProduction* matchProduction(const std::vector<LSystemSymbol *>& currLevel, std::vector<LSystemSymbol *>::const_iterator& pred);
 
 		virtual std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& out, const LSystem& lSys);

@@ -1,5 +1,8 @@
 
 #include "ConsoleProgressBar.h"
+
+#if defined(_DEBUG) || defined(_VERBOSE)
+
 #include <iostream>
 #include <string>
 
@@ -45,3 +48,5 @@ namespace lsysh
 	}
 
 }
+
+#endif

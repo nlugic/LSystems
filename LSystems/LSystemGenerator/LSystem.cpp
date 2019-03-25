@@ -144,20 +144,26 @@ namespace lsys
 		const std::vector<LSystemSymbol *>& currentLevel = products[products.size() - 1ULL];
 		std::vector<LSystemSymbol *> newLevel;
 
+#if defined(_DEBUG) || defined(_VERBOSE)
 		lsysh::ConsoleProgressBar symbolDerivation(currentLevel.size());
+#endif
 
-		for (LSystemSymbol *sym : currentLevel)
+		for (std::vector<LSystemSymbol *>::const_iterator& sym = currentLevel.begin(); sym != currentLevel.end(); ++sym)
 		{
-			LSystemProduction *matchedProd = matchProduction(sym);
+			LSystemProduction *matchedProd = matchProduction(currentLevel, sym);
 
 			if (!matchedProd)
-				newLevel.push_back(new LSystemSymbol(*sym));
+				newLevel.push_back(new LSystemSymbol(**sym));
 			else
-				matchedProd->generateSuccessor(sym, params, newLevel);
+				matchedProd->generateSuccessor(*sym, params, newLevel);
 
+#if defined(_DEBUG) || defined(_VERBOSE)
 			symbolDerivation.step();
 		}
 		symbolDerivation.finish();
+#else
+		}
+#endif
 
 		products.push_back(newLevel);
 		return products[products.size() - 1ULL];
@@ -177,13 +183,42 @@ namespace lsys
 		return derive();
 	}
 
-	LSystemProduction* LSystem::matchProduction(LSystemSymbol *pred)
+	LSystemProduction* LSystem::matchProduction(const std::vector<LSystemSymbol *>& currLevel, std::vector<LSystemSymbol *>::const_iterator& pred)
 	{
 		std::vector<LSystemProduction *> candidates;
 
 		for (LSystemProduction *prod : productions)
-			if (*prod->getPredecessor() == *pred && prod->condition(pred, params))
-				candidates.push_back(prod);
+		{
+			if (*prod->getPredecessor() != **pred || !prod->condition(*pred, params))
+				continue;
+
+			long long predIndex = pred - currLevel.begin();
+			const std::vector<LSystemSymbol *>& leftCxt = prod->getLeftContext();
+			if (!leftCxt.empty())
+			{
+				long long left = predIndex - 1LL;
+
+				while (left >= 0LL
+					&& *currLevel[left] == *leftCxt[leftCxt.size() - predIndex + left])
+					--left;
+				if (predIndex - left != leftCxt.size() + 1ULL)
+					continue;
+			}
+
+			const std::vector<LSystemSymbol *>& rightCxt = prod->getRightContext();
+			if (!rightCxt.empty())
+			{
+				long long right = predIndex + 1LL;
+
+				while (right < static_cast<long long>(currLevel.size())
+					&& *currLevel[right] == *rightCxt[right - predIndex - 1LL])
+					++right;
+				if (right - predIndex != rightCxt.size() + 1ULL)
+					continue;
+			}
+
+			candidates.push_back(prod);
+		}
 
 		if (candidates.size() == 1)
 			return candidates[0];

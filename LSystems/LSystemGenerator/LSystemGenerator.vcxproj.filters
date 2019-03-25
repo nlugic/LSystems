@@ -36,7 +36,7 @@
     <Filter Include="Systems\Generic Symbols">
       <UniqueIdentifier>{532fa1ae-c51a-4d7f-b4fc-7aef060aace2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Helpers">
+    <Filter Include="Console Progress Bar">
       <UniqueIdentifier>{66cec9b2-a11d-4a3a-b7a9-be47842c0094}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -152,12 +152,10 @@
     <ClInclude Include="GenericLineSymbol.h">
       <Filter>Systems\Generic Symbols</Filter>
     </ClInclude>
-    <ClInclude Include="StochasticHelpers.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="ConsoleProgressBar.h">
-      <Filter>Helpers</Filter>
+      <Filter>Console Progress Bar</Filter>
     </ClInclude>
+    <ClInclude Include="GlobalDefinitions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LSystem.cpp">
@@ -179,7 +177,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConsoleProgressBar.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Console Progress Bar</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

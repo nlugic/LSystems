@@ -1,4 +1,7 @@
-#ifndef CONSOLEPROGRESSBAR_H
+
+#include "GlobalDefinitions.h"
+
+#if !defined(CONSOLEPROGRESSBAR_H) && (defined(_DEBUG) || defined(_VERBOSE))
 #define CONSOLEPROGRESSBAR_H
 
 #include <fstream>

@@ -1,9 +1,7 @@
 
 #include "OGLShader.h"
-
 #include "..\..\include\glad\glad.h"
 #include "..\..\include\glm\gtc\type_ptr.hpp"
-
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -51,19 +49,49 @@ namespace lrend
 		return id;
 	}
 
-	OGLShader::OGLShader(const char *vertexPath, const char *fragmentPath)
+	OGLShader::OGLShader(const char *vertexPath, const char *tessCtrlPath, const char *tessEvalPath,
+		const char *geometryPath, const char *fragmentPath)
 		:programId(glCreateProgram())
 	{
-		unsigned vertexId = createShader(vertexPath, GL_VERTEX_SHADER);
-		unsigned fragmentId = createShader(fragmentPath, GL_FRAGMENT_SHADER);
+		if (vertexPath)
+		{
+			unsigned vertexId = createShader(vertexPath, GL_VERTEX_SHADER);
+			glAttachShader(programId, vertexId);
+			glDeleteShader(vertexId);
+		}
+
+		if (tessCtrlPath)
+		{
+			unsigned tessCtrlId = createShader(tessCtrlPath, GL_TESS_CONTROL_SHADER);
+			glAttachShader(programId, tessCtrlId);
+			glDeleteShader(tessCtrlId);
+		}
+
+		if (tessEvalPath)
+		{
+			unsigned tessEvalId = createShader(tessEvalPath, GL_TESS_EVALUATION_SHADER);
+			glAttachShader(programId, tessEvalId);
+			glDeleteShader(tessEvalId);
+		}
+
+		if (geometryPath)
+		{
+			unsigned geometryId = createShader(geometryPath, GL_GEOMETRY_SHADER);
+			glAttachShader(programId, geometryId);
+			glDeleteShader(geometryId);
+		}
+
+		if (fragmentPath)
+		{
+			unsigned fragmentId = createShader(fragmentPath, GL_FRAGMENT_SHADER);
+			glAttachShader(programId, fragmentId);
+			glDeleteShader(fragmentId);
+		}
 
 		int success;
 		char errorMsg[msg_buf_size];
 
-		glAttachShader(programId, vertexId);
-		glAttachShader(programId, fragmentId);
 		glLinkProgram(programId);
-
 		glGetProgramiv(programId, GL_LINK_STATUS, &success);
 		if (!success)
 		{
@@ -71,9 +99,6 @@ namespace lrend
 			std::cerr << "An error ocurred while linking the shader program." << std::endl
 				<< errorMsg << std::endl;
 		}
-
-		glDeleteShader(vertexId);
-		glDeleteShader(fragmentId);
 	}
 
 	OGLShader::~OGLShader()

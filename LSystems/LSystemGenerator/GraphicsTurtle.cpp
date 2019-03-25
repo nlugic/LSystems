@@ -170,18 +170,26 @@ namespace lsys
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
 		std::size_t symbolCount = symbols.size();
-		
+
 		std::clog << "Interpreting " << symbolCount << " symbols..." << std::endl;
+
+#if defined(_DEBUG) || defined(_VERBOSE)
 		lsysh::ConsoleProgressBar symbolInterpretation(symbolCount);
+#endif
 
 		for (LSystemSymbol *sym : symbols)
 		{
 			if (actions.find(sym->getKey()) != actions.end())
 				getAction(sym->getKey())(this, sym, owner);
 
+#if defined(_DEBUG) || defined(_VERBOSE)
 			symbolInterpretation.step();
 		}
 		symbolInterpretation.finish(true);
+#else
+		}
+#endif
+
 	}
 
 	std::string GraphicsTurtle::toString() const

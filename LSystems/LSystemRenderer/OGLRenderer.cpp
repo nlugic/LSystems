@@ -33,6 +33,10 @@ namespace lrend
 	OGLShader *OGLR::shaderProgram = nullptr;
 	OGLArrayTexture *OGLR::textures = nullptr;
 
+#ifdef _DEBUG
+	unsigned OGLR::tqo = 0U;
+#endif
+
 	void OGLRenderer::initGLWindow(const char *caption)
 	{
 		glfwInit();
@@ -40,7 +44,10 @@ namespace lrend
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+#ifdef _DEBUG
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+#endif
 
 		GLFWwindow *tWnd = glfwCreateWindow(OGLR::width, OGLR::height, caption, nullptr, nullptr);
 		if (!tWnd)
@@ -62,12 +69,16 @@ namespace lrend
 
 		glfwSwapInterval(1);
 		glfwSetInputMode(tWnd, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glDebugMessageCallback(OGLR::processDebugMessage, nullptr);
 
 		glfwSetKeyCallback(tWnd, OGLR::onKeyPress);
 		glfwSetWindowSizeCallback(tWnd, OGLR::onWindowResize);
 		glfwSetCursorPosCallback(tWnd, OGLR::onMouseMove);
 		glfwSetScrollCallback(tWnd, OGLR::onMouseScroll);
+
+#ifdef _DEBUG
+		glGenQueries(1, &OGLR::tqo);
+		glDebugMessageCallback(OGLR::processDebugMessage, nullptr);
+#endif
 
 		OGLR::glWindow = tWnd;
 	}
@@ -99,12 +110,21 @@ namespace lrend
 		OGLR::vertexBufSize = OGLR::shaderStorageBufSize = 0ULL;
 		OGLR::shaderProgram = nullptr;
 		OGLR::textures = nullptr;
+
+#ifdef _DEBUG
+		glDeleteQueries(1, &OGLR::tqo);
+		OGLR::tqo = 0U;
+#endif
 	}
 
 	void OGLRenderer::initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData)
 	{
 		OGLR::vertexBufSize = vertData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
+
+#ifdef _DEBUG
+		glBeginQuery(GL_TIME_ELAPSED, OGLR::tqo);
+#endif
 
 		glGenVertexArrays(1, &OGLR::vao);
 		glBindVertexArray(OGLR::vao);
@@ -115,17 +135,34 @@ namespace lrend
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), nullptr);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), reinterpret_cast<const void *>(3 * sizeof(float)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float),
+			reinterpret_cast<const void *>(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), reinterpret_cast<const void *>(6 * sizeof(float)));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float),
+			reinterpret_cast<const void *>(6 * sizeof(float)));
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), reinterpret_cast<const void *>(9 * sizeof(float)));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float),
+			reinterpret_cast<const void *>(9 * sizeof(float)));
 		glEnableVertexAttribArray(3);
 
 		glGenBuffers(1, &OGLR::ssbo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data(), GL_STATIC_DRAW);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, OGLR::shaderStorageBufSize * sizeof(glm::mat4),
+			transformData.data(), GL_STATIC_DRAW);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, OGLR::ssbo);
+
+#ifdef _DEBUG
+		glEndQuery(GL_TIME_ELAPSED);
+
+		GLuint64 elapsedTime = 0ULL;
+		glGetQueryObjectui64v(OGLR::tqo, GL_QUERY_RESULT, &elapsedTime);
+
+		std::clog << "Initializing the buffers took " << elapsedTime << " nanoseconds." << std::endl;
+
+		glObjectLabel(GL_VERTEX_ARRAY, OGLR::vao, 9, "Main VAO");
+		glObjectLabel(GL_BUFFER, OGLR::vbo, 9, "Mesh VBO");
+		glObjectLabel(GL_BUFFER, OGLR::ssbo, 21, "Mesh transforms SSBO");
+#endif
 
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
@@ -139,11 +176,13 @@ namespace lrend
 		OGLR::camera = new OGLCamera(cameraPosition);
 	}
 
-	void OGLRenderer::initShader(const char *vertexPath, const char *fragmentPath)
+	void OGLRenderer::initShader(const char *vertexPath, const char *tessCtrlPath, const char *tessEvalPath,
+		const char *geometryPath, const char *fragmentPath)
 	{
 		if (OGLR::shaderProgram)
 			delete OGLR::shaderProgram;
-		OGLR::shaderProgram = new OGLShader(vertexPath, fragmentPath);
+		OGLR::shaderProgram = new OGLShader(vertexPath, tessCtrlPath, tessEvalPath,
+			geometryPath, fragmentPath);
 	}
 
 	void OGLRenderer::initTextures(const std::vector<const char *>& texturePaths, int w, int h)
@@ -152,7 +191,6 @@ namespace lrend
 			delete OGLR::textures;
 
 		OGLR::textures = new OGLArrayTexture(texturePaths, w, h);
-		OGLR::shaderProgram->setInt("texLayers", static_cast<int>(texturePaths.size()));
 	}
 
 	void OGLRenderer::initLighting(const glm::vec4& lightPosition, const glm::vec3& lightAttenuation, 
@@ -165,20 +203,23 @@ namespace lrend
 		OGLR::shaderProgram->setFloatVx3("light.specular", lightSpecular);
 		OGLR::shaderProgram->setFloat("light.shininess", shininess);
 	}
-
-	void __stdcall OGLRenderer::processDebugMessage(GLenum src, GLenum type, GLenum id, GLenum sev, GLsizei len,
-		const GLchar *msg, const void *prm)
+	
+#ifdef _DEBUG
+	void APIENTRY OGLRenderer::processDebugMessage(GLenum source, GLenum type, GLenum id, GLenum severity,
+		GLsizei length, const GLchar *message, const void *param)
 	{
-		std::cerr << std::hex << ((type == GL_DEBUG_TYPE_ERROR) ? "Error [" : "Message [") << "src = " << src
-			<< ", type = " << type << ", severity = " << sev << "]:" << std::endl << msg << std::endl;
+		std::cerr << std::hex << ((type == GL_DEBUG_TYPE_ERROR) ? "Error [" : "Message [")
+			<< "src = " << source << ", type = " << type << ", severity = " << severity << "]:"
+			<< std::dec << std::endl << message << std::endl;
 	}
+#endif
 
 	void OGLRenderer::takeScreenshot()
 	{
 		unsigned char *data = new unsigned char[OGLR::width * OGLR::height * 3];
 
 		glReadPixels(0, 0, OGLR::width, OGLR::height, GL_RGB, GL_UNSIGNED_BYTE, data);
-		
+
 		std::string time(std::to_string(glfwGetTime()));
 		time += ".jpg";
 
@@ -199,7 +240,7 @@ namespace lrend
 		if (glfwGetKey(wnd, GLFW_KEY_D) == GLFW_PRESS)
 			OGLR::camera->move(RIGHT, OGLR::deltaTime);
 	}
-
+	
 	void OGLRenderer::onKeyPress(GLFWwindow *wnd, int key, int scancode, int action, int mode)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -250,12 +291,25 @@ namespace lrend
 		OGLR::vertexBufSize = vertData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
 
+#ifdef _DEBUG
+		glBeginQuery(GL_TIME_ELAPSED, OGLR::tqo);
+#endif
+
 		glBindVertexArray(OGLR::vao);
 		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, OGLR::vertexBufSize * sizeof(float), vertData.data());
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, OGLR::shaderStorageBufSize * sizeof(glm::mat4), transformData.data());
+
+#ifdef _DEBUG
+		glEndQuery(GL_TIME_ELAPSED);
+
+		GLuint64 elapsedTime = 0ULL;
+		glGetQueryObjectui64v(OGLR::tqo, GL_QUERY_RESULT, &elapsedTime);
+
+		std::clog << "Updating the buffers took " << elapsedTime << " nanoseconds." << std::endl;
+#endif
 
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
@@ -276,7 +330,8 @@ namespace lrend
 		std::swap(vBuf, std::vector<float> { });
 
 		OGLR::initCamera(config.cameraPosition);
-		OGLR::initShader(config.vertShaderPath, config.fragShaderPath);
+		OGLR::initShader(config.vertShaderPath, config.tessCtrlPath, config.tessEvalPath,
+			config.geometryPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();
 		OGLR::initLighting(config.lightPosition, config.lightAttenuation, config.lightAmbient,
 			config.lightDiffuse, config.lightSpecular, config.specularShininess);
@@ -319,7 +374,8 @@ namespace lrend
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
 			
-			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(OGLR::vertexBufSize / (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
+			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(OGLR::vertexBufSize
+				/ (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
 
 			glfwSwapBuffers(OGLR::glWindow);
 			glfwPollEvents();

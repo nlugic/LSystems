@@ -22,7 +22,7 @@ namespace lrend
 		glm::vec3 lightAttenuation;
 		glm::vec3 lightAmbient, lightDiffuse, lightSpecular;
 		float specularShininess;
-		const char *vertShaderPath, *fragShaderPath;
+		const char *vertShaderPath, *tessCtrlPath, *tessEvalPath, *geometryPath, *fragShaderPath;
 		const char *windowCaption;
 	};
 
@@ -36,8 +36,7 @@ namespace lrend
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
-		"..\\LSystemRenderer\\shader.vert",
-		"..\\LSystemRenderer\\shader.frag",
+		"..\\LSystemRenderer\\default.vert", nullptr, nullptr, nullptr, "..\\LSystemRenderer\\default.frag",
 		"L-System Renderer"
 	};
 
@@ -59,6 +58,10 @@ namespace lrend
 		static OGLShader *shaderProgram;
 		static OGLArrayTexture *textures;
 
+#ifdef _DEBUG
+		static unsigned tqo;
+#endif
+
 		OGLRenderer(const OGLRenderer&) = delete;
 		OGLRenderer& operator=(const OGLRenderer&) = delete;
 
@@ -66,12 +69,17 @@ namespace lrend
 		static void destroyGLWindow();
 		static void initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData);
 		static void initCamera(const glm::vec3& position);
-		static void initShader(const char *vertexPath, const char *fragmentPath);
+		static void initShader(const char *vertexPath, const char *tessCtrlPath, const char *tessEvalPath,
+			const char *geometryPath, const char *fragmentPath);
 		static void initLighting(const glm::vec4& position, const glm::vec3& attenuation, const glm::vec3& ambient,
 			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
 		static void initTextures(const std::vector<const char *>& paths, int w, int h);
+		
+#ifdef _DEBUG
+		static void APIENTRY processDebugMessage(GLenum source, GLenum type, GLenum id, GLenum severity,
+			GLsizei length, const GLchar *message, const void *param);
+#endif
 
-		static void __stdcall processDebugMessage(GLenum src, GLenum type, GLenum id, GLenum sev, GLsizei len, const GLchar *msg, const void *prm);
 		static void takeScreenshot();
 		static void processMoveKeys(GLFWwindow *wnd);
 		static void onKeyPress(GLFWwindow *wnd, int key, int scancode, int action, int mode);

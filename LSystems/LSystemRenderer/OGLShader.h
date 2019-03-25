@@ -16,7 +16,8 @@ namespace lrend
 		unsigned createShader(const char *path, unsigned short type) const;
 		
 	public:
-		OGLShader(const char *vertexPath, const char *fragmentPath);
+		OGLShader(const char *vertexPath = nullptr, const char *tessCtrlPath = nullptr, const char *tessEvalPath = nullptr,
+			const char *geometryPath = nullptr, const char *fragmentPath = nullptr);
 		OGLShader(const OGLShader&) = delete;
 		OGLShader& operator=(const OGLShader&) = delete;
 		~OGLShader();

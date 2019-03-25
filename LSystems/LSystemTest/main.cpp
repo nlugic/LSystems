@@ -99,18 +99,13 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(15, 0.5f);
 	//lrend::LSystemRenderer::drawHilbertCurve3D(6, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
-	lrend::LSystemRenderer::drawGeneric3DTree(10, 4, 0.2f, 0.1f);
+	lrend::LSystemRenderer::drawGeneric3DTree(7, 16, 0.1f, 0.15f);
 
-	//benchmark(); // Debug, no optimization - 17.11.2018. ~02:30 - 19.11.2018. 18:21 = ~64h
-	//benchmark(); // Release, no optimization - 25.11.2018. ~01:10 - 25.11.2018. 12:07 = ~11h
-	//benchmark(); // Release, copy&swap + actions + reverse search - 02.12.2018. 02:45 - 02.12.2018. ~10:10 = ~7.4h
-	//benchmark(); // Release, prev + vertexInstance + no indexed rendering - 17.01.2019. 00:20 - 17.01.2019. ~00:25 = ~0.083h
-	//benchmark(); // Release, prev + changed addVertices loop - 19.01.2019. 15:30 - 19.01.2019. ~15:34 = ~0.066h
-	//benchmark(); // Release, prev + updateTransform + no map.count - 24.01.2019. 01:08 - 24.01.2019. 01:11 = ~0.066h = ~0.05h
+	//benchmark();
 
 #ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
 #endif
-
+	
 	return 0;
 }

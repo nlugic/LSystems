@@ -1,6 +1,7 @@
 #ifndef LSYSTEMSYMBOL_H
 #define LSYSTEMSYMBOL_H
 
+#include "GlobalDefinitions.h"
 #include <iostream>
 #include <string>
 #include <map>

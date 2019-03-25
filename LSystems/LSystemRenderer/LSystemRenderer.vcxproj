@@ -37,8 +37,8 @@
     <ClInclude Include="OGLTexture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="default.frag" />
+    <None Include="default.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="test.png" />

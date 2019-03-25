@@ -149,6 +149,7 @@
     <ClInclude Include="DragonCurveContext.h" />
     <ClInclude Include="DragonCurveLSystem.h" />
     <ClInclude Include="DragonCurveProductions.h" />
+    <ClInclude Include="GlobalDefinitions.h" />
     <ClInclude Include="HilbertCurve3DContext.h" />
     <ClInclude Include="HilbertCurve3DLSystem.h" />
     <ClInclude Include="HilbertCurve3DProductions.h" />
@@ -179,7 +180,6 @@
     <ClInclude Include="SierpinskiGasketContext.h" />
     <ClInclude Include="SierpinskiGasketLSystem.h" />
     <ClInclude Include="SierpinskiGasketProductions.h" />
-    <ClInclude Include="StochasticHelpers.h" />
     <ClInclude Include="TurnAroundSymbol.h" />
     <ClInclude Include="TurnLeftSymbol.h" />
     <ClInclude Include="TurnRightSymbol.h" />

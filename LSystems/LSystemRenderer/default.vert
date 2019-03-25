@@ -5,9 +5,9 @@ layout (location = 1) in vec3 vNorm;
 layout (location = 2) in vec3 tCoord;
 layout (location = 3) in float trPoint;
 
-out vec3 vertNormal;
-out vec3 fragPosition;
-out vec3 texCoordinates;
+out vec3 vNormal;
+out vec3 fPosition;
+out vec3 tCoordinates;
 
 uniform mat4 proj;
 uniform mat4 view;
@@ -22,9 +22,9 @@ void main()
 {
 	mat4 combinedModel = model * transforms[uint(trPoint)];
 
-	vertNormal = mat3(transpose(inverse(combinedModel))) * vNorm;
-	fragPosition = vec3(combinedModel * vec4(vPos, 1.0f));
-	texCoordinates = tCoord;
+	vNormal = mat3(transpose(inverse(combinedModel))) * vNorm;
+	fPosition = vec3(combinedModel * vec4(vPos, 1.0f));
+	tCoordinates = tCoord;
 
-	gl_Position = proj * view * vec4(fragPosition, 1.0f);
+	gl_Position = proj * view * vec4(fPosition, 1.0f);
 }

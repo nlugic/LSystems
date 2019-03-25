@@ -11,9 +11,11 @@ struct Light
 in vec3 vertNormal;
 in vec3 fragPosition;
 in vec3 texCoordinates;
+noperspective in vec3 edgeDistance;
 
-out vec4 gl_FragColor;
+layout (location = 0) out vec4 gl_FragColor;
 
+uniform bool enableWireframe;
 uniform vec3 viewPosition;
 uniform Light light;
 
@@ -38,4 +40,14 @@ void main()
 		+ light.attenuation.z * (distanceToFragment * distanceToFragment));
 
 	gl_FragColor = vec4(lightAttenuation * (ambient + diffuse + specular), 1.0f);
+
+	if (!enableWireframe)
+		return;
+
+	float minDistance = min(edgeDistance.x, edgeDistance.y);
+	minDistance = min(minDistance, edgeDistance.z);
+
+	float lineWidth = 0.25f;
+	vec4 lineColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	gl_FragColor = mix(lineColor, gl_FragColor, smoothstep(lineWidth - 1.0f, lineWidth + 1.0f, minDistance));
 }

@@ -22,6 +22,21 @@ namespace lsys
 		}
 	};
 
+	class TesselatedGeneric3DTreeLSystem : public LSystem
+	{
+	public:
+		TesselatedGeneric3DTreeLSystem(float radius, float height, float angle)
+		{
+			setParam('a', angle);
+
+			addSymbolToAxiom(new Generic3DTreeBranchApexSymbol(0.0f, radius, height));
+
+			addProduction(new Generic3DTreeProductionP1());
+			addProduction(new Generic3DTreeProductionP2());
+			addProduction(new Generic3DTreeProductionP3());
+		}
+	};
+
 }
 
 #endif

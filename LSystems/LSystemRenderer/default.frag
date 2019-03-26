@@ -8,9 +8,9 @@ struct Light
 	float shininess;
 };
 
-in vec3 vertNormal;
-in vec3 fragPosition;
-in vec3 texCoordinates;
+in vec3 gsVertNormal;
+in vec3 gsFragPosition;
+in vec3 gsTexCoordinates;
 noperspective in vec3 edgeDistance;
 
 layout (location = 0) out vec4 gl_FragColor;
@@ -23,19 +23,19 @@ layout (binding = 0) uniform sampler2DArray textures;
 
 void main()
 {
-	vec3 color = (texCoordinates.z < 0.0f) ? vec3(texCoordinates.xy, -texCoordinates.z) : texture(textures, texCoordinates).rgb;
+	vec3 color = (gsTexCoordinates.z < 0.0f) ? vec3(gsTexCoordinates.xy, -gsTexCoordinates.z) : texture(textures, gsTexCoordinates).rgb;
 
 	vec3 ambient = light.ambient * color;
 
-	vec3 normalizedNormal = normalize(vertNormal);
-	vec3 lightDirection = normalize((light.position.w) ? light.position.xyz - fragPosition : light.position.xyz);
+	vec3 normalizedNormal = normalize(gsVertNormal);
+	vec3 lightDirection = normalize((light.position.w) ? light.position.xyz - gsFragPosition : light.position.xyz);
 	vec3 diffuse = light.diffuse * max(dot(normalizedNormal, lightDirection), 0.0f) * color;
 
-	vec3 viewDirection = normalize(viewPosition - fragPosition);
+	vec3 viewDirection = normalize(viewPosition - gsFragPosition);
 	vec3 reflectionDirection = reflect(-lightDirection, normalizedNormal);
 	vec3 specular = light.specular * pow(max(dot(viewDirection, reflectionDirection), 0.0f), light.shininess) * color;
 
-	float distanceToFragment = (light.position.w) ? length(light.position.xyz - fragPosition) : 0.0f;
+	float distanceToFragment = (light.position.w) ? length(light.position.xyz - gsFragPosition) : 0.0f;
 	float lightAttenuation = 1.0f / (light.attenuation.x + light.attenuation.y * distanceToFragment
 		+ light.attenuation.z * (distanceToFragment * distanceToFragment));
 

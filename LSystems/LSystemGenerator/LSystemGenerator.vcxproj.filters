@@ -18,26 +18,26 @@
     <Filter Include="Implemented L-Systems">
       <UniqueIdentifier>{13a6940a-0b7a-4985-bd15-73392f959094}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Implemented L-Systems\KochCurve">
-      <UniqueIdentifier>{66f78b53-dc60-4f10-982d-a6001cd80caa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implemented L-Systems\SierpinskiGasket">
-      <UniqueIdentifier>{fd90db52-9685-42a9-bb9a-0b7136c82023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implemented L-Systems\Generic3DTree">
-      <UniqueIdentifier>{2a284e2e-99bf-47a8-b17c-d813fe8ba66c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implemented L-Systems\Generic2DTree">
-      <UniqueIdentifier>{8ac41d62-4b87-43f2-b01b-ecfb267efe03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implemented L-Systems\HilbertCurve3D">
-      <UniqueIdentifier>{e2b39f9f-8017-4f2d-8e2b-5488ecb3f572}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Implemented L-Systems\DragonCurve">
-      <UniqueIdentifier>{5a52f797-c9fb-4421-b183-c5c156875751}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implemented L-Systems\Generic Symbols">
       <UniqueIdentifier>{532fa1ae-c51a-4d7f-b4fc-7aef060aace2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Dragon Curve">
+      <UniqueIdentifier>{5a52f797-c9fb-4421-b183-c5c156875751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\3D Hilbert Curve">
+      <UniqueIdentifier>{e2b39f9f-8017-4f2d-8e2b-5488ecb3f572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Sierpinski Gasket">
+      <UniqueIdentifier>{fd90db52-9685-42a9-bb9a-0b7136c82023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Generic 2D Trees">
+      <UniqueIdentifier>{8ac41d62-4b87-43f2-b01b-ecfb267efe03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Generic 3D Trees">
+      <UniqueIdentifier>{2a284e2e-99bf-47a8-b17c-d813fe8ba66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Koch Curves">
+      <UniqueIdentifier>{66f78b53-dc60-4f10-982d-a6001cd80caa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,64 +90,58 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SierpinskiGasketLSystem.h">
-      <Filter>Implemented L-Systems\SierpinskiGasket</Filter>
+      <Filter>Implemented L-Systems\Sierpinski Gasket</Filter>
     </ClInclude>
     <ClInclude Include="SierpinskiGasketContext.h">
-      <Filter>Implemented L-Systems\SierpinskiGasket</Filter>
+      <Filter>Implemented L-Systems\Sierpinski Gasket</Filter>
     </ClInclude>
     <ClInclude Include="SierpinskiGasketProductions.h">
-      <Filter>Implemented L-Systems\SierpinskiGasket</Filter>
+      <Filter>Implemented L-Systems\Sierpinski Gasket</Filter>
     </ClInclude>
     <ClInclude Include="KochCurveProductions.h">
-      <Filter>Implemented L-Systems\KochCurve</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic3DTreeContext.h">
-      <Filter>Implemented L-Systems\Generic3DTree</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic3DTreeLSystem.h">
-      <Filter>Implemented L-Systems\Generic3DTree</Filter>
+      <Filter>Implemented L-Systems\Koch Curves</Filter>
     </ClInclude>
     <ClInclude Include="Generic3DTreeProductions.h">
-      <Filter>Implemented L-Systems\Generic3DTree</Filter>
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
     </ClInclude>
     <ClInclude Include="Generic3DTreeSymbols.h">
-      <Filter>Implemented L-Systems\Generic3DTree</Filter>
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
     </ClInclude>
     <ClInclude Include="Generic2DTreeContexts.h">
-      <Filter>Implemented L-Systems\Generic2DTree</Filter>
+      <Filter>Implemented L-Systems\Generic 2D Trees</Filter>
     </ClInclude>
     <ClInclude Include="Generic2DTreeProductions.h">
-      <Filter>Implemented L-Systems\Generic2DTree</Filter>
+      <Filter>Implemented L-Systems\Generic 2D Trees</Filter>
     </ClInclude>
     <ClInclude Include="KochCurveContexts.h">
-      <Filter>Implemented L-Systems\KochCurve</Filter>
+      <Filter>Implemented L-Systems\Koch Curves</Filter>
     </ClInclude>
     <ClInclude Include="KochCurveLSystem.h">
-      <Filter>Implemented L-Systems\KochCurve</Filter>
+      <Filter>Implemented L-Systems\Koch Curves</Filter>
     </ClInclude>
     <ClInclude Include="Generic2DTreeLSystems.h">
-      <Filter>Implemented L-Systems\Generic2DTree</Filter>
+      <Filter>Implemented L-Systems\Generic 2D Trees</Filter>
     </ClInclude>
     <ClInclude Include="HilbertCurve3DContext.h">
-      <Filter>Implemented L-Systems\HilbertCurve3D</Filter>
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
     </ClInclude>
     <ClInclude Include="HilbertCurve3DLSystem.h">
-      <Filter>Implemented L-Systems\HilbertCurve3D</Filter>
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
     </ClInclude>
     <ClInclude Include="HilbertCurve3DProductions.h">
-      <Filter>Implemented L-Systems\HilbertCurve3D</Filter>
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
     </ClInclude>
     <ClInclude Include="HilbertCurve3DSymbols.h">
-      <Filter>Implemented L-Systems\HilbertCurve3D</Filter>
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
     </ClInclude>
     <ClInclude Include="DragonCurveLSystem.h">
-      <Filter>Implemented L-Systems\DragonCurve</Filter>
+      <Filter>Implemented L-Systems\Dragon Curve</Filter>
     </ClInclude>
     <ClInclude Include="DragonCurveContext.h">
-      <Filter>Implemented L-Systems\DragonCurve</Filter>
+      <Filter>Implemented L-Systems\Dragon Curve</Filter>
     </ClInclude>
     <ClInclude Include="DragonCurveProductions.h">
-      <Filter>Implemented L-Systems\DragonCurve</Filter>
+      <Filter>Implemented L-Systems\Dragon Curve</Filter>
     </ClInclude>
     <ClInclude Include="GenericLineSymbol.h">
       <Filter>Implemented L-Systems\Generic Symbols</Filter>
@@ -156,6 +150,12 @@
       <Filter>Console Progress Bar</Filter>
     </ClInclude>
     <ClInclude Include="GlobalDefinitions.h" />
+    <ClInclude Include="Generic3DTreeContexts.h">
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeLSystems.h">
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LSystem.cpp">

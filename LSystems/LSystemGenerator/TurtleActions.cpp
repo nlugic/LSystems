@@ -200,7 +200,7 @@ namespace lsys
 		float sf = std::sin(phi), cf = std::cos(phi);
 		float sfu = std::sin(phi + ang), cfu = std::cos(phi + ang);
 		float p = std::sqrt(h * h + r * r);
-		float s = 0.0f, ds = w / (n + 1);
+		float s = 0.0f, ds = w / n;
 
 		glm::vec3 nm(h / p * cf, r / p, h / p * sf);
 		glm::vec3 nmu(h / p * cfu, r / p, h / p * sfu);
@@ -290,6 +290,57 @@ namespace lsys
 		});
 
 		turtle->translateState(glm::vec3(0.0f, l, 0.0f));
+	}
+
+	void drawTesselatedGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	{
+		float R = lSym->getParam('R');
+		float r = lSym->getParam('r');
+		float h = lSym->getParam('h');
+		float t = lSym->getParam('t');
+		float w = lSym->getParam('w');
+
+		float ang = pix2 / 4.0f;
+		float phi = 0.0f;
+		float sf = std::sin(phi), cf = std::cos(phi);
+		float sfu = std::sin(phi + ang), cfu = std::cos(phi + ang);
+		float p = std::sqrt(h * h + (R - r) * (R - r));
+		float s = w, ds = w / 4.0f;
+
+		glm::vec3 nm(h / p * cf, (R - r) / p, h / p * sf);
+		glm::vec3 nmu(h / p * cfu, (R - r) / p, h / p * sfu);
+
+		Vertex vx[4]{
+			{ R * cf, 0.0f, R * sf, nm.x, nm.y, nm.z, s, 0.0f, t },
+			{ R * cfu, 0.0f, R * sfu, nmu.x, nmu.y, nmu.z, s - ds, 0.0f, t },
+			{ r * cf, h, r * sf, nm.x, nm.y, nm.z, s, 1.0f, t },
+			{ r * cfu, h, r * sfu, nmu.x, nmu.y, nmu.z, s - ds, 1.0f, t }
+		};
+
+		std::vector<Vertex> vertices;
+
+		for (unsigned short i = 0U; i < 4; ++i)
+		{
+			vertices.push_back(vx[0]);
+			vertices.push_back(vx[1]);
+			vertices.push_back(vx[2]);
+			vertices.push_back(vx[3]);
+
+			phi += ang; s -= ds;
+			sf = sfu; cf = cfu;
+			sfu = std::sin(phi + ang); cfu = std::cos(phi + ang);
+
+			vx[0] = vx[1]; vx[2] = vx[3];
+			nmu.x = h / p * cfu; nmu.z = h / p * sfu;
+			vx[1].x = R * cfu; vx[1].z = R * sfu;
+			vx[1].nx = nmu.x; vx[1].nz = nmu.z;
+			vx[3].x = r * cfu; vx[3].z = r * sfu;
+			vx[3].nx = nmu.x; vx[3].nz = nmu.z;
+			vx[0].s = s; vx[1].s = s - ds; vx[2].s = s; vx[3].s = s - ds;
+		}
+
+		turtle->addVertices(vertices);
+		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
 	}
 
 }

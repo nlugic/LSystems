@@ -58,14 +58,14 @@ namespace lsys
 			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
 
 			word.push_back(new RestoreStateSymbol());
-			
+
 			word.push_back(new RollRightSymbol(7.0f * angle));
 
 			word.push_back(new SaveStateSymbol());
 
 			word.push_back(new PitchDownSymbol(angle));
 			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, rStart, rEnd, height, wrap));
-			
+
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
 			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
@@ -89,6 +89,7 @@ namespace lsys
 			LSystemSymbol *expansionSymbol = new LSystemSymbol('S');
 			expansionSymbol->setParams(pred);
 			word.push_back(expansionSymbol);
+
 			word.push_back(new RollRightSymbol(5.0f * globalParams.at('a')));
 			word.push_back(new Generic3DTreeBranchSegmentSymbol(pred->getParam('n'), pred->getParam('R'),
 				pred->getParam('R'), pred->getParam('h'), pred->getParam('w')));

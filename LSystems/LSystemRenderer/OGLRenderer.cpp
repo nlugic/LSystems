@@ -351,6 +351,8 @@ namespace lrend
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
+		glPatchParameteri(GL_PATCH_VERTICES, 4);
+
 		glm::mat4 projection(glm::perspective(glm::radians(OGLR::camera->getFOV()),
 			static_cast<float>(OGLR::width) / OGLR::height, 0.1f, 100.0f));
 		glm::mat4 view(OGLR::camera->getViewMatrix());
@@ -358,6 +360,11 @@ namespace lrend
 		OGLR::shaderProgram->setFloatMx4("proj", projection);
 		OGLR::shaderProgram->setFloatMx4("view", view);
 		OGLR::shaderProgram->setFloatMx4("model", glm::mat4(1.0f));
+
+		OGLR::shaderProgram->setFloat("outerX", 8.0f);
+		OGLR::shaderProgram->setFloat("outerY", 6.0f);
+		OGLR::shaderProgram->setFloat("innerX", 4.0f);
+		OGLR::shaderProgram->setFloat("innerY", 3.0f);
 
 		OGLR::shaderProgram->setBool("enableWireframe", OGLR::enableWireframe);
 		OGLR::shaderProgram->setFloatVx3("viewport", glm::vec3(config.windowWidth, config.windowHeight, 1.0f));
@@ -384,7 +391,7 @@ namespace lrend
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
 			
-			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(OGLR::vertexBufSize
+			glDrawArrays(GL_PATCHES, 0, static_cast<GLsizei>(OGLR::vertexBufSize
 				/ (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
 
 			glfwSwapBuffers(OGLR::glWindow);

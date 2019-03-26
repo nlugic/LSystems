@@ -66,10 +66,16 @@
     <None Include="default.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="default.geom">
+    <None Include="default.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="default.vert">
+    <None Include="wireframe.geom">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default.tesc">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default.tese">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -38,7 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag" />
-    <None Include="default.geom" />
+    <None Include="default.tesc" />
+    <None Include="default.tese" />
+    <None Include="wireframe.geom" />
     <None Include="default.vert" />
   </ItemGroup>
   <ItemGroup>

@@ -36,8 +36,9 @@ namespace lrend
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
-		"..\\LSystemRenderer\\default.vert", nullptr, nullptr,
-		"..\\LSystemRenderer\\default.geom", "..\\LSystemRenderer\\default.frag",
+		"..\\LSystemRenderer\\default.vert",
+		"..\\LSystemRenderer\\default.tesc", "..\\LSystemRenderer\\default.tese",
+		"..\\LSystemRenderer\\wireframe.geom", "..\\LSystemRenderer\\default.frag",
 		"L-System Renderer"
 	};
 

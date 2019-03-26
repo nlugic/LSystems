@@ -3,13 +3,13 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
-in vec3 vNormal[];
-in vec3 fPosition[];
-in vec3 tCoordinates[];
+in vec3 tesVertNormal[];
+in vec3 tesFragPosition[];
+in vec3 tesTexCoordinates[];
 
-out vec3 vertNormal;
-out vec3 fragPosition;
-out vec3 texCoordinates;
+out vec3 gsVertNormal;
+out vec3 gsFragPosition;
+out vec3 gsTexCoordinates;
 noperspective out vec3 edgeDistance;
 
 uniform bool enableWireframe;
@@ -31,23 +31,23 @@ void main()
 	}
 	
 	edgeDistance = vec3(ha, 0.0f, 0.0f);
-	vertNormal = vNormal[0];
-	fragPosition = fPosition[0];
-	texCoordinates = tCoordinates[0];
+	gsVertNormal = tesVertNormal[0];
+	gsFragPosition = tesFragPosition[0];
+	gsTexCoordinates = tesTexCoordinates[0];
 	gl_Position = gl_in[0].gl_Position;
 	EmitVertex();
 	
 	edgeDistance = vec3(0.0f, hb, 0.0f);
-	vertNormal = vNormal[1];
-	fragPosition = fPosition[1];
-	texCoordinates = tCoordinates[1];
+	gsVertNormal = tesVertNormal[1];
+	gsFragPosition = tesFragPosition[1];
+	gsTexCoordinates = tesTexCoordinates[1];
 	gl_Position = gl_in[1].gl_Position;
 	EmitVertex();
 	
 	edgeDistance = vec3(0.0f, 0.0f, hc);
-	vertNormal = vNormal[2];
-	fragPosition = fPosition[2];
-	texCoordinates = tCoordinates[2];
+	gsVertNormal = tesVertNormal[2];
+	gsFragPosition = tesFragPosition[2];
+	gsTexCoordinates = tesTexCoordinates[2];
 	gl_Position = gl_in[2].gl_Position;
 	EmitVertex();
 

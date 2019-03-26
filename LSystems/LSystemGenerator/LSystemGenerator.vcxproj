@@ -157,8 +157,8 @@
     <ClInclude Include="Generic2DTreeContexts.h" />
     <ClInclude Include="Generic2DTreeLSystems.h" />
     <ClInclude Include="Generic2DTreeProductions.h" />
-    <ClInclude Include="Generic3DTreeContext.h" />
-    <ClInclude Include="Generic3DTreeLSystem.h" />
+    <ClInclude Include="Generic3DTreeContexts.h" />
+    <ClInclude Include="Generic3DTreeLSystems.h" />
     <ClInclude Include="Generic3DTreeProductions.h" />
     <ClInclude Include="Generic3DTreeSymbols.h" />
     <ClInclude Include="GraphicsTurtle.h" />

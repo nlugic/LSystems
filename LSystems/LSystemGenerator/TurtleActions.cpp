@@ -310,7 +310,7 @@ namespace lsys
 		glm::vec3 nm(h / p * cf, (R - r) / p, h / p * sf);
 		glm::vec3 nmu(h / p * cfu, (R - r) / p, h / p * sfu);
 
-		Vertex vx[4]{
+		Vertex vx[4] {
 			{ R * cf, 0.0f, R * sf, nm.x, nm.y, nm.z, s, 0.0f, t },
 			{ R * cfu, 0.0f, R * sfu, nmu.x, nmu.y, nmu.z, s - ds, 0.0f, t },
 			{ r * cf, h, r * sf, nm.x, nm.y, nm.z, s, 1.0f, t },
@@ -319,7 +319,7 @@ namespace lsys
 
 		std::vector<Vertex> vertices;
 
-		for (unsigned short i = 0U; i < 4; ++i)
+		for (unsigned short i = 0U; i < 4U; ++i)
 		{
 			vertices.push_back(vx[0]);
 			vertices.push_back(vx[1]);

@@ -78,6 +78,7 @@ namespace lrend
 
 #ifdef _DEBUG
 		glGenQueries(1, &OGLR::tqo);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(OGLR::processDebugMessage, nullptr);
 #endif
 

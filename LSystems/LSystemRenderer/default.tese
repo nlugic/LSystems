@@ -33,14 +33,13 @@ void main()
 	vec3 v3 = gl_in[3].gl_Position.xyz;
 
 	float r1 = length(v0 - v1) * sqrt(2.0f) / 2.0f, r2 = length(v2 - v3) * sqrt(2.0f) / 2.0f;
-	float r = r1 * v + r2 * (1.0f - v);
-	float angle = faceId * PI / 2.0f * u + (faceId + 1U) * PI / 2.0f * (1.0f - u);
-	vec3 vertexPosition = vec3(r * cos(angle), v0.y * v + v2.y * (1.0f - v), r * sin(angle));
-	vec3 vertexNormal = tcsVertNormal[0] * u + tcsVertNormal[1] * (1.0f - u);
-	vertexNormal.y = tcsVertNormal[0].y;
-	//vec2 textureCoordinates = vec2(faceId * tcsTexCoordinates[0].x * u + (faceId + 1U) * tcsTexCoordinates[1].x * (1.0f - u), v);
+	float r = mix(r1, r2, v), s = length(v2 - v0), h = v2.y - v0.y;
+	float angle = mix(faceId * PI / 2.0f, (faceId + 1U) * PI / 2.0f, u);
+	
+	vec3 vertexPosition = vec3(r * cos(angle), mix(v0.y, v2.y, v), r * sin(angle));
+	vec3 vertexNormal = vec3(cos(angle) * h / s, (r1 - r2) / s, sin(angle) * h / s);
 	vec2 textureCoordinates = vec2((faceId + u) * 0.25f, v);
-
+	
 	mat4 combinedModel = model * transforms[uint(tcsTransPointer[0])];
 
 	tesVertNormal = mat3(transpose(inverse(combinedModel))) * vertexNormal;

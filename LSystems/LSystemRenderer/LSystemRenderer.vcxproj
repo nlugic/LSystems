@@ -37,11 +37,11 @@
     <ClInclude Include="OGLTexture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.tesc" />
-    <None Include="default.tese" />
+    <None Include="default_tess.frag" />
+    <None Include="default_tess.tesc" />
+    <None Include="default_tess.tese" />
     <None Include="wireframe.geom" />
-    <None Include="default.vert" />
+    <None Include="default_tess.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="test.png" />

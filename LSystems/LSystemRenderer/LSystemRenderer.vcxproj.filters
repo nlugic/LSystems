@@ -63,19 +63,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="default.vert">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="wireframe.geom">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="default.tesc">
+    <None Include="default_tess.tesc">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="default.tese">
+    <None Include="default_tess.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default_tess.tese">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default_tess.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

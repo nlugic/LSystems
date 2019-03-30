@@ -23,6 +23,7 @@ namespace lrend
 		~OGLShader();
 
 		void use() const;
+		void setBool(const char *name, bool value) const;
 		void setInt(const char *name, int value) const;
 		void setFloat(const char *name, float value) const;
 		void setFloatVx3(const char *name, const glm::vec3& value) const;

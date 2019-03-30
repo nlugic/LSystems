@@ -111,6 +111,11 @@ namespace lrend
 		glUseProgram(programId);
 	}
 
+	void OGLShader::setBool(const char *name, bool value) const
+	{
+		glUniform1i(glGetUniformLocation(programId, name), value);
+	}
+
 	void OGLShader::setInt(const char *name, int value) const
 	{
 		glUniform1i(glGetUniformLocation(programId, name), value);

@@ -19,6 +19,7 @@ namespace lrend
 	int OGLR::width = defaultOGLRendererConfig.windowWidth;
 	int OGLR::height = defaultOGLRendererConfig.windowHeight;
 	GLFWwindow *OGLR::glWindow = nullptr;
+	bool OGLR::enableWireframe = false;
 	bool OGLR::mouseMoved = false;
 	double OGLR::lastXPos = OGLR::width / 2.0;
 	double OGLR::lastYPos = OGLR::height / 2.0;
@@ -77,6 +78,7 @@ namespace lrend
 
 #ifdef _DEBUG
 		glGenQueries(1, &OGLR::tqo);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(OGLR::processDebugMessage, nullptr);
 #endif
 
@@ -101,6 +103,7 @@ namespace lrend
 		OGLR::width = defaultOGLRendererConfig.windowWidth;
 		OGLR::height = defaultOGLRendererConfig.windowHeight;
 		OGLR::glWindow = nullptr;
+		OGLR::enableWireframe = false;
 		OGLR::mouseMoved = false;
 		OGLR::lastXPos = OGLR::width / 2.0;
 		OGLR::lastYPos = OGLR::height / 2.0;
@@ -249,6 +252,12 @@ namespace lrend
 		if (key == GLFW_KEY_PRINT_SCREEN && action == GLFW_PRESS)
 			takeScreenshot();
 
+		if (key == GLFW_KEY_F && action == GLFW_PRESS)
+		{
+			OGLR::enableWireframe = !OGLR::enableWireframe;
+			OGLR::shaderProgram->setBool("enableWireframe", OGLR::enableWireframe);
+		}
+
 		if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
 			static_cast<LSystemRenderer *>(OGLR::owner)->levelUp();
 		if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
@@ -343,13 +352,23 @@ namespace lrend
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
+		glPatchParameteri(GL_PATCH_VERTICES, 4);
+
 		glm::mat4 projection(glm::perspective(glm::radians(OGLR::camera->getFOV()),
 			static_cast<float>(OGLR::width) / OGLR::height, 0.1f, 100.0f));
 		glm::mat4 view(OGLR::camera->getViewMatrix());
-		
+
 		OGLR::shaderProgram->setFloatMx4("proj", projection);
 		OGLR::shaderProgram->setFloatMx4("view", view);
 		OGLR::shaderProgram->setFloatMx4("model", glm::mat4(1.0f));
+
+		OGLR::shaderProgram->setFloat("outerX", 8.0f);
+		OGLR::shaderProgram->setFloat("outerY", 6.0f);
+		OGLR::shaderProgram->setFloat("innerX", 4.0f);
+		OGLR::shaderProgram->setFloat("innerY", 3.0f);
+
+		OGLR::shaderProgram->setBool("enableWireframe", OGLR::enableWireframe);
+		OGLR::shaderProgram->setFloatVx3("viewport", glm::vec3(config.windowWidth, config.windowHeight, 1.0f));
 
 		while (!glfwWindowShouldClose(OGLR::glWindow))
 		{
@@ -373,7 +392,7 @@ namespace lrend
 			OGLR::deltaTime = currentFrame - OGLR::lastFrame;
 			OGLR::lastFrame = currentFrame;
 			
-			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(OGLR::vertexBufSize
+			glDrawArrays(GL_PATCHES, 0, static_cast<GLsizei>(OGLR::vertexBufSize
 				/ (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
 
 			glfwSwapBuffers(OGLR::glWindow);

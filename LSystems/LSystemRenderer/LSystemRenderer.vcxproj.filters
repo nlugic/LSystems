@@ -9,9 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b1624c5d-a63c-454f-a8d7-9c4b65a1720f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{2f113a50-b238-47ad-87b6-77b277ab75db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,25 +63,34 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag">
-      <Filter>Resource Files</Filter>
+    <None Include="wireframe.geom">
+      <Filter>Shaders</Filter>
     </None>
-    <None Include="default.vert">
-      <Filter>Resource Files</Filter>
+    <None Include="default_tess.tesc">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default_tess.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default_tess.tese">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default_tess.vert">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="test.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Textures</Filter>
     </Image>
     <Image Include="tree.jpg">
-      <Filter>Resource Files</Filter>
+      <Filter>Textures</Filter>
     </Image>
     <Image Include="tree2.jpg">
-      <Filter>Resource Files</Filter>
+      <Filter>Textures</Filter>
     </Image>
     <Image Include="tree3.jpg">
-      <Filter>Resource Files</Filter>
+      <Filter>Textures</Filter>
     </Image>
   </ItemGroup>
 </Project>

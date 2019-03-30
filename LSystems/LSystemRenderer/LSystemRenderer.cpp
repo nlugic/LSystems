@@ -7,7 +7,7 @@
 #include "..\LSystemGenerator\DragonCurveContext.h"
 #include "..\LSystemGenerator\Generic2DTreeContexts.h"
 #include "..\LSystemGenerator\HilbertCurve3DContext.h"
-#include "..\LSystemGenerator\Generic3DTreeContext.h"
+#include "..\LSystemGenerator\Generic3DTreeContexts.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "..\\x64\\Debug\\LSystemGenerator.lib")
@@ -244,6 +244,16 @@ namespace lrend
 	void LSystemRenderer::drawGeneric3DTree(std::size_t level, int slices, float radius, float height, float angle)
 	{
 		LSystemRenderer rend(level, new lsys::Generic3DTreeContext(slices, radius, height, angle));
+		rend.context->generateModel(level);
+
+		if (!lrend::testMode)
+			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(),
+				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, rend.context->getTransformBuffer());
+	}
+
+	void LSystemRenderer::drawTesselatedGeneric3DTree(std::size_t level, float radius, float height, float angle)
+	{
+		LSystemRenderer rend(level, new lsys::TesselatedGeneric3DTreeContext(radius, height, angle));
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)

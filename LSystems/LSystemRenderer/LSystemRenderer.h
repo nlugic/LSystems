@@ -47,6 +47,7 @@ namespace lrend
 			float red = 0.0f, float green = 0.0f, float blue = 0.0f, float angle = 90.0f);
 		static void drawGeneric3DTree(std::size_t level, int slices, float radius,
 			float height, float angle = 22.5f);
+		static void drawTesselatedGeneric3DTree(std::size_t level, float radius, float height, float angle = 22.5f);
 	};
 
 }

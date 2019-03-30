@@ -36,7 +36,9 @@ namespace lrend
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
-		"..\\LSystemRenderer\\default.vert", nullptr, nullptr, nullptr, "..\\LSystemRenderer\\default.frag",
+		"..\\LSystemRenderer\\default_tess.vert",
+		"..\\LSystemRenderer\\default_tess.tesc", "..\\LSystemRenderer\\default_tess.tese",
+		"..\\LSystemRenderer\\wireframe.geom", "..\\LSystemRenderer\\default_tess.frag",
 		"L-System Renderer"
 	};
 
@@ -47,6 +49,8 @@ namespace lrend
 
 		static int width, height;
 		static GLFWwindow *glWindow;
+
+		static bool enableWireframe;
 
 		static bool mouseMoved;
 		static double lastXPos, lastYPos;

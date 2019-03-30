@@ -39,7 +39,7 @@ void main()
 	vec3 vertexPosition = vec3(r * cos(angle), mix(v0.y, v2.y, v), r * sin(angle));
 	vec3 vertexNormal = vec3(cos(angle) * h / s, (r1 - r2) / s, sin(angle) * h / s);
 	vec2 textureCoordinates = vec2((faceId + u) * 0.25f, v);
-	
+
 	mat4 combinedModel = model * transforms[uint(tcsTransPointer[0])];
 
 	tesVertNormal = mat3(transpose(inverse(combinedModel))) * vertexNormal;

@@ -300,10 +300,9 @@ namespace lsys
 		float t = lSym->getParam('t');
 		float w = lSym->getParam('w');
 
-		float ang = pix2 / 4.0f;
 		float phi = 0.0f;
 		float sf = std::sin(phi), cf = std::cos(phi);
-		float sfu = std::sin(phi + ang), cfu = std::cos(phi + ang);
+		float sfu = std::sin(phi + pi_2), cfu = std::cos(phi + pi_2);
 		float p = std::sqrt(h * h + (R - r) * (R - r));
 		float s = w, ds = w / 4.0f;
 
@@ -326,9 +325,9 @@ namespace lsys
 			vertices.push_back(vx[2]);
 			vertices.push_back(vx[3]);
 
-			phi += ang; s -= ds;
+			phi += pi_2; s -= ds;
 			sf = sfu; cf = cfu;
-			sfu = std::sin(phi + ang); cfu = std::cos(phi + ang);
+			sfu = std::sin(phi + pi_2); cfu = std::cos(phi + pi_2);
 
 			vx[0] = vx[1]; vx[2] = vx[3];
 			nmu.x = h / p * cfu; nmu.z = h / p * sfu;

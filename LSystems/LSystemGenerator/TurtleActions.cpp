@@ -147,7 +147,7 @@ namespace lsys
 		float sf = std::sin(phi), cf = std::cos(phi);
 		float sfu = std::sin(phi + ang), cfu = std::cos(phi + ang);
 		float p = std::sqrt(h * h + (R - r) * (R - r));
-		float s = w, ds = w / (n + 1);
+		float s = w, ds = w / n;
 
 		glm::vec3 nm(h / p * cf, (R - r) / p, h / p * sf);
 		glm::vec3 nmu(h / p * cfu, (R - r) / p, h / p * sfu);

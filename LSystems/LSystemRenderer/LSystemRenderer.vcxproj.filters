@@ -78,6 +78,12 @@
     <None Include="default_tess.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="default.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="default.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="test.png">

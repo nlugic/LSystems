@@ -37,6 +37,8 @@
     <ClInclude Include="OGLTexture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="default.frag" />
+    <None Include="default.vert" />
     <None Include="default_tess.frag" />
     <None Include="default_tess.tesc" />
     <None Include="default_tess.tese" />

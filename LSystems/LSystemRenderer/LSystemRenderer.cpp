@@ -257,8 +257,19 @@ namespace lrend
 		rend.context->generateModel(level);
 
 		if (!lrend::testMode)
+		{
+			OGLRendererConfig config = defaultOGLRendererConfig;
+
+			config.vertShaderPath = "..\\LSystemRenderer\\default_tess.vert";
+			config.tessCtrlPath = "..\\LSystemRenderer\\default_tess.tesc";
+			config.tessEvalPath = "..\\LSystemRenderer\\default_tess.tese";
+			config.geometryPath = "..\\LSystemRenderer\\wireframe.geom";
+			config.fragShaderPath = "..\\LSystemRenderer\\default_tess.frag";
+
 			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(),
-				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, rend.context->getTransformBuffer());
+				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" },
+				rend.context->getTransformBuffer(), config);
+		}
 	}
 
 }

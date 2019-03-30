@@ -244,8 +244,8 @@ namespace lsys
 		float C = lSym->getParam('C');
 		float t = lSym->getParam('t');
 
-		glm::vec3 vl(w / 2, p + c, 0.0f);
-		glm::vec3 vh(w / 2, p + l - C, 0.0f);
+		glm::vec3 vl(w / 2.0f, p + c, 0.0f);
+		glm::vec3 vh(w / 2.0f, p + l - C, 0.0f);
 
 		turtle->addVertices({
 			{ -0.025f * w, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.3f, 0.85f, t },
@@ -318,7 +318,7 @@ namespace lsys
 
 		std::vector<Vertex> vertices;
 
-		for (unsigned short i = 0U; i < 4U; ++i)
+		for (unsigned char i = 0U; i < 4U; ++i)
 		{
 			vertices.push_back(vx[0]);
 			vertices.push_back(vx[1]);

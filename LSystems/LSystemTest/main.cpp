@@ -98,8 +98,8 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeS(5, 0.05f);
 	//lrend::LSystemRenderer::drawGeneric2DTreeSD(15, 0.5f);
-	//lrend::LSystemRenderer::drawHilbertCurve3D(6, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
-	lrend::LSystemRenderer::drawGeneric3DTree(7, 8, 0.1f, 0.15f);
+	lrend::LSystemRenderer::drawHilbertCurve3D(6, 0.025f, 0.4f, 0.3f, 0.6f, 0.4f);
+	//lrend::LSystemRenderer::drawGeneric3DTree(7, 8, 0.1f, 0.15f);
 	
 	//lrend::LSystemRenderer::drawTesselatedGeneric3DTree(7, 0.1f, 0.2f);
 	

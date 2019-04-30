@@ -116,9 +116,9 @@ namespace lsys
 
 	void GraphicsTurtle::rotateAroundUp(float angle)
 	{
-		glm::mat4 rot(glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up));
-		currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
-		currentState.left = rot * glm::vec4(currentState.left, 1.0f);
+		currentState.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up)
+			* glm::vec4(currentState.heading, 1.0f);
+		currentState.left = glm::cross(currentState.up, currentState.heading);
 	}
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)

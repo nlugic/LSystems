@@ -11,8 +11,8 @@ namespace lsys
 	class HilbertCurve3DContext : public LSystemContext
 	{
 	public:
-		HilbertCurve3DContext(float width, float length, float angle, float red, float green, float blue)
-			:LSystemContext(new HilbertCurve3DLSystem(width, length, angle, glm::vec3(red, green, blue)))
+		HilbertCurve3DContext(std::size_t maxL, float width, float length, float angle, float red, float green, float blue)
+			:LSystemContext(new HilbertCurve3DLSystem(width, length, angle, glm::vec3(red, green, blue)), maxL)
 		{
 			turtle.setAction('F', drawBox);
 		}

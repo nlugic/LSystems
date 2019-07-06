@@ -11,8 +11,8 @@ namespace lsys
 	class DragonCurveContext : public LSystemContext
 	{
 	public:
-		DragonCurveContext(float length, float angle)
-			:LSystemContext(new DragonCurveLSystem(length, angle))
+		DragonCurveContext(std::size_t maxL, float length, float angle)
+			:LSystemContext(new DragonCurveLSystem(length, angle), maxL)
 		{
 			turtle.setAction('L', drawLine);
 			turtle.setAction('R', drawLine);

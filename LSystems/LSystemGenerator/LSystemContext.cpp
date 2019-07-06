@@ -19,14 +19,14 @@ namespace lsys
 		turtle.setAction('$', rotateTurtleToVertical);
 	}
 
-	LSystemContext::LSystemContext(const TurtleState& state)
-		:currentLevel(0U), lSystem(new LSystem), turtle(lSystem, state)
+	LSystemContext::LSystemContext(std::size_t maxL, const TurtleState& state)
+		:currentLevel(0U), maxLevel(maxL), lSystem(new LSystem), turtle(lSystem, state)
 	{
 		initTurtleActions();
 	}
 
-	LSystemContext::LSystemContext(LSystem *lSys, const TurtleState& state)
-		: currentLevel(0U), lSystem(lSys), turtle(lSystem, state)
+	LSystemContext::LSystemContext(LSystem *lSys, std::size_t maxL, const TurtleState& state)
+		:currentLevel(0U), maxLevel(maxL), lSystem(lSys), turtle(lSystem, state)
 	{
 		initTurtleActions();
 	}
@@ -34,6 +34,7 @@ namespace lsys
 	void swap(LSystemContext& lCxt1, LSystemContext& lCxt2)
 	{
 		std::swap(lCxt1.currentLevel, lCxt2.currentLevel);
+		std::swap(lCxt1.maxLevel, lCxt2.maxLevel);
 		std::swap(lCxt1.lSystem, lCxt2.lSystem);
 		std::swap(lCxt1.turtle, lCxt2.turtle);
 	}
@@ -67,40 +68,35 @@ namespace lsys
 
 	std::size_t LSystemContext::getMaxLevel() const
 	{
-		return lSystem->getCurrentLevel();
-	}
-
-	std::vector<float> LSystemContext::getVertexBuffer() const
-	{
-		return turtle.getVertices();
-	}
-
-	const std::vector<glm::mat4>& LSystemContext::getTransformBuffer() const
-	{
-		return turtle.getTransforms();
+		return maxLevel;
 	}
 
 	void LSystemContext::generateModel(std::size_t level)
 	{
-		currentLevel = level;
+		turtle.resetState();
 
 		std::size_t curr = lSystem->getCurrentLevel();
+
 		if (level > curr)
+#if defined(_DEBUG) || defined(_VERBOSE)
 		{
 			std::clog << "Deriving the L-system to level " << level << "..." << std::endl;
 			lSystem->derive(level - curr);
 			std::clog << "L-system derivation finished!" << std::endl;
 		}
+#else
+			lSystem->derive(level - curr);
+#endif
 
-		turtle.resetState();
 		turtle.interpretSymbols((*lSystem)[level]);
-
-		GraphicsTurtle::transformPointer = 0U;
+		currentLevel = level;
 	}
 
 	std::string LSystemContext::toString() const
 	{
 		std::string ret(lSystem->toString());
+		ret += "Maximum derivation level: ";
+		ret += std::to_string(maxLevel);
 		ret += '\n';
 		ret += turtle.toString();
 

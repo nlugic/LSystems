@@ -49,13 +49,12 @@ namespace lsys
 		glm::mat4 currentTransform;
 		std::stack<TurtleState> stateStack;
 
-		std::vector<VertexInstance> vertexInstances;
-		std::vector<Vertex> vertexBuffer;
-		std::vector<glm::mat4> transformBuffer;
-
-	public:
+		static std::vector<VertexInstance> vertexInstances;
+		static std::vector<Vertex> vertexBuffer;
+		static std::vector<glm::mat4> transformBuffer;
 		static float transformPointer;
 
+	public:
 		GraphicsTurtle(LSystem *owner = nullptr, const TurtleState& state = defaultTurtleState);
 
 		void setOwner(LSystem *lSys);
@@ -64,8 +63,6 @@ namespace lsys
 		glm::mat4& getCurrentTransform();
 		const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& getAction(char key) const;
 		void setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
-		std::vector<float> getVertices() const;
-		const std::vector<glm::mat4>& getTransforms() const;
 
 		void pushState();
 		void popState();
@@ -81,6 +78,10 @@ namespace lsys
 
 		std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& gTrt);
+
+		static std::vector<float> getVertexBuffer();
+		static const std::vector<glm::mat4>& getTransformBuffer();
+		static void resetBuffers();
 	};
 
 }

@@ -20,30 +20,63 @@ namespace lrend
 
 	static bool testMode = false;
 
-	LSystemRenderer::LSystemRenderer(std::size_t maxL, lsys::LSystemContext *lCxt)
-		:maxLevel(maxL), context(lCxt) { }
+	LSystemRenderer::LSystemRenderer(lsys::LSystemContext *lCxt)
+	{
+		addContext(lCxt);
+	}
 
 	LSystemRenderer::~LSystemRenderer()
 	{
-		delete context;
+		for (lsys::LSystemContext *lCxt : contexts)
+			delete lCxt;
+	}
+
+	void LSystemRenderer::addContext(lsys::LSystemContext *lCxt)
+	{
+		if (lCxt)
+			contexts.push_back(lCxt);
 	}
 
 	void LSystemRenderer::levelUp()
 	{
-		if (context->getCurrentLevel() >= maxLevel)
-			return;
+		bool bufferChanged = false;
+		lsys::GraphicsTurtle::resetBuffers();
 
-		context->generateModel(context->getCurrentLevel() + 1ULL);
-		OGLRenderer::updateVertexData(context->getVertexBuffer(), context->getTransformBuffer());
+		for (lsys::LSystemContext *lCxt : contexts)
+		{
+			if (lCxt->getCurrentLevel() >= lCxt->getMaxLevel())
+				lCxt->generateModel(lCxt->getCurrentLevel());
+			else
+			{
+				lCxt->generateModel(lCxt->getCurrentLevel() + 1ULL);
+				bufferChanged = true;
+			}
+		}
+
+		if (bufferChanged)
+			OGLRenderer::updateVertexData(lsys::GraphicsTurtle::getVertexBuffer(),
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::levelDown()
 	{
-		if (context->getCurrentLevel() == 0ULL)
-			return;
+		bool bufferChanged = false;
+		lsys::GraphicsTurtle::resetBuffers();
 
-		context->generateModel(context->getCurrentLevel() - 1ULL);
-		OGLRenderer::updateVertexData(context->getVertexBuffer(), context->getTransformBuffer());
+		for (lsys::LSystemContext *lCxt : contexts)
+		{
+			if (lCxt->getCurrentLevel() == 0ULL)
+				lCxt->generateModel(lCxt->getCurrentLevel());
+			else
+			{
+				lCxt->generateModel(lCxt->getCurrentLevel() - 1ULL);
+				bufferChanged = true;
+			}
+		}
+
+		if (bufferChanged)
+			OGLRenderer::updateVertexData(lsys::GraphicsTurtle::getVertexBuffer(),
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::setTestMode(bool test)
@@ -53,208 +86,250 @@ namespace lrend
 
 	void LSystemRenderer::drawKochSnowflake(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochSnowflakeContext(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochSnowflakeContext(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandA(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextA(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextA(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandB(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextB(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextB(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandC(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextC(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextC(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandD(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextD(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextD(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandE(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextE(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextE(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandF(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextF(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextF(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawKochIslandG(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::KochIslandContextG(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::KochIslandContextG(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawDragonCurve(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::DragonCurveContext(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::DragonCurveContext(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawSierpinskiGasket(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::SierpinskiGasketContext(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::SierpinskiGasketContext(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeA(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextA(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextA(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeB(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextB(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextB(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeC(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextC(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextC(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeD(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextD(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextD(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeE(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextE(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextE(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeF(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextF(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextF(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeS(std::size_t level, float length, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreContextS(length, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreContextS(level, length, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric2DTreeSD(std::size_t level, float length, float reduction, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic2DTreeContextSD(length, reduction, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic2DTreeContextSD(level, length, reduction, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawHilbertCurve3D(std::size_t level, float width, float length, float red, float green, float blue, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::HilbertCurve3DContext(width, length, angle, red, green, blue));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::HilbertCurve3DContext(level, width, length, angle, red, green, blue));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(), std::vector<const char *> { },
-				rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawGeneric3DTree(std::size_t level, int slices, float radius, float height, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::Generic3DTreeContext(slices, radius, height, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::Generic3DTreeContext(level, slices, radius, height, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(),
-				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, rend.context->getTransformBuffer());
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(),
+				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, lsys::GraphicsTurtle::getTransformBuffer());
 	}
 
 	void LSystemRenderer::drawTesselatedGeneric3DTree(std::size_t level, float radius, float height, float angle)
 	{
-		LSystemRenderer rend(level, new lsys::TesselatedGeneric3DTreeContext(radius, height, angle));
-		rend.context->generateModel(level);
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend(new lsys::TesselatedGeneric3DTreeContext(level, radius, height, angle));
+		rend.contexts[0]->generateModel(level);
 
 		if (!lrend::testMode)
 		{
@@ -266,9 +341,9 @@ namespace lrend
 			config.geometryPath = "..\\LSystemRenderer\\wireframe.geom";
 			config.fragShaderPath = "..\\LSystemRenderer\\default_tess.frag";
 
-			OGLRenderer::renderScene(&rend, rend.context->getVertexBuffer(),
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(),
 				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" },
-				rend.context->getTransformBuffer(), config);
+				lsys::GraphicsTurtle::getTransformBuffer(), config);
 		}
 	}
 

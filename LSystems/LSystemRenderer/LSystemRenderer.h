@@ -10,15 +10,16 @@ namespace lrend
 	class LSystemRenderer
 	{
 	private:
-		std::size_t maxLevel;
-		lsys::LSystemContext *context;
+		std::vector<lsys::LSystemContext *> contexts;
 
-		LSystemRenderer(std::size_t maxL, lsys::LSystemContext *lCxt);
+		LSystemRenderer() = default;
+		LSystemRenderer(lsys::LSystemContext *lCxt);
 		LSystemRenderer(const LSystemRenderer&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 
 	public:
+		void addContext(lsys::LSystemContext *lCxt);
 		void levelUp();
 		void levelDown();
 

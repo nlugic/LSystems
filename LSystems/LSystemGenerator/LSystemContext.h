@@ -29,6 +29,7 @@ namespace lsys
 
 		std::size_t getCurrentLevel() const;
 		std::size_t getMaxLevel() const;
+		TurtleState& getTurtleState();
 		void generateModel(std::size_t level);
 
 		virtual std::string toString() const;

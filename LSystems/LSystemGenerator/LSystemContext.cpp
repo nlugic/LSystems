@@ -71,10 +71,13 @@ namespace lsys
 		return maxLevel;
 	}
 
+	TurtleState& LSystemContext::getTurtleState()
+	{
+		return turtle.getCurrentState();
+	}
+
 	void LSystemContext::generateModel(std::size_t level)
 	{
-		turtle.resetState();
-
 		std::size_t curr = lSystem->getCurrentLevel();
 
 		if (level > curr)
@@ -89,6 +92,8 @@ namespace lsys
 #endif
 
 		turtle.interpretSymbols((*lSystem)[level]);
+		turtle.resetState();
+
 		currentLevel = level;
 	}
 

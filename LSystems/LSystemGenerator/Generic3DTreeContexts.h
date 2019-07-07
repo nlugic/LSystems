@@ -11,8 +11,8 @@ namespace lsys
 	class Generic3DTreeContext : public LSystemContext
 	{
 	public:
-		Generic3DTreeContext(std::size_t maxL, int slices, float radius, float height, float angle)
-			:LSystemContext(new Generic3DTreeLSystem(slices, radius, height, angle), maxL)
+		Generic3DTreeContext(std::size_t maxL, int slices, float radius, float height, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic3DTreeLSystem(slices, radius, height, angle), maxL, state)
 		{
 			turtle.setAction('F', drawGenericBranchSegment);
 			turtle.setAction('A', drawGenericBranchApex);
@@ -23,8 +23,8 @@ namespace lsys
 	class TesselatedGeneric3DTreeContext : public LSystemContext
 	{
 	public:
-		TesselatedGeneric3DTreeContext(std::size_t maxL, float radius, float height, float angle)
-			:LSystemContext(new TesselatedGeneric3DTreeLSystem(radius, height, angle), maxL)
+		TesselatedGeneric3DTreeContext(std::size_t maxL, float radius, float height, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new TesselatedGeneric3DTreeLSystem(radius, height, angle), maxL, state)
 		{
 			turtle.setAction('F', drawTesselatedGenericBranchSegment);
 		}

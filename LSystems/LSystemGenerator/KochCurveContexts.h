@@ -11,8 +11,8 @@ namespace lsys
 	class KochSnowflakeContext : public LSystemContext
 	{
 	public:
-		KochSnowflakeContext(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(), length, angle, 3.0f), maxL)
+		KochSnowflakeContext(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(), length, angle, 3.0f), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -21,8 +21,8 @@ namespace lsys
 	class KochIslandContextA : public LSystemContext
 	{
 	public:
-		KochIslandContextA(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(), length, angle), maxL)
+		KochIslandContextA(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -31,8 +31,8 @@ namespace lsys
 	class KochIslandContextB : public LSystemContext
 	{
 	public:
-		KochIslandContextB(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionB(length, angle), length, angle), maxL)
+		KochIslandContextB(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionB(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -41,8 +41,8 @@ namespace lsys
 	class KochIslandContextC : public LSystemContext
 	{
 	public:
-		KochIslandContextC(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionC(length, angle), length, angle), maxL)
+		KochIslandContextC(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionC(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -51,8 +51,8 @@ namespace lsys
 	class KochIslandContextD : public LSystemContext
 	{
 	public:
-		KochIslandContextD(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionD(length, angle), length, angle), maxL)
+		KochIslandContextD(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionD(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -61,8 +61,8 @@ namespace lsys
 	class KochIslandContextE : public LSystemContext
 	{
 	public:
-		KochIslandContextE(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionE(length, angle), length, angle), maxL)
+		KochIslandContextE(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionE(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -71,8 +71,8 @@ namespace lsys
 	class KochIslandContextF : public LSystemContext
 	{
 	public:
-		KochIslandContextF(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionF(length, angle), length, angle), maxL)
+		KochIslandContextF(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionF(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -81,8 +81,8 @@ namespace lsys
 	class KochIslandContextG : public LSystemContext
 	{
 	public:
-		KochIslandContextG(std::size_t maxL, float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionG(length, angle), length, angle), maxL)
+		KochIslandContextG(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionG(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}

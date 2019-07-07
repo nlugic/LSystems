@@ -11,8 +11,8 @@ namespace lsys
 	class Generic2DTreContextA : public LSystemContext
 	{
 	public:
-		Generic2DTreContextA(std::size_t maxL, float length, float angle = 25.7f)
-			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionA(length, angle), length), maxL)
+		Generic2DTreContextA(std::size_t maxL, float length, float angle = 25.7f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionA(length, angle), length), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -21,8 +21,8 @@ namespace lsys
 	class Generic2DTreContextB : public LSystemContext
 	{
 	public:
-		Generic2DTreContextB(std::size_t maxL, float length, float angle = 20.0f)
-			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionB(length, angle), length), maxL)
+		Generic2DTreContextB(std::size_t maxL, float length, float angle = 20.0f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionB(length, angle), length), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -31,8 +31,8 @@ namespace lsys
 	class Generic2DTreContextC : public LSystemContext
 	{
 	public:
-		Generic2DTreContextC(std::size_t maxL, float length, float angle = 22.5f)
-			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionC(length, angle), length), maxL)
+		Generic2DTreContextC(std::size_t maxL, float length, float angle = 22.5f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionC(length, angle), length), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -41,8 +41,8 @@ namespace lsys
 	class Generic2DTreContextD : public LSystemContext
 	{
 	public:
-		Generic2DTreContextD(std::size_t maxL, float length, float angle = 20.0f)
-			:LSystemContext(new Generic2DTreeLSystem('X', new Generic2DTreeProductionD(length, angle), length, true), maxL)
+		Generic2DTreContextD(std::size_t maxL, float length, float angle = 20.0f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('X', new Generic2DTreeProductionD(length, angle), length, true), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 			turtle.setAction('X', drawLine);
@@ -52,8 +52,8 @@ namespace lsys
 	class Generic2DTreContextE : public LSystemContext
 	{
 	public:
-		Generic2DTreContextE(std::size_t maxL, float length, float angle = 25.7f)
-			:LSystemContext(new Generic2DTreeLSystem('X', new Generic2DTreeProductionE(length, angle), length, true), maxL)
+		Generic2DTreContextE(std::size_t maxL, float length, float angle = 25.7f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('X', new Generic2DTreeProductionE(length, angle), length, true), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 			turtle.setAction('X', drawLine);
@@ -63,8 +63,8 @@ namespace lsys
 	class Generic2DTreContextF : public LSystemContext
 	{
 	public:
-		Generic2DTreContextF(std::size_t maxL, float length, float angle = 22.5f)
-			:LSystemContext(new Generic2DTreeLSystem('X', new Generic2DTreeProductionF(length, angle), length, true), maxL)
+		Generic2DTreContextF(std::size_t maxL, float length, float angle = 22.5f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('X', new Generic2DTreeProductionF(length, angle), length, true), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 			turtle.setAction('X', drawLine);
@@ -74,8 +74,8 @@ namespace lsys
 	class Generic2DTreContextS : public LSystemContext
 	{
 	public:
-		Generic2DTreContextS(std::size_t maxL, float length, float angle = 22.5f)
-			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionS1(length, angle), length), maxL)
+		Generic2DTreContextS(std::size_t maxL, float length, float angle = 22.5f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystem('F', new Generic2DTreeProductionS1(length, angle), length), maxL, state)
 		{
 			lSystem->addProduction(new Generic2DTreeProductionS2(length, angle));
 			lSystem->addProduction(new Generic2DTreeProductionS3(length, angle));
@@ -87,8 +87,8 @@ namespace lsys
 	class Generic2DTreeContextSD : public LSystemContext
 	{
 	public:
-		Generic2DTreeContextSD(std::size_t maxL, float length, float reduction, float angle = 85.0f)
-			:LSystemContext(new Generic2DTreeLSystemSD(length, reduction, angle), maxL)
+		Generic2DTreeContextSD(std::size_t maxL, float length, float reduction, float angle = 85.0f, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new Generic2DTreeLSystemSD(length, reduction, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}

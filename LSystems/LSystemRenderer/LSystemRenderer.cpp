@@ -347,4 +347,46 @@ namespace lrend
 		}
 	}
 
+	void LSystemRenderer::drawMultipleKochSnowflakes(std::size_t level, const std::vector<glm::vec3>& positions,
+		const std::vector<float>& lengths, float angle)
+	{
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend;
+
+		std::size_t snowflakes = positions.size();
+		lsys::TurtleState state = lsys::defaultTurtleState;
+		for (std::size_t i = 0ULL; i < snowflakes; ++i)
+		{
+			state.position = positions[i];
+			rend.addContext(new lsys::KochSnowflakeContext(level, lengths[i], angle, state));
+			rend.contexts[i]->generateModel(level);
+		}
+
+		if (!lrend::testMode)
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(), std::vector<const char *> { },
+				lsys::GraphicsTurtle::getTransformBuffer());
+	}
+
+	void LSystemRenderer::drawGeneric3DForest(std::size_t level, int slices, const std::vector<glm::vec3>& positions,
+		const std::vector<float>& radii, const std::vector<float>& heights, float angle)
+	{
+		lsys::GraphicsTurtle::resetBuffers();
+
+		LSystemRenderer rend;
+
+		std::size_t trees = positions.size();
+		lsys::TurtleState state = lsys::defaultTurtleState;
+		for (std::size_t i = 0ULL; i < trees; ++i)
+		{
+			state.position = positions[i];
+			rend.addContext(new lsys::Generic3DTreeContext(level, slices, radii[i], heights[i], angle, state));
+			rend.contexts[i]->generateModel(level);
+		}
+
+		if (!lrend::testMode)
+			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(),
+				std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, lsys::GraphicsTurtle::getTransformBuffer());
+	}
+
 }

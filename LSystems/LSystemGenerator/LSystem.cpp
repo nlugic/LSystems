@@ -171,6 +171,7 @@ namespace lsys
 
 	const std::vector<LSystemSymbol *>& LSystem::derive(std::size_t level)
 	{
+#if defined(_DEBUG) || defined(_VERBOSE)
 		std::size_t curr = getCurrentLevel() + 1ULL;
 
 		while (--level)
@@ -180,6 +181,11 @@ namespace lsys
 		}
 
 		std::clog << "Deriving level " << curr << "..." << std::endl;
+#else
+		while (--level)
+			derive();
+#endif
+
 		return derive();
 	}
 

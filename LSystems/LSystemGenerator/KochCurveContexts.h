@@ -11,8 +11,8 @@ namespace lsys
 	class KochSnowflakeContext : public LSystemContext
 	{
 	public:
-		KochSnowflakeContext(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(), length, angle, 3.0f))
+		KochSnowflakeContext(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(), length, angle, 3.0f), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -21,8 +21,8 @@ namespace lsys
 	class KochIslandContextA : public LSystemContext
 	{
 	public:
-		KochIslandContextA(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(), length, angle))
+		KochIslandContextA(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -31,8 +31,8 @@ namespace lsys
 	class KochIslandContextB : public LSystemContext
 	{
 	public:
-		KochIslandContextB(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionB(length, angle), length, angle))
+		KochIslandContextB(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionB(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -41,8 +41,8 @@ namespace lsys
 	class KochIslandContextC : public LSystemContext
 	{
 	public:
-		KochIslandContextC(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionC(length, angle), length, angle))
+		KochIslandContextC(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionC(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -51,8 +51,8 @@ namespace lsys
 	class KochIslandContextD : public LSystemContext
 	{
 	public:
-		KochIslandContextD(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionD(length, angle), length, angle))
+		KochIslandContextD(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionD(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -61,8 +61,8 @@ namespace lsys
 	class KochIslandContextE : public LSystemContext
 	{
 	public:
-		KochIslandContextE(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionE(length, angle), length, angle))
+		KochIslandContextE(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionE(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -71,8 +71,8 @@ namespace lsys
 	class KochIslandContextF : public LSystemContext
 	{
 	public:
-		KochIslandContextF(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionF(length, angle), length, angle))
+		KochIslandContextF(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionF(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}
@@ -81,8 +81,8 @@ namespace lsys
 	class KochIslandContextG : public LSystemContext
 	{
 	public:
-		KochIslandContextG(float length, float angle)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionG(length, angle), length, angle))
+		KochIslandContextG(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionG(length, angle), length, angle), maxL, state)
 		{
 			turtle.setAction('F', drawLine);
 		}

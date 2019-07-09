@@ -26,14 +26,14 @@ void main()
 	vec3 ambient = light.ambient * color;
 
 	vec3 normalizedNormal = normalize(vertNormal);
-	vec3 lightDirection = normalize((light.position.w) ? light.position.xyz - fragPosition : light.position.xyz);
+	vec3 lightDirection = normalize((bool(light.position.w)) ? light.position.xyz - fragPosition : light.position.xyz);
 	vec3 diffuse = light.diffuse * max(dot(normalizedNormal, lightDirection), 0.0f) * color;
 
 	vec3 viewDirection = normalize(viewPosition - fragPosition);
 	vec3 reflectionDirection = reflect(-lightDirection, normalizedNormal);
 	vec3 specular = light.specular * pow(max(dot(viewDirection, reflectionDirection), 0.0f), light.shininess) * color;
 
-	float distanceToFragment = (light.position.w) ? length(light.position.xyz - fragPosition) : 0.0f;
+	float distanceToFragment = (bool(light.position.w)) ? length(light.position.xyz - fragPosition) : 0.0f;
 	float lightAttenuation = 1.0f / (light.attenuation.x + light.attenuation.y * distanceToFragment
 		+ light.attenuation.z * (distanceToFragment * distanceToFragment));
 

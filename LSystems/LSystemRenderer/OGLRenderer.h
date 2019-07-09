@@ -16,8 +16,8 @@ namespace lrend
 	{
 		unsigned windowWidth, windowHeight;
 		unsigned textureWidth, textureHeight;
+		OGLCameraConfig cameraConfig;
 		glm::vec3 backgroundColor;
-		glm::vec3 cameraPosition;
 		glm::vec4 lightPosition;
 		glm::vec3 lightAttenuation;
 		glm::vec3 lightAmbient, lightDiffuse, lightSpecular;
@@ -29,8 +29,8 @@ namespace lrend
 	const OGLRendererConfig defaultOGLRendererConfig =
 	{
 		1280U, 720U, 256U, 256U,
+		defaultOGLCameraConfig,
 		glm::vec3(0.9f, 0.9f, 0.9f),
-		glm::vec3(0.0f, 1.0f, 3.0f),
 		glm::vec4(0.0f, 10.0f, 5.0f, 0.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(0.3f, 0.3f, 0.3f),
@@ -71,7 +71,7 @@ namespace lrend
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();
 		static void initBuffers(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData);
-		static void initCamera(const glm::vec3& position);
+		static void initCamera(const OGLCameraConfig& cameraConfig);
 		static void initShader(const char *vertexPath, const char *tessCtrlPath, const char *tessEvalPath,
 			const char *geometryPath, const char *fragmentPath);
 		static void initLighting(const glm::vec4& position, const glm::vec3& attenuation, const glm::vec3& ambient,

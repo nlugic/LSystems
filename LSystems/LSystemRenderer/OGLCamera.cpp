@@ -5,9 +5,9 @@
 namespace lrend
 {
 
-	OGLCamera::OGLCamera(glm::vec3 pos)
-		:front(glm::vec3(0.0f, 0.0f, -1.0f)), speed(2.0f), sensitivity(0.1f),
-		fov(45.0f), position(pos), worldUp(glm::vec3(0.0f, 1.0f, 0.0f)), yaw(-90.0f), pitch(0.0f)
+	OGLCamera::OGLCamera(const OGLCameraConfig& config)
+		:position(config.position), worldUp(config.worldUp), pitch(config.pitch), yaw(config.yaw),
+		fov(config.fov), speed(config.speed), sensitivity(config.sensitivity)
 	{
 		updateCameraVectors();
 	}
@@ -31,14 +31,13 @@ namespace lrend
 	{
 		float velocity = speed * deltaTime;
 
-		if (direction == FORWARD)
-			position += front * velocity;
-		if (direction == BACKWARDS)
-			position -= front * velocity;
-		if (direction == LEFT)
-			position -= right * velocity;
-		if (direction == RIGHT)
-			position += right * velocity;
+		switch (direction)
+		{
+			case FORWARD: position += front * velocity; break;
+			case BACKWARDS: position -= front * velocity; break;
+			case LEFT: position -= right * velocity; break;
+			case RIGHT: position += right * velocity; break;
+		}
 	}
 
 	void OGLCamera::look(float xOffset, float yOffset)
@@ -46,10 +45,7 @@ namespace lrend
 		yaw += xOffset * sensitivity;
 		pitch += yOffset * sensitivity;
 
-		if (pitch > 89.0f)
-			pitch = 89.0f;
-		if (pitch < -89.0f)
-			pitch = -89.0f;
+		pitch = glm::clamp(pitch, -89.9f, 89.9f);
 
 		updateCameraVectors();
 	}
@@ -58,18 +54,16 @@ namespace lrend
 	{
 		if (fov >= 1.0f && fov <= 45.0f)
 			fov -= yOffset;
-		if (fov <= 1.0f)
-			fov = 1.0f;
-		if (fov >= 45.0f)
-			fov = 45.0f;
+
+		fov = glm::clamp(fov, 1.0f, 45.0f);
 	}
 
 	void OGLCamera::updateCameraVectors()
 	{
 		glm::vec3 newFront;
-		newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		newFront.y = sin(glm::radians(pitch));
-		newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+		newFront.x = std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch));
+		newFront.y = std::sin(glm::radians(pitch));
+		newFront.z = std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch));
 		front = glm::normalize(newFront);
 
 		right = glm::normalize(glm::cross(front, worldUp));

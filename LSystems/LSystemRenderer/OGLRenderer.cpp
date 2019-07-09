@@ -172,11 +172,11 @@ namespace lrend
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
-	void OGLRenderer::initCamera(const glm::vec3& cameraPosition)
+	void OGLRenderer::initCamera(const OGLCameraConfig& cameraConfig)
 	{
 		if (OGLR::camera)
 			delete OGLR::camera;
-		OGLR::camera = new OGLCamera(cameraPosition);
+		OGLR::camera = new OGLCamera(cameraConfig);
 	}
 
 	void OGLRenderer::initShader(const char *vertexPath, const char *tessCtrlPath, const char *tessEvalPath,
@@ -340,7 +340,7 @@ namespace lrend
 		OGLR::initBuffers(vBuf, transMats);
 		std::swap(vBuf, std::vector<float> { });
 
-		OGLR::initCamera(config.cameraPosition);
+		OGLR::initCamera(config.cameraConfig);
 		OGLR::initShader(config.vertShaderPath, config.tessCtrlPath, config.tessEvalPath,
 			config.geometryPath, config.fragShaderPath);
 		OGLR::shaderProgram->use();

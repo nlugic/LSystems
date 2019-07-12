@@ -9,10 +9,9 @@ namespace lsys
 	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> emptyAction =
 		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>([](GraphicsTurtle *, LSystemSymbol *, LSystem *) {});
 
-	std::vector<VertexInstance> GraphicsTurtle::vertexInstances;
-	std::vector<Vertex> GraphicsTurtle::vertexBuffer;
+	std::vector<float> GraphicsTurtle::vertexBuffer;
 	std::vector<glm::mat4> GraphicsTurtle::transformBuffer;
-	float GraphicsTurtle::transformPointer = 0.0f;
+	float GraphicsTurtle::transformIndex = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
 		:owner(owner), initialState(state), currentState(state), currentTransform(glm::mat4(1.0f))
@@ -93,7 +92,7 @@ namespace lsys
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
 	{
-		std::memset(&currentTransform[3], 0, 3 * sizeof(float));
+		std::memset(&currentTransform[3], 0, 3ULL * sizeof(float));
 		currentState.position += glm::vec3(currentTransform * glm::vec4(offset, 1.0f));
 	}
 
@@ -136,19 +135,13 @@ namespace lsys
 	{
 		for (const Vertex& vert : vertices)
 		{
-			std::ptrdiff_t pos = std::distance(GraphicsTurtle::vertexBuffer.begin(),
-				std::find(GraphicsTurtle::vertexBuffer.begin(), GraphicsTurtle::vertexBuffer.end(), vert));
-			unsigned vIndex = static_cast<unsigned>(pos);
-			if (pos >= static_cast<std::ptrdiff_t>(GraphicsTurtle::vertexBuffer.size()))
-			{
-				GraphicsTurtle::vertexBuffer.push_back(vert);
-				vIndex = static_cast<unsigned>(GraphicsTurtle::vertexBuffer.size() - 1U);
-			}
-			GraphicsTurtle::vertexInstances.push_back({ vIndex, GraphicsTurtle::transformPointer });
+			GraphicsTurtle::vertexBuffer.insert(GraphicsTurtle::vertexBuffer.end(), &vert.x,
+				&vert.x + sizeof(Vertex) / sizeof(float));
+			GraphicsTurtle::vertexBuffer.push_back(GraphicsTurtle::transformIndex);
 		}
 		updateTransform();
 		GraphicsTurtle::transformBuffer.push_back(currentTransform);
-		++GraphicsTurtle::transformPointer;
+		++GraphicsTurtle::transformIndex;
 	}
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
@@ -192,30 +185,21 @@ namespace lsys
 		return out;
 	}
 
-	std::vector<float> GraphicsTurtle::getVertexBuffer()
+	std::vector<float>& GraphicsTurtle::getVertexBuffer()
 	{
-		std::vector<float> buffer;
-		for (const VertexInstance &vi : GraphicsTurtle::vertexInstances)
-		{
-			buffer.insert(buffer.end(), &GraphicsTurtle::vertexBuffer[vi.v].x,
-				&GraphicsTurtle::vertexBuffer[vi.v].x + sizeof(Vertex) / sizeof(float));
-			buffer.push_back(vi.tr);
-		}
-
-		return buffer;
+		return GraphicsTurtle::vertexBuffer;
 	}
 
-	const std::vector<glm::mat4>& GraphicsTurtle::getTransformBuffer()
+	std::vector<glm::mat4>& GraphicsTurtle::getTransformBuffer()
 	{
 		return GraphicsTurtle::transformBuffer;
 	}
 
 	void GraphicsTurtle::resetBuffers()
 	{
-		GraphicsTurtle::vertexInstances.clear();
 		GraphicsTurtle::vertexBuffer.clear();
 		GraphicsTurtle::transformBuffer.clear();
-		GraphicsTurtle::transformPointer = 0U;
+		GraphicsTurtle::transformIndex = 0.0f;
 	}
 
 }

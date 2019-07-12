@@ -20,13 +20,7 @@ namespace lsys
 			return !std::memcmp(this, &v, sizeof(Vertex));
 		}
 	};
-
-	struct VertexInstance
-	{
-		unsigned v;
-		float tr;
-	};
-
+	
 	struct TurtleState
 	{
 		glm::vec3 position;
@@ -49,10 +43,9 @@ namespace lsys
 		glm::mat4 currentTransform;
 		std::stack<TurtleState> stateStack;
 
-		static std::vector<VertexInstance> vertexInstances;
-		static std::vector<Vertex> vertexBuffer;
+		static std::vector<float> vertexBuffer;
 		static std::vector<glm::mat4> transformBuffer;
-		static float transformPointer;
+		static float transformIndex;
 
 	public:
 		GraphicsTurtle(LSystem *owner = nullptr, const TurtleState& state = defaultTurtleState);
@@ -79,8 +72,8 @@ namespace lsys
 		std::string toString() const;
 		friend std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& gTrt);
 
-		static std::vector<float> getVertexBuffer();
-		static const std::vector<glm::mat4>& getTransformBuffer();
+		static std::vector<float>& getVertexBuffer();
+		static std::vector<glm::mat4>& getTransformBuffer();
 		static void resetBuffers();
 	};
 

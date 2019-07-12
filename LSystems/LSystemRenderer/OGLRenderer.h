@@ -91,9 +91,9 @@ namespace lrend
 		static void onMouseScroll(GLFWwindow *wnd, double xOff, double yOff);
 
 	public:
-		static void updateVertexData(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData);
-		static void renderScene(void *owner, std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
-			const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config = defaultOGLRendererConfig);
+		static void updateVertexData(std::vector<float>& vertData, std::vector<glm::mat4>& transformData);
+		static void renderScene(void *owner, std::vector<float>& vBuf, std::vector<glm::mat4>& transMats,
+			const std::vector<const char *>& texPaths, const OGLRendererConfig& config = defaultOGLRendererConfig);
 	};
 
 }

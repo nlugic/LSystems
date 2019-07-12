@@ -136,17 +136,17 @@ namespace lrend
 		glBindBuffer(GL_ARRAY_BUFFER, OGLR::vbo);
 		glBufferData(GL_ARRAY_BUFFER, OGLR::vertexBufSize * sizeof(float), vertData.data(), GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), nullptr);
 		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float), nullptr);
+		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float),
 			reinterpret_cast<const void *>(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float),
 			reinterpret_cast<const void *>(6 * sizeof(float)));
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(lsys::Vertex) + sizeof(float),
 			reinterpret_cast<const void *>(9 * sizeof(float)));
-		glEnableVertexAttribArray(3);
 
 		glGenBuffers(1, &OGLR::ssbo);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, OGLR::ssbo);
@@ -164,7 +164,7 @@ namespace lrend
 
 		glObjectLabel(GL_VERTEX_ARRAY, OGLR::vao, 9, "Main VAO");
 		glObjectLabel(GL_BUFFER, OGLR::vbo, 9, "Mesh VBO");
-		glObjectLabel(GL_BUFFER, OGLR::ssbo, 21, "Mesh transforms SSBO");
+		glObjectLabel(GL_BUFFER, OGLR::ssbo, 22, "Transform matrix SSBO");
 #endif
 
 		glBindVertexArray(0U);
@@ -297,7 +297,7 @@ namespace lrend
 		OGLR::camera->zoom(static_cast<float>(yOff));
 	}
 	
-	void OGLRenderer::updateVertexData(const std::vector<float>& vertData, const std::vector<glm::mat4>& transformData)
+	void OGLRenderer::updateVertexData(std::vector<float>& vertData, std::vector<glm::mat4>& transformData)
 	{
 		OGLR::vertexBufSize = vertData.size();
 		OGLR::shaderStorageBufSize = transformData.size();
@@ -322,13 +322,16 @@ namespace lrend
 		std::clog << "Updating the buffers took " << elapsedTime << " nanoseconds." << std::endl;
 #endif
 
+		std::swap(vertData, std::vector<float> { });
+		std::swap(transformData, std::vector<glm::mat4> { });
+
 		glBindVertexArray(0U);
 		glBindBuffer(GL_ARRAY_BUFFER, 0U);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
 	}
 
-	void OGLRenderer::renderScene(void *owner, std::vector<float>& vBuf, const std::vector<const char *>& texPaths,
-		const std::vector<glm::mat4>& transMats, const OGLRendererConfig& config)
+	void OGLRenderer::renderScene(void *owner, std::vector<float>& vBuf, std::vector<glm::mat4>& transMats,
+		const std::vector<const char *>& texPaths, const OGLRendererConfig& config)
 	{
 		OGLR::owner = owner;
 		OGLR::width = config.windowWidth;
@@ -339,6 +342,7 @@ namespace lrend
 		OGLR::initGLWindow(config.windowCaption);
 		OGLR::initBuffers(vBuf, transMats);
 		std::swap(vBuf, std::vector<float> { });
+		std::swap(transMats, std::vector<glm::mat4> { });
 
 		OGLR::initCamera(config.cameraConfig);
 		OGLR::initShader(config.vertShaderPath, config.tessCtrlPath, config.tessEvalPath,

@@ -18,6 +18,7 @@ namespace lsys
 		float probability;
 
 	public:
+		LSystemProduction() = delete;
 		LSystemProduction(LSystemSymbol *pred, float prob = 1.0f);
 		LSystemProduction(char pred, float prob = 1.0f);
 		LSystemProduction(const LSystemProduction& prod);

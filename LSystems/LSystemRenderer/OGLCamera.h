@@ -31,7 +31,9 @@ namespace lrend
 	public:
 		OGLCamera(const OGLCameraConfig& config = default_ogl_camera_config);
 		OGLCamera(const OGLCamera&) = delete;
+		OGLCamera(OGLCamera&&) = delete;
 		OGLCamera& operator=(const OGLCamera&) = delete;
+		~OGLCamera() = default;
 
 		const glm::vec3& getPosition() const;
 		float getFOV() const;

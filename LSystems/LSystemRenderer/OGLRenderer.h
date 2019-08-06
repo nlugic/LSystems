@@ -14,7 +14,7 @@ namespace lrend
 	
 	struct OGLRendererConfig
 	{
-		unsigned window_width, window_height, texture_width, texture_height;
+		unsigned int window_width, window_height, texture_width, texture_height;
 		OGLCameraConfig camera_config;
 		glm::vec3 background_color;
 		glm::vec4 light_position;
@@ -53,17 +53,20 @@ namespace lrend
 		static float delta_time, last_frame;
 		static OGLCamera *camera;
 
-		static unsigned vao, vbo, ssbo;
+		static unsigned int vao, vbo, ssbo;
 		static std::size_t vertex_buf_size, shader_storage_buf_size;
 		static OGLShader *shader_program;
 		static OGLArrayTexture *textures;
 
 #ifdef _DEBUG
-		static unsigned tqo;
+		static unsigned int tqo;
 #endif
 
+		OGLRenderer() = delete;
 		OGLRenderer(const OGLRenderer&) = delete;
+		OGLRenderer(OGLRenderer&&) = delete;
 		OGLRenderer& operator=(const OGLRenderer&) = delete;
+		~OGLRenderer() = delete;
 
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();

@@ -13,15 +13,17 @@ namespace lsysh
 	class ConsoleProgressBar
 	{
 	private:
-		unsigned marker_count;
+		unsigned int marker_count;
 		float progress, progress_increment, progress_marker;
 
 		std::chrono::steady_clock::time_point start, end;
 		std::ofstream log;
 
 	public:
-		ConsoleProgressBar(std::size_t units, unsigned markers = 25U, const char *log_path = "./benchmark.csv");
+		ConsoleProgressBar() = delete;
+		ConsoleProgressBar(std::size_t units, unsigned int markers = 25U, const char *log_path = "./benchmark.csv");
 		ConsoleProgressBar(const ConsoleProgressBar&) = delete;
+		ConsoleProgressBar(ConsoleProgressBar&&) = delete;
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;
 		~ConsoleProgressBar() = default;
 

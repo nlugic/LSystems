@@ -18,6 +18,7 @@ namespace lsys
 		virtual void initTurtleActions();
 
 	public:
+		LSystemContext() = delete;
 		LSystemContext(std::size_t max_l, const TurtleState& state = default_turtle_state);
 		LSystemContext(LSystem *sys, std::size_t max_l, const TurtleState& state = default_turtle_state);
 		LSystemContext(const LSystemContext& cxt);

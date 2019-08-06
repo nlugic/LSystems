@@ -15,6 +15,7 @@ namespace lrend
 		LSystemRenderer() = default;
 		LSystemRenderer(lsys::LSystemContext *cxt);
 		LSystemRenderer(const LSystemRenderer&) = delete;
+		LSystemRenderer(LSystemRenderer&&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 

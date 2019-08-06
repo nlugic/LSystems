@@ -9,16 +9,18 @@ namespace lrend
 	class OGLArrayTexture
 	{
 	private:
-		unsigned array_texture_id;
+		unsigned int array_texture_id;
 		std::size_t layers;
 		int width, height;
 
 		void initArrayTexture();
 
 	public:
+		OGLArrayTexture() = delete;
 		OGLArrayTexture(const std::vector<const char *>& paths, int w, int h);
 		OGLArrayTexture(const std::vector<unsigned char *>& data, int w, int h);
 		OGLArrayTexture(const OGLArrayTexture&) = delete;
+		OGLArrayTexture(OGLArrayTexture&&) = delete;
 		OGLArrayTexture& operator=(const OGLArrayTexture&) = delete;
 		~OGLArrayTexture();
 	};

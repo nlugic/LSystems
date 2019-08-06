@@ -55,7 +55,7 @@ namespace lsys
 	void GraphicsTurtle::resetState()
 	{
 		std::size_t stack_size = state_stack.size();
-		for (unsigned i = 1ULL; i < stack_size; ++i)
+		for (unsigned int i = 1ULL; i < stack_size; ++i)
 			state_stack.pop();
 		current_state = state_stack.top();
 		current_transform = glm::mat4(1.0f);

@@ -11,14 +11,15 @@ namespace lrend
 	class OGLShader
 	{
 	private:
-		unsigned program_id;
+		unsigned int program_id;
 
-		unsigned createShader(const char *path, unsigned short type) const;
+		unsigned int createShader(const char *path, unsigned short type) const;
 		
 	public:
 		OGLShader(const char *vert_path = nullptr, const char *tesc_path = nullptr, const char *tese_path = nullptr,
 			const char *geom_path = nullptr, const char *frag_path = nullptr);
 		OGLShader(const OGLShader&) = delete;
+		OGLShader(OGLShader&&) = delete;
 		OGLShader& operator=(const OGLShader&) = delete;
 		~OGLShader();
 

@@ -16,8 +16,13 @@ namespace lsys
 		std::map<char, float> params;
 
 	public:
+		LSystemSymbol() = delete;
 		LSystemSymbol(char key);
+		LSystemSymbol(const LSystemSymbol&) = default;
 		virtual LSystemSymbol *clone() const;
+		friend void swap(LSystemSymbol& sym_1, LSystemSymbol& sym_2);
+		LSystemSymbol(LSystemSymbol&& sym) noexcept;
+		LSystemSymbol& operator=(LSystemSymbol sym) noexcept;
 		virtual ~LSystemSymbol() = default;
 
 		char getKey() const;

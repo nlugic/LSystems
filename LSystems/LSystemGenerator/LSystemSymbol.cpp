@@ -10,6 +10,16 @@ namespace lsys
 
 	LSystemSymbol *LSystemSymbol::clone() const { return new LSystemSymbol(*this); }
 
+	void swap(LSystemSymbol& sym_1, LSystemSymbol& sym_2)
+	{
+		std::swap(sym_1.key, sym_2.key);
+		std::swap(sym_1.params, sym_2.params);
+	}
+
+	LSystemSymbol::LSystemSymbol(LSystemSymbol&& sym) noexcept { swap(*this, sym); }
+
+	LSystemSymbol& LSystemSymbol::operator=(LSystemSymbol sym) noexcept { swap(*this, sym); return *this; }
+
 	char LSystemSymbol::getKey() const { return key; }
 
 	float LSystemSymbol::getParam(char param) const

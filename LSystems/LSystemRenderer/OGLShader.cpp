@@ -9,7 +9,7 @@
 namespace lrend
 {
 
-	unsigned OGLShader::createShader(const char *path, unsigned short type) const
+	unsigned int OGLShader::createShader(const char *path, unsigned short type) const
 	{
 		std::ifstream in;
 		in.exceptions(std::ifstream::badbit | std::ifstream::failbit);
@@ -28,7 +28,7 @@ namespace lrend
 				<< e.what() << std::endl;
 		}
 
-		unsigned id;
+		unsigned int id;
 		int success;
 		char error_msg[msg_buf_size];
 
@@ -63,35 +63,35 @@ namespace lrend
 	{
 		if (vert_path)
 		{
-			unsigned vertex_id = createShader(vert_path, GL_VERTEX_SHADER);
+			unsigned int vertex_id = createShader(vert_path, GL_VERTEX_SHADER);
 			glAttachShader(program_id, vertex_id);
 			glDeleteShader(vertex_id);
 		}
 
 		if (tesc_path)
 		{
-			unsigned tess_ctrl_id = createShader(tesc_path, GL_TESS_CONTROL_SHADER);
+			unsigned int tess_ctrl_id = createShader(tesc_path, GL_TESS_CONTROL_SHADER);
 			glAttachShader(program_id, tess_ctrl_id);
 			glDeleteShader(tess_ctrl_id);
 		}
 
 		if (tese_path)
 		{
-			unsigned tess_eval_id = createShader(tese_path, GL_TESS_EVALUATION_SHADER);
+			unsigned int tess_eval_id = createShader(tese_path, GL_TESS_EVALUATION_SHADER);
 			glAttachShader(program_id, tess_eval_id);
 			glDeleteShader(tess_eval_id);
 		}
 
 		if (geom_path)
 		{
-			unsigned geometry_id = createShader(geom_path, GL_GEOMETRY_SHADER);
+			unsigned int geometry_id = createShader(geom_path, GL_GEOMETRY_SHADER);
 			glAttachShader(program_id, geometry_id);
 			glDeleteShader(geometry_id);
 		}
 
 		if (frag_path)
 		{
-			unsigned fragment_id = createShader(frag_path, GL_FRAGMENT_SHADER);
+			unsigned int fragment_id = createShader(frag_path, GL_FRAGMENT_SHADER);
 			glAttachShader(program_id, fragment_id);
 			glDeleteShader(fragment_id);
 		}

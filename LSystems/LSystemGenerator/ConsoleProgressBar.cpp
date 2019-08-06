@@ -9,7 +9,7 @@
 namespace lsysh
 {
 
-	ConsoleProgressBar::ConsoleProgressBar(std::size_t units, unsigned markers, const char *log_path)
+	ConsoleProgressBar::ConsoleProgressBar(std::size_t units, unsigned int markers, const char *log_path)
 		:marker_count(markers), progress(0.0f), progress_increment(100.0f / units), progress_marker(0.0f),
 			start(std::chrono::steady_clock::now()), log(log_path, std::ios::app) { }
 
@@ -20,8 +20,8 @@ namespace lsysh
 		progress += progress_increment;
 		progress_marker = std::floorf(progress / (100.0f / marker_count));
 		if (std::floorf(progress) - std::floorf(progress - progress_increment) > eps)
-			std::clog << "\r[" << std::string(static_cast<unsigned>(progress_marker), '#')
-			<< std::string(marker_count - static_cast<unsigned>(progress_marker), ' ') << "] ["
+			std::clog << "\r[" << std::string(static_cast<unsigned int>(progress_marker), '#')
+			<< std::string(marker_count - static_cast<unsigned int>(progress_marker), ' ') << "] ["
 			<< std::floorf(progress) << "%]";
 	}
 

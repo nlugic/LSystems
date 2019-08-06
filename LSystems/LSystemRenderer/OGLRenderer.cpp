@@ -26,16 +26,16 @@ namespace lrend
 	float OGLR::delta_time = 0.0f;
 	float OGLR::last_frame = 0.0f;
 	OGLCamera *OGLR::camera = nullptr;
-	unsigned OGLR::vao = 0U;
-	unsigned OGLR::vbo = 0U;
-	unsigned OGLR::ssbo = 0U;
+	unsigned int OGLR::vao = 0U;
+	unsigned int OGLR::vbo = 0U;
+	unsigned int OGLR::ssbo = 0U;
 	std::size_t OGLR::vertex_buf_size = 0ULL;
 	std::size_t OGLR::shader_storage_buf_size = 0ULL;
 	OGLShader *OGLR::shader_program = nullptr;
 	OGLArrayTexture *OGLR::textures = nullptr;
 
 #ifdef _DEBUG
-	unsigned OGLR::tqo = 0U;
+	unsigned int OGLR::tqo = 0U;
 #endif
 
 	void OGLRenderer::initGLWindow(const char *caption)

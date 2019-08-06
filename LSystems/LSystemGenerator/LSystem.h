@@ -21,17 +21,18 @@ namespace lsys
 
 	public:
 		LSystem() = default;
-		friend void swap(LSystem& lSys1, LSystem& lSys2);
-		LSystem(const LSystem& lSys);
-		LSystem(LSystem&& lSys) noexcept;
-		LSystem& operator=(LSystem lSys) noexcept;
+		LSystem(const LSystem& sys);
+		friend void swap(LSystem& sys_1, LSystem& sys_2);
+		LSystem(LSystem&& sys) noexcept;
+		LSystem& operator=(LSystem sys) noexcept;
+		virtual LSystem *clone() const;
 		virtual ~LSystem();
 
 		std::size_t getCurrentLevel() const;
 		float getParam(char param) const;
 		void setParam(char param, float value);
 		const std::vector<LSystemSymbol *>& getAxiom() const;
-		void addSymbolToAxiom(LSystemSymbol *lSym);
+		void addSymbolToAxiom(LSystemSymbol *sym);
 		void setAxiom(const std::vector<LSystemSymbol *>& ax);
 		const std::vector<LSystemProduction *>& getProductions() const;
 		void addProduction(LSystemProduction *prod);
@@ -40,10 +41,11 @@ namespace lsys
 
 		virtual const std::vector<LSystemSymbol *>& derive();
 		const std::vector<LSystemSymbol *>& derive(std::size_t level);
-		LSystemProduction* matchProduction(const std::vector<LSystemSymbol *>& currLevel, std::vector<LSystemSymbol *>::const_iterator& pred);
+		LSystemProduction* matchProduction(const std::vector<LSystemSymbol *>& currLevel,
+			std::vector<LSystemSymbol *>::const_iterator& pred);
 
 		virtual std::string toString() const;
-		friend std::ostream& operator<<(std::ostream& out, const LSystem& lSys);
+		friend std::ostream& operator<<(std::ostream& out, const LSystem& sys);
 	};
 
 }

@@ -9,9 +9,9 @@ namespace lrend
 
 	void OGLArrayTexture::initArrayTexture()
 	{
-		glGenTextures(1, &arrayTextureId);
+		glGenTextures(1, &array_texture_id);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D_ARRAY, arrayTextureId);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, array_texture_id);
 
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
@@ -64,9 +64,6 @@ namespace lrend
 		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 	}
 
-	OGLArrayTexture::~OGLArrayTexture()
-	{
-		glDeleteTextures(1, &arrayTextureId);
-	}
+	OGLArrayTexture::~OGLArrayTexture() { glDeleteTextures(1, &array_texture_id); }
 
 }

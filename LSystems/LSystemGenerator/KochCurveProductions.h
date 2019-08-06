@@ -15,11 +15,11 @@ namespace lsys
 		KochSnowflakeProduction()
 			:LSystemProduction('F') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
-			float length = pred->getParam('h') / globalParams.at('s');
-			float angle = globalParams.at('a');
+			float length = pred->getParam('h') / global_params.at('s');
+			float angle = global_params.at('a');
 
 			word.push_back(new GenericLineSymbol('F', length));
 			word.push_back(new TurnLeftSymbol(angle));
@@ -30,6 +30,8 @@ namespace lsys
 			word.push_back(new TurnLeftSymbol(angle));
 			word.push_back(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochSnowflakeProduction(*this); }
 	};
 
 	class KochIslandProductionA : public LSystemProduction
@@ -38,11 +40,11 @@ namespace lsys
 		KochIslandProductionA()
 			:LSystemProduction('F') { }
 		
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
-			float length = pred->getParam('h') / globalParams.at('s');
-			float angle = globalParams.at('a');
+			float length = pred->getParam('h') / global_params.at('s');
+			float angle = global_params.at('a');
 
 			word.push_back(new GenericLineSymbol('F', length));
 			word.push_back(new TurnRightSymbol(angle));
@@ -59,6 +61,8 @@ namespace lsys
 			word.push_back(new TurnLeftSymbol(angle));
 			word.push_back(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionA(*this); }
 	};
 
 	class KochIslandProductionB : public LSystemProduction
@@ -82,6 +86,8 @@ namespace lsys
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionB(*this); }
 	};
 
 	class KochIslandProductionC : public LSystemProduction
@@ -102,6 +108,8 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionC(*this); }
 	};
 
 	class KochIslandProductionD : public LSystemProduction
@@ -122,6 +130,8 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionD(*this); }
 	};
 
 	class KochIslandProductionE : public LSystemProduction
@@ -140,6 +150,8 @@ namespace lsys
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionE(*this); }
 	};
 
 	class KochIslandProductionF : public LSystemProduction
@@ -158,6 +170,8 @@ namespace lsys
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionF(*this); }
 	};
 
 	class KochIslandProductionG : public LSystemProduction
@@ -176,6 +190,8 @@ namespace lsys
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new KochIslandProductionG(*this); }
 	};
 
 }

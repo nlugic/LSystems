@@ -13,13 +13,13 @@ namespace lrend
 		std::vector<lsys::LSystemContext *> contexts;
 
 		LSystemRenderer() = default;
-		LSystemRenderer(lsys::LSystemContext *lCxt);
+		LSystemRenderer(lsys::LSystemContext *cxt);
 		LSystemRenderer(const LSystemRenderer&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 
 	public:
-		void addContext(lsys::LSystemContext *lCxt);
+		void addContext(lsys::LSystemContext *cxt);
 		void levelUp();
 		void levelDown();
 

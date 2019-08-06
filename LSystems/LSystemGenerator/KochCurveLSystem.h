@@ -24,6 +24,8 @@ namespace lsys
 
 			addProduction(prod);
 		}
+
+		virtual LSystem *clone() const override { return new KochCurveLSystem(*this); }
 	};
 
 }

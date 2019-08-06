@@ -19,27 +19,27 @@ namespace lsys
 		Generic3DTreeProductionP1()
 			:LSystemProduction('A') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
-			float angle = globalParams.at('a');
+			float angle = global_params.at('a');
 			float slices = pred->getParam('n');
-			float rStart = pred->getParam('r');
-			float rEnd = 0.8f * rStart;
+			float r_start = pred->getParam('r');
+			float r_end = 0.8f * r_start;
 			float height = 1.1f * pred->getParam('h');
 			float wrap = pred->getParam('w');
 
 			word.push_back(new SaveStateSymbol());
 
 			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, rStart, rEnd, height, wrap));
+			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, r_start, r_end, height, wrap));
 
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
 			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 
-			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
+			word.push_back(new Generic3DTreeBranchApexSymbol(slices, r_end, height, wrap));
 
 			word.push_back(new RestoreStateSymbol());
 
@@ -48,14 +48,14 @@ namespace lsys
 			word.push_back(new SaveStateSymbol());
 
 			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, rStart, rEnd, height, wrap));
+			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, r_start, r_end, height, wrap));
 
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
 			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 
-			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
+			word.push_back(new Generic3DTreeBranchApexSymbol(slices, r_end, height, wrap));
 
 			word.push_back(new RestoreStateSymbol());
 
@@ -64,17 +64,19 @@ namespace lsys
 			word.push_back(new SaveStateSymbol());
 
 			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, rStart, rEnd, height, wrap));
+			word.push_back(new Generic3DTreeBranchSegmentSymbol(slices, r_start, r_end, height, wrap));
 
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new PitchUpSymbol(2.0f * angle));
 			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 
-			word.push_back(new Generic3DTreeBranchApexSymbol(slices, rEnd, height, wrap));
+			word.push_back(new Generic3DTreeBranchApexSymbol(slices, r_end, height, wrap));
 
 			word.push_back(new RestoreStateSymbol());
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP1(*this); }
 	};
 
 	class Generic3DTreeProductionP2 : public LSystemProduction
@@ -83,17 +85,19 @@ namespace lsys
 		Generic3DTreeProductionP2()
 			:LSystemProduction('F') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			LSystemSymbol *expansionSymbol = new LSystemSymbol('S');
 			expansionSymbol->setParams(pred);
 			word.push_back(expansionSymbol);
 
-			word.push_back(new RollRightSymbol(5.0f * globalParams.at('a')));
+			word.push_back(new RollRightSymbol(5.0f * global_params.at('a')));
 			word.push_back(new Generic3DTreeBranchSegmentSymbol(pred->getParam('n'), pred->getParam('R'),
 				pred->getParam('R'), pred->getParam('h'), pred->getParam('w')));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP2(*this); }
 	};
 
 	class Generic3DTreeProductionP3 : public LSystemProduction
@@ -102,17 +106,19 @@ namespace lsys
 		Generic3DTreeProductionP3()
 			:LSystemProduction('S') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			word.push_back(new Generic3DTreeBranchSegmentSymbol(pred->getParam('n'), pred->getParam('R'),
 				pred->getParam('R'), pred->getParam('h'), pred->getParam('w')));
 
 			word.push_back(new SaveStateSymbol());
-			word.push_back(new PitchUpSymbol(2.0f * globalParams.at('a')));
+			word.push_back(new PitchUpSymbol(2.0f * global_params.at('a')));
 			word.push_back(new Generic3DTreeLeafSymbol(0.25f, 0.1f, 0.075f, 0.2f, 0.6f));
 			word.push_back(new RestoreStateSymbol());
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP3(*this); }
 	};
 
 }

@@ -10,21 +10,21 @@ namespace lsys
 	class LSystemContext
 	{
 	protected:
-		std::size_t currentLevel;
-		std::size_t maxLevel;
+		std::size_t current_level, max_level;
 
-		LSystem *lSystem;
+		LSystem *system;
 		GraphicsTurtle turtle;
 
 		virtual void initTurtleActions();
 
 	public:
-		LSystemContext(std::size_t maxL, const TurtleState& state = defaultTurtleState);
-		LSystemContext(LSystem *lSys, std::size_t maxL, const TurtleState& state = defaultTurtleState);
-		friend void swap(LSystemContext& lCxt1, LSystemContext& lCxt2);
-		LSystemContext(const LSystemContext& lCxt);
-		LSystemContext(LSystemContext&& lCxt) noexcept;
-		LSystemContext& operator=(LSystemContext lCxt) noexcept;
+		LSystemContext(std::size_t max_l, const TurtleState& state = default_turtle_state);
+		LSystemContext(LSystem *sys, std::size_t max_l, const TurtleState& state = default_turtle_state);
+		LSystemContext(const LSystemContext& cxt);
+		friend void swap(LSystemContext& cxt_1, LSystemContext& cxt_2);
+		LSystemContext(LSystemContext&& cxt) noexcept;
+		LSystemContext& operator=(LSystemContext cxt) noexcept;
+		virtual LSystemContext *clone() const;
 		virtual ~LSystemContext();
 
 		std::size_t getCurrentLevel() const;
@@ -33,7 +33,7 @@ namespace lsys
 		void generateModel(std::size_t level);
 
 		virtual std::string toString() const;
-		friend std::ostream& operator<<(std::ostream& out, const LSystemContext& lCxt);
+		friend std::ostream& operator<<(std::ostream& out, const LSystemContext& cxt);
 	};
 
 }

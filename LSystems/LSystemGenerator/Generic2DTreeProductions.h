@@ -29,6 +29,8 @@ namespace lsys
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionA(*this); }
 	};
 
 	class Generic2DTreeProductionB : public LSystemProduction
@@ -51,6 +53,8 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionB(*this); }
 	};
 
 	class Generic2DTreeProductionC : public LSystemProduction
@@ -80,6 +84,8 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new RestoreStateSymbol());
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionC(*this); }
 	};
 
 	class Generic2DTreeProductionD : public LSystemProduction
@@ -101,6 +107,8 @@ namespace lsys
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
 			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionD(*this); }
 	};
 
 	class Generic2DTreeProductionE : public LSystemProduction
@@ -121,6 +129,8 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionE(*this); }
 	};
 
 	class Generic2DTreeProductionF : public LSystemProduction
@@ -148,6 +158,8 @@ namespace lsys
 			addSymbolToSuccessor(new TurnRightSymbol(angle));
 			addSymbolToSuccessor(new GenericLineSymbol('X', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionF(*this); }
 	};
 
 	class Generic2DTreeElongationProduction : public LSystemProduction
@@ -159,6 +171,8 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeElongationProduction(*this); }
 	};
 
 	class Generic2DTreeProductionS1 : public LSystemProduction
@@ -179,6 +193,8 @@ namespace lsys
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionS1(*this); }
 	};
 
 	class Generic2DTreeProductionS2 : public LSystemProduction
@@ -194,6 +210,8 @@ namespace lsys
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionS2(*this); }
 	};
 
 	class Generic2DTreeProductionS3 : public LSystemProduction
@@ -209,6 +227,8 @@ namespace lsys
 			addSymbolToSuccessor(new RestoreStateSymbol());
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionS3(*this); }
 	};
 
 	class Generic2DTreeProductionSD : public LSystemProduction
@@ -217,14 +237,14 @@ namespace lsys
 		Generic2DTreeProductionSD()
 			:LSystemProduction('A') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
-			float angle = globalParams.at('a');
+			float angle = global_params.at('a');
 			float scale = pred->getParam('s');
 
 			LSystemSymbol *apex = new LSystemSymbol('A');
-			apex->setParam('s', scale / globalParams.at('R'));
+			apex->setParam('s', scale / global_params.at('R'));
 
 			word.push_back(new GenericLineSymbol('F', scale));
 			word.push_back(new SaveStateSymbol());
@@ -236,6 +256,8 @@ namespace lsys
 			word.push_back(new LSystemSymbol(*apex));
 			word.push_back(new RestoreStateSymbol());
 		}
+
+		virtual LSystemProduction *clone() const override { return new Generic2DTreeProductionSD(*this); }
 	};
 
 }

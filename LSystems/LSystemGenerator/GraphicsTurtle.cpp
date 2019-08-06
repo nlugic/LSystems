@@ -6,128 +6,117 @@
 namespace lsys
 {
 
-	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)> emptyAction =
-		std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>([](GraphicsTurtle *, LSystemSymbol *, LSystem *) {});
+	using TurtleAction = std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>;
 
-	std::vector<float> GraphicsTurtle::vertexBuffer;
-	std::vector<glm::mat4> GraphicsTurtle::transformBuffer;
-	float GraphicsTurtle::transformIndex = 0.0f;
+	const TurtleAction empty_action = TurtleAction([](GraphicsTurtle *, LSystemSymbol *, LSystem *) { });
+
+	std::vector<float> GraphicsTurtle::vertex_buffer;
+	std::vector<glm::mat4> GraphicsTurtle::transform_buffer;
+	float GraphicsTurtle::transform_index = 0.0f;
 
 	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
-		:owner(owner), initialState(state), currentState(state), currentTransform(glm::mat4(1.0f))
+		:owner(owner), initial_state(state), current_state(state),
+		current_transform(glm::mat4(1.0f)) { state_stack.push(current_state); }
+
+	void swap(GraphicsTurtle& trt_1, GraphicsTurtle& trt_2)
 	{
-		stateStack.push(currentState);
+		std::swap(trt_1.owner, trt_2.owner);
+		std::swap(trt_1.actions, trt_2.actions);
+		std::swap(trt_1.initial_state, trt_2.initial_state);
+		std::swap(trt_1.current_state, trt_2.current_state);
+		std::swap(trt_1.state_stack, trt_2.state_stack);
+		std::swap(trt_1.current_transform, trt_2.current_transform);
+	}
+	
+	GraphicsTurtle::GraphicsTurtle(GraphicsTurtle&& trt) noexcept { swap(*this, trt); }
+
+	GraphicsTurtle& GraphicsTurtle::operator=(GraphicsTurtle trt) noexcept { swap(*this, trt); return *this; }
+
+	void GraphicsTurtle::setOwner(LSystem *lSys) { owner = lSys; }
+
+	const TurtleState& GraphicsTurtle::getInitialState() const { return initial_state; }
+
+	TurtleState& GraphicsTurtle::getCurrentState() { return current_state; }
+
+	glm::mat4& GraphicsTurtle::getCurrentTransform() { return current_transform; }
+
+	const TurtleAction& GraphicsTurtle::getAction(char key) const
+	{
+		std::map<char, TurtleAction>::const_iterator value = actions.find(key);
+		return (value != actions.end()) ? value->second : empty_action;
 	}
 
-	void GraphicsTurtle::setOwner(LSystem *lSys)
-	{
-		owner = lSys;
-	}
+	void GraphicsTurtle::setAction(char key, const TurtleAction& func) { actions[key] = func; }
 
-	const TurtleState& GraphicsTurtle::getInitialState() const
-	{
-		return initialState;
-	}
+	void GraphicsTurtle::pushState() { state_stack.push(current_state); }
 
-	TurtleState& GraphicsTurtle::getCurrentState()
-	{
-		return currentState;
-	}
-
-	glm::mat4& GraphicsTurtle::getCurrentTransform()
-	{
-		return currentTransform;
-	}
-
-	const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& GraphicsTurtle::getAction(char key) const
-	{
-		if (actions.find(key) != actions.end())
-			return actions.at(key);
-		return emptyAction;
-	}
-
-	void GraphicsTurtle::setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
-	{
-		actions[key] = func;
-	}
-
-	void GraphicsTurtle::pushState()
-	{
-		stateStack.push(currentState);
-	}
-
-	void GraphicsTurtle::popState()
-	{
-		currentState = stateStack.top();
-		if (stateStack.size() > 1ULL)
-			stateStack.pop();
-	}
+	void GraphicsTurtle::popState() { current_state = state_stack.top(); if (state_stack.size() > 1ULL) state_stack.pop(); }
 
 	void GraphicsTurtle::resetState()
 	{
-		std::size_t stackSize = stateStack.size();
-		for (unsigned i = 1U; i < stackSize; ++i)
-			stateStack.pop();
-		currentState = stateStack.top();
-		currentTransform = glm::mat4(1.0f);
+		std::size_t stack_size = state_stack.size();
+		for (unsigned i = 1ULL; i < stack_size; ++i)
+			state_stack.pop();
+		current_state = state_stack.top();
+		current_transform = glm::mat4(1.0f);
 	}
 
 	void GraphicsTurtle::updateTransform()
 	{
-		currentTransform = glm::translate(glm::mat4(1.0f), currentState.position);
+		current_transform = glm::translate(glm::mat4(1.0f), current_state.position);
 
-		glm::vec3 axis(glm::cross(initialState.heading, currentState.heading));
-		float angle = glm::acos(glm::clamp(glm::dot(initialState.heading, currentState.heading), -1.0f, 1.0f));
+		glm::vec3 axis(glm::cross(initial_state.heading, current_state.heading));
+		float angle = glm::acos(glm::clamp(glm::dot(initial_state.heading, current_state.heading), -1.0f, 1.0f));
 
-		if (std::fabs(angle) > epsilon)
-			currentTransform = glm::rotate(currentTransform, angle, (glm::length(axis) > epsilon) ? axis : currentState.up);
+		if (std::fabs(angle) > eps)
+			current_transform = glm::rotate(current_transform, angle, (glm::length(axis) > eps) ? axis : current_state.up);
 		else
 		{
-			angle = glm::acos(glm::clamp(glm::dot(initialState.up, currentState.up), -1.0f, 1.0f));
+			angle = glm::acos(glm::clamp(glm::dot(initial_state.up, current_state.up), -1.0f, 1.0f));
 
-			if (std::fabs(angle) > epsilon)
-				currentTransform = glm::rotate(currentTransform, angle, currentState.heading);
+			if (std::fabs(angle) > eps)
+				current_transform = glm::rotate(current_transform, angle, current_state.heading);
 		}
 	}
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
 	{
-		std::memset(&currentTransform[3], 0, 3ULL * sizeof(float));
-		currentState.position += glm::vec3(currentTransform * glm::vec4(offset, 1.0f));
+		std::memset(&current_transform[3], 0, 3ULL * sizeof(float));
+		current_state.position += glm::vec3(current_transform * glm::vec4(offset, 1.0f));
 	}
 
 	void GraphicsTurtle::rotateAroundUp(float angle)
 	{
-		currentState.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.up)
-			* glm::vec4(currentState.heading, 1.0f);
-		currentState.left = glm::cross(currentState.up, currentState.heading);
+		current_state.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), current_state.up)
+			* glm::vec4(current_state.heading, 1.0f);
+		current_state.left = glm::cross(current_state.up, current_state.heading);
 	}
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
-		currentState.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.left)
-			* glm::vec4(currentState.heading, 1.0f);
-		currentState.up = glm::cross(currentState.heading, currentState.left);
+		current_state.heading = glm::rotate(glm::mat4(1.0f), glm::radians(angle), current_state.left)
+			* glm::vec4(current_state.heading, 1.0f);
+		current_state.up = glm::cross(current_state.heading, current_state.left);
 	}
 
 	void GraphicsTurtle::rotateAroundHeading(float angle)
 	{
-		currentState.left = glm::rotate(glm::mat4(1.0f), glm::radians(angle), currentState.heading)
-			* glm::vec4(currentState.left, 1.0f);
-		currentState.up = glm::cross(currentState.heading, currentState.left);
+		current_state.left = glm::rotate(glm::mat4(1.0f), glm::radians(angle), current_state.heading)
+			* glm::vec4(current_state.left, 1.0f);
+		current_state.up = glm::cross(current_state.heading, current_state.left);
 	}
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
-		glm::vec3 axis = glm::cross(currentState.heading, target);
-		float angle = glm::acos(glm::clamp(glm::dot(currentState.heading, target), -1.0f, 1.0f));
+		glm::vec3 axis = glm::cross(current_state.heading, target);
+		float angle = glm::acos(glm::clamp(glm::dot(current_state.heading, target), -1.0f, 1.0f));
 
-		if (std::fabs(angle) > epsilon)
+		if (std::fabs(angle) > eps)
 		{
-			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, (glm::length(axis) > epsilon) ? axis : currentState.up));
-			currentState.heading = rot * glm::vec4(currentState.heading, 1.0f);
-			currentState.left = rot * glm::vec4(currentState.left, 1.0f);
-			currentState.up = glm::cross(currentState.heading, currentState.left);
+			glm::mat4 rot(glm::rotate(glm::mat4(1.0f), angle, (glm::length(axis) > eps) ? axis : current_state.up));
+			current_state.heading = rot * glm::vec4(current_state.heading, 1.0f);
+			current_state.left = rot * glm::vec4(current_state.left, 1.0f);
+			current_state.up = glm::cross(current_state.heading, current_state.left);
 		}
 	}
 
@@ -135,23 +124,23 @@ namespace lsys
 	{
 		for (const Vertex& vert : vertices)
 		{
-			GraphicsTurtle::vertexBuffer.insert(GraphicsTurtle::vertexBuffer.end(), &vert.x,
+			GraphicsTurtle::vertex_buffer.insert(GraphicsTurtle::vertex_buffer.end(), &vert.x,
 				&vert.x + sizeof(Vertex) / sizeof(float));
-			GraphicsTurtle::vertexBuffer.push_back(GraphicsTurtle::transformIndex);
+			GraphicsTurtle::vertex_buffer.push_back(GraphicsTurtle::transform_index);
 		}
 		updateTransform();
-		GraphicsTurtle::transformBuffer.push_back(currentTransform);
-		++GraphicsTurtle::transformIndex;
+		GraphicsTurtle::transform_buffer.push_back(current_transform);
+		++GraphicsTurtle::transform_index;
 	}
 
 	void GraphicsTurtle::interpretSymbols(const std::vector<LSystemSymbol *>& symbols)
 	{
 #if defined(_DEBUG) || defined(_VERBOSE)
-		std::size_t symbolCount = symbols.size();
+		std::size_t symbol_count = symbols.size();
 
-		std::clog << "Interpreting " << symbolCount << " symbols..." << std::endl;
+		std::clog << "Interpreting " << symbol_count << " symbols..." << std::endl;
 
-		lsysh::ConsoleProgressBar symbolInterpretation(symbolCount);
+		lsysh::ConsoleProgressBar symbol_interpretation(symbol_count);
 #endif
 
 		for (LSystemSymbol *sym : symbols)
@@ -160,9 +149,9 @@ namespace lsys
 				getAction(sym->getKey())(this, sym, owner);
 
 #if defined(_DEBUG) || defined(_VERBOSE)
-			symbolInterpretation.step();
+			symbol_interpretation.step();
 		}
-		symbolInterpretation.finish(true);
+		symbol_interpretation.finish(true);
 #else
 		}
 #endif
@@ -171,35 +160,24 @@ namespace lsys
 	std::string GraphicsTurtle::toString() const
 	{
 		std::string ret("Turtle's symbols = { ");
-		for (std::map<char, std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>>::const_iterator& iter = actions.begin();
-			iter != actions.end(); ++iter)
-			ret += iter->first + (std::distance(iter, actions.end()) > 1) ? ", " : " ";
+		for (std::map<char, TurtleAction>::const_iterator& it = actions.begin(); it != actions.end(); ++it)
+			ret += it->first + (std::distance(it, actions.end()) > 1) ? ", " : " ";
 		ret += '}';
 		
 		return ret;
 	}
 	
-	std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& gTrt)
-	{
-		out << gTrt.toString();
-		return out;
-	}
+	std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& trt) { out << trt.toString(); return out; }
 
-	std::vector<float>& GraphicsTurtle::getVertexBuffer()
-	{
-		return GraphicsTurtle::vertexBuffer;
-	}
+	std::vector<float>& GraphicsTurtle::getVertexBuffer() { return GraphicsTurtle::vertex_buffer; }
 
-	std::vector<glm::mat4>& GraphicsTurtle::getTransformBuffer()
-	{
-		return GraphicsTurtle::transformBuffer;
-	}
+	std::vector<glm::mat4>& GraphicsTurtle::getTransformBuffer() { return GraphicsTurtle::transform_buffer; }
 
 	void GraphicsTurtle::resetBuffers()
 	{
-		GraphicsTurtle::vertexBuffer.clear();
-		GraphicsTurtle::transformBuffer.clear();
-		GraphicsTurtle::transformIndex = 0.0f;
+		GraphicsTurtle::vertex_buffer.clear();
+		GraphicsTurtle::transform_buffer.clear();
+		GraphicsTurtle::transform_index = 0.0f;
 	}
 
 }

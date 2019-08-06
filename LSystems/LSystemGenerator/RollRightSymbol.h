@@ -10,6 +10,8 @@ namespace lsys
 	{
 	public:
 		RollRightSymbol(float roll) :LSystemSymbol('/') { setParam('r', roll); }
+
+		virtual LSystemSymbol *clone() const override { return new RollRightSymbol(*this); }
 	};
 
 }

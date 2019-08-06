@@ -19,6 +19,8 @@ namespace lsys
 			addProduction(new SierpinskiGasketProductionL());
 			addProduction(new SierpinskiGasketProductionR());
 		}
+
+		virtual LSystem *clone() const override { return new SierpinskiGasketLSystem(*this); }
 	};
 
 }

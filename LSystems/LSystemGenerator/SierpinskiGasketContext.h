@@ -11,12 +11,15 @@ namespace lsys
 	class SierpinskiGasketContext : public LSystemContext
 	{
 	public:
-		SierpinskiGasketContext(std::size_t maxL, float length, float angle, const TurtleState& state = defaultTurtleState)
-			:LSystemContext(new SierpinskiGasketLSystem(length, angle), maxL, state)
+		SierpinskiGasketContext(std::size_t max_l, float length, float angle,
+			const TurtleState& state = default_turtle_state)
+			:LSystemContext(new SierpinskiGasketLSystem(length, angle), max_l, state)
 		{
 			turtle.setAction('L', drawLine);
 			turtle.setAction('R', drawLine);
 		}
+
+		virtual LSystemContext *clone() const override { return new SierpinskiGasketContext(*this); }
 	};
 
 }

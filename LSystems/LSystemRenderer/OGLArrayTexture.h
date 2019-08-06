@@ -9,8 +9,7 @@ namespace lrend
 	class OGLArrayTexture
 	{
 	private:
-		unsigned arrayTextureId;
-
+		unsigned array_texture_id;
 		std::size_t layers;
 		int width, height;
 

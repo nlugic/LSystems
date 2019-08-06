@@ -10,6 +10,8 @@ namespace lsys
 	{
 	public:
 		TurnAroundSymbol() :LSystemSymbol('|') { }
+
+		virtual LSystemSymbol *clone() const override { return new TurnAroundSymbol(*this); }
 	};
 
 }

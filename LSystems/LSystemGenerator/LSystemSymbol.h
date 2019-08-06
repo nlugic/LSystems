@@ -17,16 +17,18 @@ namespace lsys
 
 	public:
 		LSystemSymbol(char key);
+		virtual LSystemSymbol *clone() const;
+		virtual ~LSystemSymbol() = default;
 
 		char getKey() const;
 		float getParam(char param) const;
 		void setParam(char param, float value);
-		void setParams(const LSystemSymbol *lSym);
-		virtual bool operator==(const LSystemSymbol& lSym) const;
-		virtual bool operator!=(const LSystemSymbol& lSym) const;
+		void setParams(const LSystemSymbol *sym);
+		virtual bool operator==(const LSystemSymbol& sym) const;
+		virtual bool operator!=(const LSystemSymbol& sym) const;
 
 		virtual std::string toString() const;
-		friend std::ostream& operator<<(std::ostream& out, const LSystemSymbol& lSym);
+		friend std::ostream& operator<<(std::ostream& out, const LSystemSymbol& sym);
 	};
 
 }

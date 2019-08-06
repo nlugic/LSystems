@@ -10,6 +10,8 @@ namespace lsys
 	{
 	public:
 		TurnLeftSymbol(float yaw) :LSystemSymbol('+') { setParam('y', yaw); }
+
+		virtual LSystemSymbol *clone() const override { return new TurnLeftSymbol(*this); }
 	};
 
 }

@@ -17,6 +17,8 @@ namespace lsys
 			addProduction(new DragonCurveProductionL(length, angle));
 			addProduction(new DragonCurveProductionR(length, angle));
 		}
+
+		virtual LSystem *clone() const override { return new DragonCurveLSystem(*this); }
 	};
 
 }

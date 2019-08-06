@@ -18,6 +18,8 @@ namespace lsys
 			if (elongation)
 				addProduction(new Generic2DTreeElongationProduction(length));
 		}
+
+		virtual LSystem *clone() const override { return new Generic2DTreeLSystem(*this); }
 	};
 
 	class Generic2DTreeLSystemSD : public LSystem
@@ -33,6 +35,8 @@ namespace lsys
 
 			addProduction(new Generic2DTreeProductionSD());
 		}
+
+		virtual LSystem *clone() const override { return new Generic2DTreeLSystemSD(*this); }
 	};
 
 }

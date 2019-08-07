@@ -4,33 +4,6 @@
 namespace lsys
 {
 
-	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys) { turtle->pushState(); }
-
-	void restoreTurtleState(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys) { turtle->popState(); }
-
-	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateAroundUp(sym->getParam('y')); }
-
-	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateAroundUp(-sym->getParam('y')); }
-
-	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateAroundLeft(-sym->getParam('p')); }
-
-	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateAroundLeft(sym->getParam('p')); }
-
-	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateAroundHeading(-sym->getParam('r')); }
-
-	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateAroundHeading(sym->getParam('r')); }
-
-	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys) { turtle->rotateAroundUp(180.0f); }
-
-	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateToVector(turtle->getInitialState().up); }
-
 	void drawLine(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
 		float h = sym->getParam('h');

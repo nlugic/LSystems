@@ -13,7 +13,7 @@ namespace lsys
 	{
 		float x, y, z, nx, ny, nz, s, t, d;
 
-		bool operator==(const Vertex& v) { return !std::memcmp(this, &v, sizeof(Vertex)); }
+		inline bool operator==(const Vertex& v) { return !std::memcmp(this, &v, sizeof(Vertex)); }
 	};
 	
 	struct TurtleState { glm::vec3 position, heading, left, up; };
@@ -39,21 +39,25 @@ namespace lsys
 		static float transform_index;
 
 	public:
-		GraphicsTurtle(LSystem *owner = nullptr, const TurtleState& state = default_turtle_state);
-		GraphicsTurtle(const GraphicsTurtle&) = default;
+		inline GraphicsTurtle(LSystem *owner = nullptr, const TurtleState& state = default_turtle_state)
+			:owner(owner), initial_state(state), current_state(state),
+			current_transform(glm::mat4(1.0f)) { state_stack.push(current_state); }
+		inline GraphicsTurtle(const GraphicsTurtle&) = default;
 		friend void swap(GraphicsTurtle& trt_1, GraphicsTurtle& trt_2);
-		GraphicsTurtle(GraphicsTurtle&& trt) noexcept;
-		GraphicsTurtle& operator=(GraphicsTurtle trt) noexcept;
+		inline GraphicsTurtle(GraphicsTurtle&& trt) noexcept { swap(*this, trt); }
+		inline GraphicsTurtle& operator=(GraphicsTurtle trt) noexcept { swap(*this, trt); return *this; }
+		inline ~GraphicsTurtle() = default;
 
-		void setOwner(LSystem *sys);
-		const TurtleState& getInitialState() const;
-		TurtleState& getCurrentState();
-		glm::mat4& getCurrentTransform();
+		inline void setOwner(LSystem *sys) { owner = sys; }
+		inline const TurtleState& getInitialState() const { return initial_state; }
+		inline TurtleState& getCurrentState() { return current_state; }
+		inline glm::mat4& getCurrentTransform() { return current_transform; }
 		const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& getAction(char key) const;
-		void setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func);
+		inline void setAction(char key, const std::function<void(GraphicsTurtle *, LSystemSymbol *, LSystem *)>& func)
+			{ actions[key] = func; }
 
-		void pushState();
-		void popState();
+		inline void pushState() { state_stack.push(current_state); }
+		inline void popState() { current_state = state_stack.top(); if (state_stack.size() > 1ULL) state_stack.pop(); }
 		void resetState();
 		void updateTransform();
 		void translateState(const glm::vec3& offset);
@@ -65,10 +69,11 @@ namespace lsys
 		void addVertices(const std::vector<Vertex>& vertices);
 
 		std::string toString() const;
-		friend std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& trt);
+		inline friend std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& trt)
+			{ out << trt.toString(); return out; }
 
-		static std::vector<float>& getVertexBuffer();
-		static std::vector<glm::mat4>& getTransformBuffer();
+		inline static std::vector<float>& getVertexBuffer() { return GraphicsTurtle::vertex_buffer; }
+		inline static std::vector<glm::mat4>& getTransformBuffer() { return GraphicsTurtle::transform_buffer; }
 		static void resetBuffers();
 	};
 

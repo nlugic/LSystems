@@ -21,7 +21,7 @@ namespace lsys
 			setParam('w', texture_wrap);
 		}
 
-		virtual LSystemSymbol *clone() const override { return new Generic3DTreeBranchSegmentSymbol(*this); }
+		inline virtual LSystemSymbol *clone() const override { return new Generic3DTreeBranchSegmentSymbol(*this); }
 	};
 
 	class Generic3DTreeBranchApexSymbol : public LSystemSymbol
@@ -37,7 +37,7 @@ namespace lsys
 			setParam('w', texture_wrap);
 		}
 
-		virtual LSystemSymbol *clone() const override { return new Generic3DTreeBranchApexSymbol(*this); }
+		inline virtual LSystemSymbol *clone() const override { return new Generic3DTreeBranchApexSymbol(*this); }
 	};
 
 	class Generic3DTreeLeafSymbol : public LSystemSymbol
@@ -54,7 +54,7 @@ namespace lsys
 			setParam('t', -0.4f);
 		}
 
-		virtual LSystemSymbol *clone() const override { return new Generic3DTreeLeafSymbol(*this); }
+		inline virtual LSystemSymbol *clone() const override { return new Generic3DTreeLeafSymbol(*this); }
 	};
 
 }

@@ -12,7 +12,7 @@ namespace lsys
 	class KochSnowflakeProduction : public LSystemProduction
 	{
 	public:
-		KochSnowflakeProduction()
+		inline KochSnowflakeProduction()
 			:LSystemProduction('F') { }
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -31,13 +31,13 @@ namespace lsys
 			word.push_back(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochSnowflakeProduction(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochSnowflakeProduction(*this); }
 	};
 
 	class KochIslandProductionA : public LSystemProduction
 	{
 	public:
-		KochIslandProductionA()
+		inline KochIslandProductionA()
 			:LSystemProduction('F') { }
 		
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -62,7 +62,7 @@ namespace lsys
 			word.push_back(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionA(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionA(*this); }
 	};
 
 	class KochIslandProductionB : public LSystemProduction
@@ -87,7 +87,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionB(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionB(*this); }
 	};
 
 	class KochIslandProductionC : public LSystemProduction
@@ -109,7 +109,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionC(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionC(*this); }
 	};
 
 	class KochIslandProductionD : public LSystemProduction
@@ -131,7 +131,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionD(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionD(*this); }
 	};
 
 	class KochIslandProductionE : public LSystemProduction
@@ -151,7 +151,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionE(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionE(*this); }
 	};
 
 	class KochIslandProductionF : public LSystemProduction
@@ -171,7 +171,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionF(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionF(*this); }
 	};
 
 	class KochIslandProductionG : public LSystemProduction
@@ -191,7 +191,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new KochIslandProductionG(*this); }
+		inline virtual LSystemProduction *clone() const override { return new KochIslandProductionG(*this); }
 	};
 
 }

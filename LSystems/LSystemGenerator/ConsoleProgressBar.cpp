@@ -13,8 +13,6 @@ namespace lsysh
 		:marker_count(markers), progress(0.0f), progress_increment(100.0f / units), progress_marker(0.0f),
 			start(std::chrono::steady_clock::now()), log(log_path, std::ios::app) { }
 
-	float ConsoleProgressBar::getProgress() const { return progress; }
-
 	void ConsoleProgressBar::step()
 	{
 		progress += progress_increment;
@@ -38,8 +36,6 @@ namespace lsysh
 		log << execution_time << ((new_line) ? '\n' : ',');
 		log.close();
 	}
-
-	void ConsoleProgressBar::reset() { progress = progress_marker = 0.0f; }
 
 }
 

@@ -20,7 +20,7 @@ namespace lsys
 			addProduction(new HilbertCurve3DProductionD(width, length, angle, color));
 		}
 
-		virtual LSystem *clone() const override { return new HilbertCurve3DLSystem(*this); }
+		inline virtual LSystem *clone() const override { return new HilbertCurve3DLSystem(*this); }
 	};
 
 }

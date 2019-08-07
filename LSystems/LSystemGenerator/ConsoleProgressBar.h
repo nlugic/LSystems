@@ -27,10 +27,10 @@ namespace lsysh
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;
 		~ConsoleProgressBar() = default;
 
-		float getProgress() const;
+		inline float getProgress() const { return progress; }
+		inline void reset() { progress = progress_marker = 0.0f; }
 		void step();
 		void finish(bool new_line = false);
-		void reset();
 	};
 
 }

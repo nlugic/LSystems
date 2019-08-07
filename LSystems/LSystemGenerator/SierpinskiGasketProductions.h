@@ -12,7 +12,7 @@ namespace lsys
 	class SierpinskiGasketProductionL : public LSystemProduction
 	{
 	public:
-		SierpinskiGasketProductionL()
+		inline SierpinskiGasketProductionL()
 			:LSystemProduction('L') { }
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -28,13 +28,13 @@ namespace lsys
 			word.push_back(new GenericLineSymbol('R', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionL(*this); }
+		inline virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionL(*this); }
 	};
 
 	class SierpinskiGasketProductionR : public LSystemProduction
 	{
 	public:
-		SierpinskiGasketProductionR()
+		inline SierpinskiGasketProductionR()
 			:LSystemProduction('R') { }
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -50,7 +50,7 @@ namespace lsys
 			word.push_back(new GenericLineSymbol('L', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionR(*this); }
+		inline virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionR(*this); }
 	};
 
 }

@@ -5,36 +5,17 @@
 namespace lsys
 {
 
-	LSystemSymbol::LSystemSymbol(char key)
-		:key(key) { }
-
-	LSystemSymbol *LSystemSymbol::clone() const { return new LSystemSymbol(*this); }
-
 	void swap(LSystemSymbol& sym_1, LSystemSymbol& sym_2)
 	{
 		std::swap(sym_1.key, sym_2.key);
 		std::swap(sym_1.params, sym_2.params);
 	}
 
-	LSystemSymbol::LSystemSymbol(LSystemSymbol&& sym) noexcept { swap(*this, sym); }
-
-	LSystemSymbol& LSystemSymbol::operator=(LSystemSymbol sym) noexcept { swap(*this, sym); return *this; }
-
-	char LSystemSymbol::getKey() const { return key; }
-
 	float LSystemSymbol::getParam(char param) const
 	{
 		std::map<char, float>::const_iterator value = params.find(param);
 		return (value != params.end()) ? value->second : NAN;
 	}
-
-	void LSystemSymbol::setParam(char param, float value) { params[param] = value; }
-
-	void LSystemSymbol::setParams(const LSystemSymbol *sym) { params = sym->params; }
-
-	bool LSystemSymbol::operator==(const LSystemSymbol& sym) const { return key == sym.key; }
-
-	bool LSystemSymbol::operator!=(const LSystemSymbol& sym) const { return !(*this == sym); }
 
 	std::string LSystemSymbol::toString() const
 	{
@@ -56,7 +37,5 @@ namespace lsys
 
 		return ret;
 	}
-
-	std::ostream& operator<<(std::ostream& out, const LSystemSymbol& sym) { out << sym.toString(); return out; }
 
 }

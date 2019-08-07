@@ -51,12 +51,6 @@ namespace lsys
 		std::swap(sys_1.products, sys_2.products);
 	}
 
-	LSystem::LSystem(LSystem&& sys) noexcept { swap(*this, sys); }
-
-	LSystem& LSystem::operator=(LSystem sys) noexcept { swap(*this, sys); return *this; }
-
-	LSystem *LSystem::clone() const { return new LSystem(*this); }
-
 	LSystem::~LSystem()
 	{
 		clearAxiom();
@@ -78,20 +72,6 @@ namespace lsys
 		std::map<char, float>::const_iterator value = params.find(param);
 		return (value != params.end()) ? value->second : NAN;
 	}
-
-	void LSystem::setParam(char param, float value) { params[param] = value; }
-
-	const std::vector<LSystemSymbol *>& LSystem::getAxiom() const { return axiom; }
-
-	void LSystem::addSymbolToAxiom(LSystemSymbol *sym) { if (sym) axiom.push_back(sym); }
-
-	void LSystem::setAxiom(const std::vector<LSystemSymbol *>& ax) { clearAxiom(); axiom = ax; }
-
-	const std::vector<LSystemProduction *>& LSystem::getProductions() const { return productions; }
-
-	void LSystem::addProduction(LSystemProduction *prod) { if (prod) productions.push_back(prod); }
-
-	void LSystem::setProductions(const std::vector<LSystemProduction *>& prods) { clearProductions(); productions = prods; }
 
 	const std::vector<LSystemSymbol *>& LSystem::operator[](std::size_t level)
 	{
@@ -225,7 +205,5 @@ namespace lsys
 
 		return ret;
 	}
-
-	std::ostream& operator<<(std::ostream& out, const LSystem& sys) { out << sys.toString(); return out; }
 
 }

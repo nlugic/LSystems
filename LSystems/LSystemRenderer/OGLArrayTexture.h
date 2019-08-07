@@ -1,6 +1,7 @@
 #ifndef OGLARRAYTEXTURE_H
 #define OGLARRAYTEXTURE_H
 
+#include "..\..\include\glad\glad.h"
 #include <vector>
 
 namespace lrend
@@ -22,7 +23,7 @@ namespace lrend
 		OGLArrayTexture(const OGLArrayTexture&) = delete;
 		OGLArrayTexture(OGLArrayTexture&&) = delete;
 		OGLArrayTexture& operator=(const OGLArrayTexture&) = delete;
-		~OGLArrayTexture();
+		inline ~OGLArrayTexture() { glDeleteTextures(1, &array_texture_id); }
 	};
 
 }

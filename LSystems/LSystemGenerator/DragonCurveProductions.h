@@ -21,7 +21,7 @@ namespace lsys
 			addSymbolToSuccessor(new TurnLeftSymbol(angle));
 		}
 
-		virtual LSystemProduction *clone() const override { return new DragonCurveProductionL(*this); }
+		inline virtual LSystemProduction *clone() const override { return new DragonCurveProductionL(*this); }
 	};
 
 	class DragonCurveProductionR : public LSystemProduction
@@ -36,7 +36,7 @@ namespace lsys
 			addSymbolToSuccessor(new GenericLineSymbol('R', length));
 		}
 
-		virtual LSystemProduction *clone() const override { return new DragonCurveProductionR(*this); }
+		inline virtual LSystemProduction *clone() const override { return new DragonCurveProductionR(*this); }
 	};
 
 }

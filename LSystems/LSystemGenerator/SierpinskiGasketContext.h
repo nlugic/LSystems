@@ -19,7 +19,7 @@ namespace lsys
 			turtle.setAction('R', drawLine);
 		}
 
-		virtual LSystemContext *clone() const override { return new SierpinskiGasketContext(*this); }
+		inline virtual LSystemContext *clone() const override { return new SierpinskiGasketContext(*this); }
 	};
 
 }

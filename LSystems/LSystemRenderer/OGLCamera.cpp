@@ -1,19 +1,8 @@
 
 #include "OGLCamera.h"
-#include "..\..\include\glm\gtc\matrix_transform.hpp"
 
 namespace lrend
 {
-
-	OGLCamera::OGLCamera(const OGLCameraConfig& config)
-		:position(config.position), world_up(config.world_up), pitch(config.pitch), yaw(config.yaw),
-		fov(config.fov), speed(config.speed), sensitivity(config.sensitivity) { updateCameraVectors(); }
-
-	const glm::vec3& OGLCamera::getPosition() const { return position; }
-
-	float OGLCamera::getFOV() const { return fov; }
-
-	glm::mat4 OGLCamera::getViewMatrix() const { return glm::lookAt(position, position + front, up); }
 
 	void OGLCamera::move(MovementDirection direction, float delta_time)
 	{
@@ -37,8 +26,6 @@ namespace lrend
 
 		updateCameraVectors();
 	}
-
-	void OGLCamera::zoom(float y_offset) { fov = glm::clamp(fov -= y_offset, 1.0f, 45.0f); }
 
 	void OGLCamera::updateCameraVectors()
 	{

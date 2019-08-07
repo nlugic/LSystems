@@ -9,9 +9,10 @@ namespace lsys
 	class TurnAroundSymbol : public LSystemSymbol
 	{
 	public:
-		TurnAroundSymbol() :LSystemSymbol('|') { }
+		inline TurnAroundSymbol()
+			:LSystemSymbol('|') { }
 
-		virtual LSystemSymbol *clone() const override { return new TurnAroundSymbol(*this); }
+		inline virtual LSystemSymbol *clone() const override { return new TurnAroundSymbol(*this); }
 	};
 
 }

@@ -20,20 +20,18 @@ namespace lsys
 			turtle.setAction('L', drawGenericLeaf);
 		}
 
-		virtual LSystemContext *clone() const override { return new Generic3DTreeContext(*this); }
+		inline virtual LSystemContext *clone() const override { return new Generic3DTreeContext(*this); }
 	};
 
 	class TesselatedGeneric3DTreeContext : public LSystemContext
 	{
 	public:
-		TesselatedGeneric3DTreeContext(std::size_t max_l, float radius, float height, float angle,
+		inline TesselatedGeneric3DTreeContext(std::size_t max_l, float radius, float height, float angle,
 			const TurtleState& state = default_turtle_state)
-			:LSystemContext(new TesselatedGeneric3DTreeLSystem(radius, height, angle), max_l, state)
-		{
-			turtle.setAction('F', drawTesselatedGenericBranchSegment);
-		}
+			:LSystemContext(new TesselatedGeneric3DTreeLSystem(radius, height, angle),
+				max_l, state) { turtle.setAction('F', drawTesselatedGenericBranchSegment); }
 
-		virtual LSystemContext *clone() const override { return new TesselatedGeneric3DTreeContext(*this); }
+		inline virtual LSystemContext *clone() const override { return new TesselatedGeneric3DTreeContext(*this); }
 	};
 
 }

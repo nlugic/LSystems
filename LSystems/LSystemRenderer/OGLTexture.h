@@ -1,6 +1,8 @@
 #ifndef OGLTEXTURE_H
 #define OGLTEXTURE_H
 
+#include "..\..\include\glad\glad.h"
+
 namespace lrend
 {
 
@@ -21,7 +23,7 @@ namespace lrend
 		OGLTexture(const OGLTexture&) = delete;
 		OGLTexture(OGLTexture&&) = delete;
 		OGLTexture& operator=(const OGLTexture&) = delete;
-		~OGLTexture();
+		inline ~OGLTexture() { glDeleteTextures(1, &texture_id); }
 	};
 
 }

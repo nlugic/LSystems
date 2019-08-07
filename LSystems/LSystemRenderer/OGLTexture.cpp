@@ -1,6 +1,5 @@
 
 #include "OGLTexture.h"
-#include "..\..\include\glad\glad.h"
 #include "..\..\include\stb_image.h"
 #include <iostream>
 
@@ -57,7 +56,5 @@ namespace lrend
 
 		delete[] data;
 	}
-
-	OGLTexture::~OGLTexture() { glDeleteTextures(1, &texture_id); }
 
 }

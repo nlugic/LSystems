@@ -14,10 +14,6 @@ namespace lsys
 	std::vector<glm::mat4> GraphicsTurtle::transform_buffer;
 	float GraphicsTurtle::transform_index = 0.0f;
 
-	GraphicsTurtle::GraphicsTurtle(LSystem *owner, const TurtleState& state)
-		:owner(owner), initial_state(state), current_state(state),
-		current_transform(glm::mat4(1.0f)) { state_stack.push(current_state); }
-
 	void swap(GraphicsTurtle& trt_1, GraphicsTurtle& trt_2)
 	{
 		std::swap(trt_1.owner, trt_2.owner);
@@ -28,29 +24,11 @@ namespace lsys
 		std::swap(trt_1.current_transform, trt_2.current_transform);
 	}
 	
-	GraphicsTurtle::GraphicsTurtle(GraphicsTurtle&& trt) noexcept { swap(*this, trt); }
-
-	GraphicsTurtle& GraphicsTurtle::operator=(GraphicsTurtle trt) noexcept { swap(*this, trt); return *this; }
-
-	void GraphicsTurtle::setOwner(LSystem *lSys) { owner = lSys; }
-
-	const TurtleState& GraphicsTurtle::getInitialState() const { return initial_state; }
-
-	TurtleState& GraphicsTurtle::getCurrentState() { return current_state; }
-
-	glm::mat4& GraphicsTurtle::getCurrentTransform() { return current_transform; }
-
 	const TurtleAction& GraphicsTurtle::getAction(char key) const
 	{
 		std::map<char, TurtleAction>::const_iterator value = actions.find(key);
 		return (value != actions.end()) ? value->second : empty_action;
 	}
-
-	void GraphicsTurtle::setAction(char key, const TurtleAction& func) { actions[key] = func; }
-
-	void GraphicsTurtle::pushState() { state_stack.push(current_state); }
-
-	void GraphicsTurtle::popState() { current_state = state_stack.top(); if (state_stack.size() > 1ULL) state_stack.pop(); }
 
 	void GraphicsTurtle::resetState()
 	{
@@ -167,12 +145,6 @@ namespace lsys
 		return ret;
 	}
 	
-	std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& trt) { out << trt.toString(); return out; }
-
-	std::vector<float>& GraphicsTurtle::getVertexBuffer() { return GraphicsTurtle::vertex_buffer; }
-
-	std::vector<glm::mat4>& GraphicsTurtle::getTransformBuffer() { return GraphicsTurtle::transform_buffer; }
-
 	void GraphicsTurtle::resetBuffers()
 	{
 		GraphicsTurtle::vertex_buffer.clear();

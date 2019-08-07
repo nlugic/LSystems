@@ -20,23 +20,23 @@ namespace lsys
 		std::vector<std::vector<LSystemSymbol *>> products;
 
 	public:
-		LSystem() = default;
+		inline LSystem() = default;
 		LSystem(const LSystem& sys);
 		friend void swap(LSystem& sys_1, LSystem& sys_2);
-		LSystem(LSystem&& sys) noexcept;
-		LSystem& operator=(LSystem sys) noexcept;
-		virtual LSystem *clone() const;
+		inline LSystem(LSystem&& sys) noexcept { swap(*this, sys); }
+		inline LSystem& operator=(LSystem sys) noexcept { swap(*this, sys); return *this; }
+		inline virtual LSystem *clone() const { return new LSystem(*this); }
 		virtual ~LSystem();
 
 		std::size_t getCurrentLevel() const;
 		float getParam(char param) const;
-		void setParam(char param, float value);
-		const std::vector<LSystemSymbol *>& getAxiom() const;
-		void addSymbolToAxiom(LSystemSymbol *sym);
-		void setAxiom(const std::vector<LSystemSymbol *>& ax);
-		const std::vector<LSystemProduction *>& getProductions() const;
-		void addProduction(LSystemProduction *prod);
-		void setProductions(const std::vector<LSystemProduction *>& prods);
+		inline void setParam(char param, float value) { params[param] = value; }
+		inline const std::vector<LSystemSymbol *>& getAxiom() const { return axiom; }
+		inline void addSymbolToAxiom(LSystemSymbol *sym) { if (sym) axiom.push_back(sym); }
+		inline void setAxiom(const std::vector<LSystemSymbol *>& ax) { clearAxiom(); axiom = ax; }
+		inline const std::vector<LSystemProduction *>& getProductions() const { return productions; }
+		inline void addProduction(LSystemProduction *prod) { if (prod) productions.push_back(prod); }
+		inline void setProductions(const std::vector<LSystemProduction *>& prods) { clearProductions(); productions = prods; }
 		const std::vector<LSystemSymbol *>& operator[](std::size_t level);
 
 		virtual const std::vector<LSystemSymbol *>& derive();
@@ -45,7 +45,8 @@ namespace lsys
 			std::vector<LSystemSymbol *>::const_iterator& pred);
 
 		virtual std::string toString() const;
-		friend std::ostream& operator<<(std::ostream& out, const LSystem& sys);
+		inline friend std::ostream& operator<<(std::ostream& out, const LSystem& sys)
+			{ out << sys.toString(); return out; }
 	};
 
 }

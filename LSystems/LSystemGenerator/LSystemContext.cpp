@@ -19,15 +19,6 @@ namespace lsys
 		turtle.setAction('$', rotateTurtleToVertical);
 	}
 
-	LSystemContext::LSystemContext(std::size_t max_l, const TurtleState& state)
-		:current_level(0U), max_level(max_l), system(new LSystem), turtle(system, state) { initTurtleActions(); }
-
-	LSystemContext::LSystemContext(LSystem *sys, std::size_t max_l, const TurtleState& state)
-		:current_level(0U), max_level(max_l), system(sys), turtle(system, state) { initTurtleActions(); }
-
-	LSystemContext::LSystemContext(const LSystemContext& cxt)
-		:current_level(cxt.current_level), system(cxt.system->clone()), turtle(cxt.turtle) { turtle.setOwner(system); }
-
 	void swap(LSystemContext& cxt_1, LSystemContext& cxt_2)
 	{
 		std::swap(cxt_1.current_level, cxt_2.current_level);
@@ -35,20 +26,6 @@ namespace lsys
 		std::swap(cxt_1.system, cxt_2.system);
 		std::swap(cxt_1.turtle, cxt_2.turtle);
 	}
-
-	LSystemContext::LSystemContext(LSystemContext&& cxt) noexcept { swap(*this, cxt); }
-
-	LSystemContext& LSystemContext::operator=(LSystemContext cxt) noexcept { swap(*this, cxt); return *this; }
-
-	LSystemContext *LSystemContext::clone() const { return new LSystemContext(*this); }
-
-	LSystemContext::~LSystemContext() { delete system; }
-
-	std::size_t LSystemContext::getCurrentLevel() const { return current_level; }
-
-	std::size_t LSystemContext::getMaxLevel() const { return max_level; }
-
-	TurtleState& LSystemContext::getTurtleState() { return turtle.getCurrentState(); }
 
 	void LSystemContext::generateModel(std::size_t level)
 	{
@@ -81,7 +58,5 @@ namespace lsys
 
 		return ret;
 	}
-
-	std::ostream& operator<<(std::ostream& out, const LSystemContext& cxt) { out << cxt.toString(); return out; }
 
 }

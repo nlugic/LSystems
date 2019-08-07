@@ -11,14 +11,12 @@ namespace lsys
 	class DragonCurveContext : public LSystemContext
 	{
 	public:
-		DragonCurveContext(std::size_t max_l, float length, float angle, const TurtleState& state = default_turtle_state)
-			:LSystemContext(new DragonCurveLSystem(length, angle), max_l, state)
-		{
-			turtle.setAction('L', drawLine);
-			turtle.setAction('R', drawLine);
-		}
+		inline DragonCurveContext(std::size_t max_l, float length, float angle,
+			const TurtleState& state = default_turtle_state)
+			:LSystemContext(new DragonCurveLSystem(length, angle),
+				max_l, state) { turtle.setAction('L', drawLine); turtle.setAction('R', drawLine); }
 
-		virtual LSystemContext *clone() const override { return new DragonCurveContext(*this); }
+		inline virtual LSystemContext *clone() const override { return new DragonCurveContext(*this); }
 	};
 
 }

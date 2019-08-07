@@ -88,7 +88,8 @@ namespace lrend
 		static void onKeyPress(GLFWwindow *wnd, int key, int scancode, int action, int mode);
 		static void onWindowResize(GLFWwindow *wnd, int w, int h);
 		static void onMouseMove(GLFWwindow *wnd, double x_pos, double y_pos);
-		static void onMouseScroll(GLFWwindow *wnd, double x_off, double y_off);
+		inline static void onMouseScroll(GLFWwindow *wnd, double x_off, double y_off)
+			{ OGLRenderer::camera->zoom(static_cast<float>(y_off)); }
 
 	public:
 		static void updateVertexData(std::vector<float>& vert_data, std::vector<glm::mat4>& transform_data);

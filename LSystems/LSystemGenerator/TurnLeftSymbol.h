@@ -9,9 +9,10 @@ namespace lsys
 	class TurnLeftSymbol : public LSystemSymbol
 	{
 	public:
-		TurnLeftSymbol(float yaw) :LSystemSymbol('+') { setParam('y', yaw); }
+		inline TurnLeftSymbol(float yaw)
+			:LSystemSymbol('+') { setParam('y', yaw); }
 
-		virtual LSystemSymbol *clone() const override { return new TurnLeftSymbol(*this); }
+		inline virtual LSystemSymbol *clone() const override { return new TurnLeftSymbol(*this); }
 	};
 
 }

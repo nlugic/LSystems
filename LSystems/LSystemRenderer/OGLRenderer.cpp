@@ -293,9 +293,6 @@ namespace lrend
 		OGLR::camera->look(static_cast<float>(x_off), static_cast<float>(y_off));
 	}
 
-	void OGLRenderer::onMouseScroll(GLFWwindow *wnd, double x_off, double y_off)
-		{ OGLR::camera->zoom(static_cast<float>(y_off)); }
-	
 	void OGLRenderer::updateVertexData(std::vector<float>& vert_data, std::vector<glm::mat4>& transform_data)
 	{
 		OGLR::vertex_buf_size = vert_data.size();

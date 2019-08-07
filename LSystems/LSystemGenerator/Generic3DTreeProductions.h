@@ -16,7 +16,7 @@ namespace lsys
 	class Generic3DTreeProductionP1 : public LSystemProduction
 	{
 	public:
-		Generic3DTreeProductionP1()
+		inline Generic3DTreeProductionP1()
 			:LSystemProduction('A') { }
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -76,13 +76,13 @@ namespace lsys
 			word.push_back(new RestoreStateSymbol());
 		}
 
-		virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP1(*this); }
+		inline virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP1(*this); }
 	};
 
 	class Generic3DTreeProductionP2 : public LSystemProduction
 	{
 	public:
-		Generic3DTreeProductionP2()
+		inline Generic3DTreeProductionP2()
 			:LSystemProduction('F') { }
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -97,13 +97,13 @@ namespace lsys
 				pred->getParam('R'), pred->getParam('h'), pred->getParam('w')));
 		}
 
-		virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP2(*this); }
+		inline virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP2(*this); }
 	};
 
 	class Generic3DTreeProductionP3 : public LSystemProduction
 	{
 	public:
-		Generic3DTreeProductionP3()
+		inline Generic3DTreeProductionP3()
 			:LSystemProduction('S') { }
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
@@ -118,7 +118,7 @@ namespace lsys
 			word.push_back(new RestoreStateSymbol());
 		}
 
-		virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP3(*this); }
+		inline virtual LSystemProduction *clone() const override { return new Generic3DTreeProductionP3(*this); }
 	};
 
 }

@@ -9,9 +9,10 @@ namespace lsys
 	class RotateToVerticalSymbol : public LSystemSymbol
 	{
 	public:
-		RotateToVerticalSymbol() :LSystemSymbol('$') { }
+		inline RotateToVerticalSymbol()
+			:LSystemSymbol('$') { }
 
-		virtual LSystemSymbol *clone() const override { return new RotateToVerticalSymbol(*this); }
+		inline virtual LSystemSymbol *clone() const override { return new RotateToVerticalSymbol(*this); }
 	};
 
 }

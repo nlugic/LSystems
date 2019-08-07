@@ -11,136 +11,59 @@ namespace lsys
 		syms.clear();
 	}
 
-	LSystemProduction::LSystemProduction(LSystemSymbol *pred, float prob)
-		:predecessor(pred), probability((prob < 0.0f || prob > 1.0f) ? 1.0f : prob) { }
-
-	LSystemProduction::LSystemProduction(char pred, float prob)
-		:predecessor(new LSystemSymbol(pred)), probability((prob < 0.0f || prob > 1.0f) ? 1.0f : prob) { }
-
-	void swap(LSystemProduction& lProd1, LSystemProduction& lProd2)
+	LSystemProduction::LSystemProduction(const LSystemProduction& prod)
+		:predecessor(prod.predecessor->clone()), probability(prod.probability)
 	{
-		std::swap(lProd1.predecessor, lProd2.predecessor);
-		std::swap(lProd1.leftContext, lProd2.leftContext);
-		std::swap(lProd1.rightContext, lProd2.rightContext);
-		std::swap(lProd1.successor, lProd2.successor);
+		for (const LSystemSymbol *sym : prod.left_context)
+			left_context.push_back(sym->clone());
+		for (const LSystemSymbol *sym : prod.right_context)
+			right_context.push_back(sym->clone());
+		for (const LSystemSymbol *sym : prod.successor)
+			successor.push_back(sym->clone());
 	}
 
-	LSystemProduction::LSystemProduction(const LSystemProduction& lProd)
-		:predecessor(new LSystemSymbol(*lProd.predecessor)), probability(lProd.probability)
+	void swap(LSystemProduction& prod_1, LSystemProduction& prod_2)
 	{
-		for (const LSystemSymbol *sym : lProd.leftContext)
-			leftContext.push_back(new LSystemSymbol(*sym));
-		for (const LSystemSymbol *sym : lProd.rightContext)
-			rightContext.push_back(new LSystemSymbol(*sym));
-		for (const LSystemSymbol *sym : lProd.successor)
-			successor.push_back(new LSystemSymbol(*sym));
-	}
-
-	LSystemProduction::LSystemProduction(LSystemProduction&& lProd) noexcept
-	{
-		swap(*this, lProd);
-	}
-
-	LSystemProduction& LSystemProduction::operator=(LSystemProduction lProd) noexcept
-	{
-		swap(*this, lProd);
-		return *this;
+		std::swap(prod_1.predecessor, prod_2.predecessor);
+		std::swap(prod_1.left_context, prod_2.left_context);
+		std::swap(prod_1.right_context, prod_2.right_context);
+		std::swap(prod_1.successor, prod_2.successor);
 	}
 
 	LSystemProduction::~LSystemProduction()
 	{
 		delete predecessor;
-		clearSymbols(leftContext);
-		clearSymbols(rightContext);
+		clearSymbols(left_context);
+		clearSymbols(right_context);
 		clearSymbols(successor);
 	}
 
-	const LSystemSymbol* LSystemProduction::getPredecessor() const
-	{
-		return predecessor;
-	}
-
-	const std::vector<LSystemSymbol *>& LSystemProduction::getLeftContext() const
-	{
-		return leftContext;
-	}
-
-	const std::vector<LSystemSymbol *>& LSystemProduction::getRightContext() const
-	{
-		return rightContext;
-	}
-
-	const std::vector<LSystemSymbol *>& LSystemProduction::getSuccessor() const
-	{
-		return successor;
-	}
-
-	void LSystemProduction::addSymbolToLeftContext(LSystemSymbol *lSym)
-	{
-		if (lSym)
-			leftContext.push_back(lSym);
-	}
-
-	void LSystemProduction::setLeftContext(const std::vector<LSystemSymbol *>& lCxt)
-	{
-		clearSymbols(leftContext);
-	}
-
-	void LSystemProduction::addSymbolToRightContext(LSystemSymbol *lSym)
-	{
-		if (lSym)
-			rightContext.push_back(lSym);
-	}
-
-	void LSystemProduction::setRightContext(const std::vector<LSystemSymbol *>& rCxt)
-	{
-		clearSymbols(rightContext);
-	}
-
-	void LSystemProduction::addSymbolToSuccessor(LSystemSymbol *lSym)
-	{
-		if (lSym)
-			successor.push_back(lSym);
-	}
-
-	void LSystemProduction::setSuccessor(const std::vector<LSystemSymbol *>& succ)
-	{
-		clearSymbols(successor);
-		successor = succ;
-	}
-
-	float LSystemProduction::getProbability() const
-	{
-		return probability;
-	}
-
-	bool LSystemProduction::condition(const LSystemSymbol *pred, const std::map<char, float>& globalParams) const
-	{
-		return true;
-	}
-
-	void LSystemProduction::generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+	void LSystemProduction::generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 		std::vector<LSystemSymbol *>& word) const
 	{
 		for (LSystemSymbol *sym : successor)
-			word.push_back(new LSystemSymbol(*sym));
+			word.push_back(sym->clone());
 	}
 
 	std::string LSystemProduction::toString() const
 	{
 		std::string ret;
 
-		for (const LSystemSymbol *sym : leftContext)
+		for (const LSystemSymbol *sym : left_context)
+		{
 			ret += sym->toString();
-		if (!leftContext.empty())
-			ret += " < ";
+			if (!left_context.empty())
+				ret += " < ";
+		}
 
 		ret += predecessor->toString();
 
-		if (!rightContext.empty())
+		if (!right_context.empty())
+		{
 			ret += " > ";
-		for (const LSystemSymbol *sym : rightContext)
-			ret += sym->toString();
+			for (const LSystemSymbol *sym : right_context)
+				ret += sym->toString();
+		}
 
 		ret += " -";
 		if (probability < 1.0f)
@@ -155,12 +78,6 @@ namespace lsys
 		ret += '\n';
 
 		return ret;
-	}
-
-	std::ostream& operator<<(std::ostream& out, const LSystemProduction& lProd)
-	{
-		out << lProd.toString();
-		return out;
 	}
 
 }

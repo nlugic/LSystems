@@ -12,14 +12,14 @@ namespace lsys
 	class SierpinskiGasketProductionL : public LSystemProduction
 	{
 	public:
-		SierpinskiGasketProductionL()
+		inline SierpinskiGasketProductionL()
 			:LSystemProduction('L') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			float length = pred->getParam('h');
-			float angle = globalParams.at('a');
+			float angle = global_params.at('a');
 
 			word.push_back(new GenericLineSymbol('R', length));
 			word.push_back(new TurnLeftSymbol(angle));
@@ -27,19 +27,21 @@ namespace lsys
 			word.push_back(new TurnLeftSymbol(angle));
 			word.push_back(new GenericLineSymbol('R', length));
 		}
+
+		inline virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionL(*this); }
 	};
 
 	class SierpinskiGasketProductionR : public LSystemProduction
 	{
 	public:
-		SierpinskiGasketProductionR()
+		inline SierpinskiGasketProductionR()
 			:LSystemProduction('R') { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			float length = pred->getParam('h');
-			float angle = globalParams.at('a');
+			float angle = global_params.at('a');
 
 			word.push_back(new GenericLineSymbol('L', length));
 			word.push_back(new TurnRightSymbol(angle));
@@ -47,6 +49,8 @@ namespace lsys
 			word.push_back(new TurnRightSymbol(angle));
 			word.push_back(new GenericLineSymbol('L', length));
 		}
+
+		inline virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionR(*this); }
 	};
 
 }

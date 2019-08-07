@@ -5,39 +5,16 @@
 namespace lsys
 {
 
-	LSystemSymbol::LSystemSymbol(char key)
-		:key(key) { }
-
-	char LSystemSymbol::getKey() const
+	void swap(LSystemSymbol& sym_1, LSystemSymbol& sym_2)
 	{
-		return key;
+		std::swap(sym_1.key, sym_2.key);
+		std::swap(sym_1.params, sym_2.params);
 	}
 
 	float LSystemSymbol::getParam(char param) const
 	{
-		if (params.find(param) != params.end())
-			return params.at(param);
-		return NAN;
-	}
-
-	void LSystemSymbol::setParam(char param, float value)
-	{
-		params[param] = value;
-	}
-
-	void LSystemSymbol::setParams(const LSystemSymbol *lSym)
-	{
-		params = lSym->params;
-	}
-
-	bool LSystemSymbol::operator==(const LSystemSymbol& lSym) const
-	{
-		return key == lSym.key;
-	}
-
-	bool LSystemSymbol::operator!=(const LSystemSymbol& lSym) const
-	{
-		return !(*this == lSym);
+		std::map<char, float>::const_iterator value = params.find(param);
+		return (value != params.end()) ? value->second : NAN;
 	}
 
 	std::string LSystemSymbol::toString() const
@@ -50,21 +27,15 @@ namespace lsys
 			out.precision(4LL);
 			out << "(";
 
-			for (std::map<char, float>::const_iterator& iter = params.begin(); iter != params.end(); ++iter)
+			for (std::map<char, float>::const_iterator& it = params.begin(); it != params.end(); ++it)
 			{
-				out << iter->second;
-				out << ((std::distance(iter, params.end()) == 1LL) ? ")" : ", ");
+				out << it->second;
+				out << ((std::distance(it, params.end()) == 1LL) ? ")" : ", ");
 			}
 			ret += out.str();
 		}
 
 		return ret;
-	}
-
-	std::ostream& operator<<(std::ostream& out, const LSystemSymbol& lSym)
-	{
-		out << lSym.toString();
-		return out;
 	}
 
 }

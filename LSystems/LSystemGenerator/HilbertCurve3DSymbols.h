@@ -18,6 +18,8 @@ namespace lsys
 			setParam('g', color.g);
 			setParam('b', color.b);
 		}
+
+		inline virtual LSystemSymbol *clone() const override { return new HilbertCurve3DPipeSymbol(*this); }
 	};
 
 }

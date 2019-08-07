@@ -9,7 +9,10 @@ namespace lsys
 	class PitchDownSymbol : public LSystemSymbol
 	{
 	public:
-		PitchDownSymbol(float pitch) :LSystemSymbol('&') { setParam('p', pitch); }
+		inline PitchDownSymbol(float pitch)
+			:LSystemSymbol('&') { setParam('p', pitch); }
+
+		inline virtual LSystemSymbol *clone() const override { return new PitchDownSymbol(*this); }
 	};
 
 }

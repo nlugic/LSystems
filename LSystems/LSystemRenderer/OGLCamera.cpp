@@ -1,35 +1,12 @@
 
 #include "OGLCamera.h"
-#include "..\..\include\glm\gtc\matrix_transform.hpp"
 
 namespace lrend
 {
 
-	OGLCamera::OGLCamera(const OGLCameraConfig& config)
-		:position(config.position), worldUp(config.worldUp), pitch(config.pitch), yaw(config.yaw),
-		fov(config.fov), speed(config.speed), sensitivity(config.sensitivity)
+	void OGLCamera::move(MovementDirection direction, float delta_time)
 	{
-		updateCameraVectors();
-	}
-
-	const glm::vec3& OGLCamera::getPosition() const
-	{
-		return position;
-	}
-
-	float OGLCamera::getFOV() const
-	{
-		return fov;
-	}
-
-	glm::mat4 OGLCamera::getViewMatrix() const
-	{
-		return glm::lookAt(position, position + front, up);
-	}
-
-	void OGLCamera::move(MovementDirection direction, float deltaTime)
-	{
-		float velocity = speed * deltaTime;
+		float velocity = speed * delta_time;
 
 		switch (direction)
 		{
@@ -40,33 +17,25 @@ namespace lrend
 		}
 	}
 
-	void OGLCamera::look(float xOffset, float yOffset)
+	void OGLCamera::look(float x_offset, float y_offset)
 	{
-		yaw += xOffset * sensitivity;
-		pitch += yOffset * sensitivity;
+		yaw += x_offset * sensitivity;
+		pitch += y_offset * sensitivity;
 
 		pitch = glm::clamp(pitch, -89.9f, 89.9f);
 
 		updateCameraVectors();
 	}
 
-	void OGLCamera::zoom(float yOffset)
-	{
-		if (fov >= 1.0f && fov <= 45.0f)
-			fov -= yOffset;
-
-		fov = glm::clamp(fov, 1.0f, 45.0f);
-	}
-
 	void OGLCamera::updateCameraVectors()
 	{
-		glm::vec3 newFront;
-		newFront.x = std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch));
-		newFront.y = std::sin(glm::radians(pitch));
-		newFront.z = std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch));
-		front = glm::normalize(newFront);
+		glm::vec3 new_front;
+		new_front.x = std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch));
+		new_front.y = std::sin(glm::radians(pitch));
+		new_front.z = std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch));
+		front = glm::normalize(new_front);
 
-		right = glm::normalize(glm::cross(front, worldUp));
+		right = glm::normalize(glm::cross(front, world_up));
 		up = glm::normalize(glm::cross(right, front));
 	}
 

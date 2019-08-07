@@ -4,60 +4,10 @@
 namespace lsys
 {
 
-	void saveTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	void drawLine(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
-		turtle->pushState();
-	}
-
-	void restoreTurtleState(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->popState();
-	}
-
-	void turnTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundUp(lSym->getParam('y'));
-	}
-
-	void turnTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundUp(-lSym->getParam('y'));
-	}
-
-	void pitchTurtleUp(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundLeft(-lSym->getParam('p'));
-	}
-
-	void pitchTurtleDown(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundLeft(lSym->getParam('p'));
-	}
-
-	void rollTurtleLeft(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundHeading(-lSym->getParam('r'));
-	}
-
-	void rollTurtleRight(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundHeading(lSym->getParam('r'));
-	}
-
-	void turnTurtleAround(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateAroundUp(180.0f);
-	}
-
-	void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		turtle->rotateToVector(turtle->getInitialState().up);
-	}
-
-	void drawLine(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
-	{
-		float h = lSym->getParam('h');
-		float w_2 = lSym->getParam('w') / 2.0f;
+		float h = sym->getParam('h');
+		float w_2 = sym->getParam('w') / 2.0f;
 		float d = h - w_2;
 
 		turtle->addVertices({
@@ -78,13 +28,13 @@ namespace lsys
 		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
 	}
 
-	void drawBox(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	void drawBox(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
-		float a_2 = lSym->getParam('a') / 2.0f;
-		float h = lSym->getParam('h');
-		float r = lSym->getParam('r');
-		float g = lSym->getParam('g');
-		float b = lSym->getParam('b');
+		float a_2 = sym->getParam('a') / 2.0f;
+		float h = sym->getParam('h');
+		float r = sym->getParam('r');
+		float g = sym->getParam('g');
+		float b = sym->getParam('b');
 
 		turtle->addVertices({
 			{ -a_2, -a_2, a_2, 0.0f, 0.0f, 1.0f, r, g, -b },
@@ -133,14 +83,14 @@ namespace lsys
 		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
 	}
 
-	void drawGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	void drawGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
-		unsigned short n = static_cast<unsigned short>(lSym->getParam('n'));
-		float R = lSym->getParam('R');
-		float r = lSym->getParam('r');
-		float h = lSym->getParam('h');
-		float t = lSym->getParam('t');
-		float w = lSym->getParam('w');
+		unsigned short n = static_cast<unsigned short>(sym->getParam('n'));
+		float R = sym->getParam('R');
+		float r = sym->getParam('r');
+		float h = sym->getParam('h');
+		float t = sym->getParam('t');
+		float w = sym->getParam('w');
 
 		float ang = pix2 / n;
 		float phi = 0.0f;
@@ -187,13 +137,13 @@ namespace lsys
 		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
 	}
 
-	void drawGenericBranchApex(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	void drawGenericBranchApex(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
-		unsigned short n = static_cast<unsigned short>(lSym->getParam('n'));
-		float r = lSym->getParam('r');
-		float h = lSym->getParam('h');
-		float t = lSym->getParam('t');
-		float w = lSym->getParam('w');
+		unsigned short n = static_cast<unsigned short>(sym->getParam('n'));
+		float r = sym->getParam('r');
+		float h = sym->getParam('h');
+		float t = sym->getParam('t');
+		float w = sym->getParam('w');
 
 		float ang = pix2 / n;
 		float phi = 0.0f;
@@ -206,8 +156,7 @@ namespace lsys
 		glm::vec3 nmu(h / p * cfu, r / p, h / p * sfu);
 
 		Vertex vx[3] {
-			{ 0.0f, h, 0.0f, (nm.x + nmu.x) / 2.0f, (nm.y + nmu.y) / 2.0f, (nm.z + nmu.z) / 2.0f,
-				s, 1.0f, t },
+			{ 0.0f, h, 0.0f, (nm.x + nmu.x) / 2.0f, (nm.y + nmu.y) / 2.0f, (nm.z + nmu.z) / 2.0f, s, 1.0f, t },
 			{ r * cf, 0.0f, r * sf, nmu.x, nmu.y, nmu.z, s - ds, 0.0f, t },
 			{ r * cfu, 0.0f, r * sfu, nm.x, nm.y, nm.z, s, 0.0f, t }
 		};
@@ -235,14 +184,14 @@ namespace lsys
 		turtle->translateState(glm::vec3(0.0f, h, 0.0f));
 	}
 
-	void drawGenericLeaf(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	void drawGenericLeaf(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
-		float l = lSym->getParam('l');
-		float w = lSym->getParam('w');
-		float p = lSym->getParam('p');
-		float c = lSym->getParam('c');
-		float C = lSym->getParam('C');
-		float t = lSym->getParam('t');
+		float l = sym->getParam('l');
+		float w = sym->getParam('w');
+		float p = sym->getParam('p');
+		float c = sym->getParam('c');
+		float C = sym->getParam('C');
+		float t = sym->getParam('t');
 
 		glm::vec3 vl(w / 2.0f, p + c, 0.0f);
 		glm::vec3 vh(w / 2.0f, p + l - C, 0.0f);
@@ -292,13 +241,13 @@ namespace lsys
 		turtle->translateState(glm::vec3(0.0f, l, 0.0f));
 	}
 
-	void drawTesselatedGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *lSym, LSystem *lSys)
+	void drawTesselatedGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
 	{
-		float R = lSym->getParam('R');
-		float r = lSym->getParam('r');
-		float h = lSym->getParam('h');
-		float t = lSym->getParam('t');
-		float w = lSym->getParam('w');
+		float R = sym->getParam('R');
+		float r = sym->getParam('r');
+		float h = sym->getParam('h');
+		float t = sym->getParam('t');
+		float w = sym->getParam('w');
 
 		float phi = 0.0f;
 		float sf = std::sin(phi), cf = std::cos(phi);

@@ -9,7 +9,10 @@ namespace lsys
 	class RestoreStateSymbol : public LSystemSymbol
 	{
 	public:
-		RestoreStateSymbol() :LSystemSymbol(']') { }
+		inline RestoreStateSymbol()
+			:LSystemSymbol(']') { }
+
+		inline virtual LSystemSymbol *clone() const override { return new RestoreStateSymbol(*this); }
 	};
 
 }

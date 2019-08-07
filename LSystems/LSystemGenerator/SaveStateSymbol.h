@@ -9,7 +9,10 @@ namespace lsys
 	class SaveStateSymbol : public LSystemSymbol
 	{
 	public:
-		SaveStateSymbol() :LSystemSymbol('[') { }
+		inline SaveStateSymbol()
+			:LSystemSymbol('[') { }
+
+		inline virtual LSystemSymbol *clone() const override { return new SaveStateSymbol(*this); }
 	};
 
 }

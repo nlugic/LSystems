@@ -9,7 +9,10 @@ namespace lsys
 	class RollLeftSymbol : public LSystemSymbol
 	{
 	public:
-		RollLeftSymbol(float roll) :LSystemSymbol('\\') { setParam('r', roll); }
+		inline RollLeftSymbol(float roll)
+			:LSystemSymbol('\\') { setParam('r', roll); }
+
+		inline virtual LSystemSymbol *clone() const override { return new RollLeftSymbol(*this); }
 	};
 
 }

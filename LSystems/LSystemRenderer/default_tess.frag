@@ -8,46 +8,46 @@ struct Light
 	float shininess;
 };
 
-in vec3 gsVertNormal;
-in vec3 gsFragPosition;
-in vec3 gsTexCoordinates;
-noperspective in vec3 edgeDistance;
+in vec3 gs_vert_normal;
+in vec3 gs_frag_position;
+in vec3 gs_tex_coords;
+noperspective in vec3 edge_distance;
 
 layout (location = 0) out vec4 gl_FragColor;
 
-uniform bool enableWireframe;
-uniform vec3 viewPosition;
+uniform bool enable_wireframe;
+uniform vec3 view_position;
 uniform Light light;
 
 layout (binding = 0) uniform sampler2DArray textures;
 
 void main()
 {
-	vec3 color = (gsTexCoordinates.z < 0.0f) ? vec3(gsTexCoordinates.xy, -gsTexCoordinates.z) : texture(textures, gsTexCoordinates).rgb;
+	vec3 color = (gs_tex_coords.z < 0.0f) ? vec3(gs_tex_coords.xy, -gs_tex_coords.z) : texture(textures, gs_tex_coords).rgb;
 
 	vec3 ambient = light.ambient * color;
 
-	vec3 normalizedNormal = normalize(gsVertNormal);
-	vec3 lightDirection = normalize((light.position.w) ? light.position.xyz - gsFragPosition : light.position.xyz);
-	vec3 diffuse = light.diffuse * max(dot(normalizedNormal, lightDirection), 0.0f) * color;
+	vec3 normalized_normal = normalize(gs_vert_normal);
+	vec3 light_direction = normalize((light.position.w) ? light.position.xyz - gs_frag_position : light.position.xyz);
+	vec3 diffuse = light.diffuse * max(dot(normalized_normal, light_direction), 0.0f) * color;
 
-	vec3 viewDirection = normalize(viewPosition - gsFragPosition);
-	vec3 reflectionDirection = reflect(-lightDirection, normalizedNormal);
-	vec3 specular = light.specular * pow(max(dot(viewDirection, reflectionDirection), 0.0f), light.shininess) * color;
+	vec3 view_direction = normalize(view_position - gs_frag_position);
+	vec3 reflection_direction = reflect(-light_direction, normalized_normal);
+	vec3 specular = light.specular * pow(max(dot(view_direction, reflection_direction), 0.0f), light.shininess) * color;
 
-	float distanceToFragment = (light.position.w) ? length(light.position.xyz - gsFragPosition) : 0.0f;
-	float lightAttenuation = 1.0f / (light.attenuation.x + light.attenuation.y * distanceToFragment
-		+ light.attenuation.z * (distanceToFragment * distanceToFragment));
+	float distance_to_fragment = (light.position.w) ? length(light.position.xyz - gs_frag_position) : 0.0f;
+	float light_attenuation = 1.0f / (light.attenuation.x + light.attenuation.y * distance_to_fragment
+		+ light.attenuation.z * (distance_to_fragment * distance_to_fragment));
 
-	gl_FragColor = vec4(lightAttenuation * (ambient + diffuse + specular), 1.0f);
+	gl_FragColor = vec4(light_attenuation * (ambient + diffuse + specular), 1.0f);
 
-	if (!enableWireframe)
+	if (!enable_wireframe)
 		return;
 
-	float minDistance = min(edgeDistance.x, edgeDistance.y);
-	minDistance = min(minDistance, edgeDistance.z);
+	float min_distance = min(edge_distance.x, edge_distance.y);
+	min_distance = min(min_distance, edge_distance.z);
 
-	float lineWidth = 0.25f;
-	vec4 lineColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	gl_FragColor = mix(lineColor, gl_FragColor, smoothstep(lineWidth - 1.0f, lineWidth + 1.0f, minDistance));
+	float line_width = 0.25f;
+	vec4 line_color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	gl_FragColor = mix(line_color, gl_FragColor, smoothstep(line_width - 1.0f, line_width + 1.0f, min_distance));
 }

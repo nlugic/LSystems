@@ -10,27 +10,27 @@
 namespace lsysh
 {
 
-	const float epsilon = 1e-5f;
-
 	class ConsoleProgressBar
 	{
 	private:
-		float progress, progressIncrement;
-		unsigned markerCount;
-		float progressMarker;
+		unsigned int marker_count;
+		float progress, progress_increment, progress_marker;
 
 		std::chrono::steady_clock::time_point start, end;
 		std::ofstream log;
 
 	public:
-		ConsoleProgressBar(std::size_t units, unsigned markers = 25U, const char *logPath = "./benchmark.csv");
+		ConsoleProgressBar() = delete;
+		ConsoleProgressBar(std::size_t units, unsigned int markers = 25U, const char *log_path = "./benchmark.csv");
 		ConsoleProgressBar(const ConsoleProgressBar&) = delete;
+		ConsoleProgressBar(ConsoleProgressBar&&) = delete;
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;
+		~ConsoleProgressBar() = default;
 
-		float getProgress() const;
+		inline float getProgress() const { return progress; }
+		inline void reset() { progress = progress_marker = 0.0f; }
 		void step();
-		void finish(bool newLine = false);
-		void reset();
+		void finish(bool new_line = false);
 	};
 
 }

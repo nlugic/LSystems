@@ -20,6 +20,8 @@ namespace lsys
 			addProduction(new Generic3DTreeProductionP2());
 			addProduction(new Generic3DTreeProductionP3());
 		}
+
+		inline virtual LSystem *clone() const override { return new Generic3DTreeLSystem(*this); }
 	};
 
 	class TesselatedGeneric3DTreeLSystem : public LSystem
@@ -35,6 +37,8 @@ namespace lsys
 			addProduction(new Generic3DTreeProductionP2());
 			addProduction(new Generic3DTreeProductionP3());
 		}
+
+		inline virtual LSystem *clone() const override { return new TesselatedGeneric3DTreeLSystem(*this); }
 	};
 
 }

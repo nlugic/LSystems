@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 	//lrend::LSystemRenderer::drawGeneric3DForest(7, 8, positions, std::vector<float> { 0.1f, 0.08f, 0.12f, 0.05f, 0.09f, 0.11f, 0.14f },
 	//	std::vector<float> { 0.15f, 0.14f, 0.2f, 0.13f, 0.16f, 0.14f, 0.22f });
 
-	//benchmark();
+	benchmark();
 
 #ifdef _DEBUG
 	_CrtDumpMemoryLeaks();

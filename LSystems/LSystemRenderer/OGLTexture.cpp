@@ -1,26 +1,25 @@
 
 #include "OGLTexture.h"
-#include "..\..\include\glad\glad.h"
 #include "..\..\include\stb_image.h"
 #include <iostream>
 
 namespace lrend
 {
 
-	unsigned char OGLTexture::texPointer = 0U;
+	unsigned char OGLTexture::texture_pointer = 0U;
 
 	void OGLTexture::initTexture()
 	{
-		glGenTextures(1, &textureId);
-		glActiveTexture(GL_TEXTURE0 + OGLTexture::texPointer);
-		glBindTexture(GL_TEXTURE_2D, textureId);
+		glGenTextures(1, &texture_id);
+		glActiveTexture(GL_TEXTURE0 + OGLTexture::texture_pointer);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		++OGLTexture::texPointer;
+		++OGLTexture::texture_pointer;
 	}
 
 	OGLTexture::OGLTexture(const char *path)
@@ -56,11 +55,6 @@ namespace lrend
 			std::cerr << "An error ocurred while loading the texture image." << std::endl;
 
 		delete[] data;
-	}
-
-	OGLTexture::~OGLTexture()
-	{
-		glDeleteTextures(1, &textureId);
 	}
 
 }

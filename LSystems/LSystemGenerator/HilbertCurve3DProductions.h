@@ -20,10 +20,12 @@ namespace lsys
 		glm::vec3 color;
 
 	public:
-		HilbertCurve3DProductionA(float wid, float len, float ang, const glm::vec3& col)
+		inline HilbertCurve3DProductionA(float wid, float len, float ang, const glm::vec3& col)
 			:LSystemProduction('A'), width(wid), length(len), angle(ang), color(col) { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionA(*this); }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			word.push_back(new LSystemSymbol('B'));
@@ -65,10 +67,12 @@ namespace lsys
 		glm::vec3 color;
 
 	public:
-		HilbertCurve3DProductionB(float wid, float len, float ang, const glm::vec3& col)
+		inline HilbertCurve3DProductionB(float wid, float len, float ang, const glm::vec3& col)
 			:LSystemProduction('B'), width(wid), length(len), angle(ang), color(col) { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionB(*this); }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			word.push_back(new LSystemSymbol('A'));
@@ -112,10 +116,12 @@ namespace lsys
 		glm::vec3 color;
 
 	public:
-		HilbertCurve3DProductionC(float wid, float len, float ang, const glm::vec3& col)
+		inline HilbertCurve3DProductionC(float wid, float len, float ang, const glm::vec3& col)
 			:LSystemProduction('C'), width(wid), length(len), angle(ang), color(col) { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionC(*this); }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			word.push_back(new TurnAroundSymbol());
@@ -161,10 +167,12 @@ namespace lsys
 		glm::vec3 color;
 
 	public:
-		HilbertCurve3DProductionD(float wid, float len, float ang, const glm::vec3& col)
+		inline HilbertCurve3DProductionD(float wid, float len, float ang, const glm::vec3& col)
 			:LSystemProduction('D'), width(wid), length(len), angle(ang), color(col) { }
 
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& globalParams,
+		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionD(*this); }
+
+		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
 		{
 			word.push_back(new TurnAroundSymbol());

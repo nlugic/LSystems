@@ -12,18 +12,21 @@ namespace lrend
 	private:
 		std::vector<lsys::LSystemContext *> contexts;
 
-		LSystemRenderer() = default;
-		LSystemRenderer(lsys::LSystemContext *lCxt);
+		static bool test_mode;
+
+		inline LSystemRenderer() = default;
+		inline LSystemRenderer(lsys::LSystemContext *cxt) { addContext(cxt); }
 		LSystemRenderer(const LSystemRenderer&) = delete;
+		LSystemRenderer(LSystemRenderer&&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;
 		~LSystemRenderer();
 
 	public:
-		void addContext(lsys::LSystemContext *lCxt);
+		inline void addContext(lsys::LSystemContext *cxt) { if (cxt) contexts.push_back(cxt); }
 		void levelUp();
 		void levelDown();
 
-		static void setTestMode(bool test);
+		inline static void setTestMode(bool test) { LSystemRenderer::test_mode = test; }
 
 		static void drawKochSnowflake(std::size_t level, float length, float angle = 60.0f);
 		static void drawKochIslandA(std::size_t level, float length, float angle = 90.0f);

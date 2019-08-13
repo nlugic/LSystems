@@ -1,4 +1,4 @@
-#version 450 core
+#version 460 core
 
 layout (vertices = 4) out;
 
@@ -20,7 +20,7 @@ void main()
 {
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 
-	for (uint i = 0U; i < gl_PatchVerticesIn; ++i)
+	for (uint i = 0u; i < gl_PatchVerticesIn; ++i)
 	{
 		tcs_vert_normal[i] = vs_vert_normal[i];
 		tcs_tex_coords[i] = vs_tex_coords[i];

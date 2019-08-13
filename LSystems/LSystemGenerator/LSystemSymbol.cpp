@@ -24,13 +24,13 @@ namespace lsys
 		if (!params.empty())
 		{
 			std::ostringstream out;
-			out.precision(4LL);
+			out.precision(4ll);
 			out << "(";
 
 			for (std::map<char, float>::const_iterator& it = params.begin(); it != params.end(); ++it)
 			{
 				out << it->second;
-				out << ((std::distance(it, params.end()) == 1LL) ? ")" : ", ");
+				out << ((std::distance(it, params.end()) == 1ll) ? ")" : ", ");
 			}
 			ret += out.str();
 		}

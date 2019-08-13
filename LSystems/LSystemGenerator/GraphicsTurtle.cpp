@@ -33,7 +33,7 @@ namespace lsys
 	void GraphicsTurtle::resetState()
 	{
 		std::size_t stack_size = state_stack.size();
-		for (unsigned int i = 1ULL; i < stack_size; ++i)
+		for (unsigned int i = 1ull; i < stack_size; ++i)
 			state_stack.pop();
 		current_state = state_stack.top();
 		current_transform = glm::mat4(1.0f);
@@ -59,7 +59,7 @@ namespace lsys
 
 	void GraphicsTurtle::translateState(const glm::vec3& offset)
 	{
-		std::memset(&current_transform[3], 0, 3ULL * sizeof(float));
+		std::memset(&current_transform[3], 0, 3ull * sizeof(float));
 		current_state.position += glm::vec3(current_transform * glm::vec4(offset, 1.0f));
 	}
 

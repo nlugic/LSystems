@@ -26,16 +26,16 @@ namespace lrend
 	float OGLR::delta_time = 0.0f;
 	float OGLR::last_frame = 0.0f;
 	OGLCamera *OGLR::camera = nullptr;
-	unsigned int OGLR::vao = 0U;
-	unsigned int OGLR::vbo = 0U;
-	unsigned int OGLR::ssbo = 0U;
-	std::size_t OGLR::vertex_buf_size = 0ULL;
-	std::size_t OGLR::shader_storage_buf_size = 0ULL;
+	unsigned int OGLR::vao = 0u;
+	unsigned int OGLR::vbo = 0u;
+	unsigned int OGLR::ssbo = 0u;
+	std::size_t OGLR::vertex_buf_size = 0ull;
+	std::size_t OGLR::shader_storage_buf_size = 0ull;
 	OGLShader *OGLR::shader_program = nullptr;
 	OGLArrayTexture *OGLR::textures = nullptr;
 
 #ifdef _DEBUG
-	unsigned int OGLR::tqo = 0U;
+	unsigned int OGLR::tqo = 0u;
 #endif
 
 	void OGLRenderer::initGLWindow(const char *caption)
@@ -44,7 +44,7 @@ namespace lrend
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
 #ifdef _DEBUG
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
@@ -63,6 +63,7 @@ namespace lrend
 		if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
 		{
 			std::cerr << "An error ocurred while loading functions with GLAD." << std::endl;
+			glfwTerminate();
 			return;
 		}
 
@@ -109,14 +110,14 @@ namespace lrend
 		OGLR::last_y_pos = OGLR::height / 2.0;
 		OGLR::delta_time = OGLR::last_frame = 0.0f;
 		OGLR::camera = nullptr;
-		OGLR::vao = OGLR::vbo = OGLR::ssbo = 0U;
-		OGLR::vertex_buf_size = OGLR::shader_storage_buf_size = 0ULL;
+		OGLR::vao = OGLR::vbo = OGLR::ssbo = 0u;
+		OGLR::vertex_buf_size = OGLR::shader_storage_buf_size = 0ull;
 		OGLR::shader_program = nullptr;
 		OGLR::textures = nullptr;
 
 #ifdef _DEBUG
 		glDeleteQueries(1, &OGLR::tqo);
-		OGLR::tqo = 0U;
+		OGLR::tqo = 0u;
 #endif
 	}
 
@@ -157,7 +158,7 @@ namespace lrend
 #ifdef _DEBUG
 		glEndQuery(GL_TIME_ELAPSED);
 
-		GLuint64 elapsed_time = 0ULL;
+		GLuint64 elapsed_time = 0ull;
 		glGetQueryObjectui64v(OGLR::tqo, GL_QUERY_RESULT, &elapsed_time);
 
 		std::clog << "Initializing the buffers took " << elapsed_time << " nanoseconds." << std::endl;
@@ -167,9 +168,9 @@ namespace lrend
 		glObjectLabel(GL_BUFFER, OGLR::ssbo, 22, "Transform matrix SSBO");
 #endif
 
-		glBindVertexArray(0U);
-		glBindBuffer(GL_ARRAY_BUFFER, 0U);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
+		glBindVertexArray(0u);
+		glBindBuffer(GL_ARRAY_BUFFER, 0u);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0u);
 	}
 
 	void OGLRenderer::initCamera(const OGLCameraConfig& camera_config)
@@ -180,13 +181,13 @@ namespace lrend
 		OGLR::camera = new OGLCamera(camera_config);
 	}
 
-	void OGLRenderer::initShader(const char *vert_path, const char *tesc_path, const char *tese_path,
-		const char *geom_path, const char *frag_path)
+	void OGLRenderer::initShader(const char *vert_path, const char *frag_path, const char *geom_path,
+		const char *tesc_path, const char *tese_path)
 	{
 		if (OGLR::shader_program)
 			delete OGLR::shader_program;
 
-		OGLR::shader_program = new OGLShader(vert_path, tesc_path, tese_path, geom_path, frag_path);
+		OGLR::shader_program = new OGLShader(vert_path, frag_path, geom_path, tesc_path, tese_path);
 	}
 
 	void OGLRenderer::initTextures(const std::vector<const char *>& texture_paths, int w, int h)
@@ -312,7 +313,7 @@ namespace lrend
 #ifdef _DEBUG
 		glEndQuery(GL_TIME_ELAPSED);
 
-		GLuint64 elapsed_time = 0ULL;
+		GLuint64 elapsed_time = 0ull;
 		glGetQueryObjectui64v(OGLR::tqo, GL_QUERY_RESULT, &elapsed_time);
 
 		std::clog << "Updating the buffers took " << elapsed_time << " nanoseconds." << std::endl;
@@ -321,9 +322,9 @@ namespace lrend
 		std::swap(vert_data, std::vector<float> { });
 		std::swap(transform_data, std::vector<glm::mat4> { });
 
-		glBindVertexArray(0U);
-		glBindBuffer(GL_ARRAY_BUFFER, 0U);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0U);
+		glBindVertexArray(0u);
+		glBindBuffer(GL_ARRAY_BUFFER, 0u);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0u);
 	}
 
 	void OGLRenderer::renderScene(void *owner, std::vector<float>& v_buf, std::vector<glm::mat4>& trans_mats,
@@ -341,8 +342,8 @@ namespace lrend
 		std::swap(trans_mats, std::vector<glm::mat4> { });
 
 		OGLR::initCamera(config.camera_config);
-		OGLR::initShader(config.vert_path, config.tesc_path, config.tese_path,
-			config.geom_path, config.frag_path);
+		OGLR::initShader(config.vert_path, config.frag_path, config.geom_path,
+			config.tesc_path, config.tese_path);
 		OGLR::shader_program->use();
 		OGLR::initLighting(config.light_position, config.light_attenuation, config.light_ambient,
 			config.light_diffuse, config.light_specular, config.specular_shininess);
@@ -397,10 +398,10 @@ namespace lrend
 			OGLR::last_frame = current_frame;
 
 			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(OGLR::vertex_buf_size
-				/ (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
+				/ (sizeof(lsys::Vertex) / sizeof(float) + 1u)));
 
 			//glDrawArrays(GL_PATCHES, 0, static_cast<GLsizei>(OGLR::vertex_buf_size
-			//	/ (sizeof(lsys::Vertex) / sizeof(float) + 1U)));
+			//	/ (sizeof(lsys::Vertex) / sizeof(float) + 1u)));
 
 			glfwSwapBuffers(OGLR::gl_window);
 			glfwPollEvents();

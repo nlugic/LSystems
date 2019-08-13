@@ -20,12 +20,12 @@ namespace lrend
 		glm::vec4 light_position;
 		glm::vec3 light_attenuation, light_ambient, light_diffuse, light_specular;
 		float specular_shininess;
-		const char *vert_path, *tesc_path, *tese_path, *geom_path, *frag_path, *window_caption;
+		const char *vert_path, *frag_path, *geom_path, *tesc_path, *tese_path, *window_caption;
 	};
 
 	const OGLRendererConfig default_ogl_renderer_config =
 	{
-		1280U, 720U, 256U, 256U,
+		1280u, 720u, 256u, 256u,
 		default_ogl_camera_config,
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec4(0.0f, 10.0f, 5.0f, 0.0f),
@@ -33,9 +33,8 @@ namespace lrend
 		glm::vec3(0.3f, 0.3f, 0.3f),
 		glm::vec3(0.9f, 0.9f, 0.9f),
 		glm::vec3(0.2f, 0.2f, 0.2f), 32.0f,
-		"..\\LSystemRenderer\\default.vert", nullptr, nullptr,
-		nullptr, "..\\LSystemRenderer\\default.frag",
-		"L-System Renderer"
+		"..\\LSystemRenderer\\default.vert", "..\\LSystemRenderer\\default.frag",
+		nullptr, nullptr, nullptr, "L-System Renderer"
 	};
 
 	class OGLRenderer
@@ -72,8 +71,8 @@ namespace lrend
 		static void destroyGLWindow();
 		static void initBuffers(const std::vector<float>& vert_data, const std::vector<glm::mat4>& transform_data);
 		static void initCamera(const OGLCameraConfig& camera_config);
-		static void initShader(const char *vert_path, const char *tesc_path, const char *tese_path,
-			const char *geom_path, const char *frag_path);
+		static void initShader(const char *vert_path, const char *frag_path, const char *geom_path,
+			const char *tesc_path, const char *tese_path);
 		static void initLighting(const glm::vec4& position, const glm::vec3& attenuation, const glm::vec3& ambient,
 			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
 		static void initTextures(const std::vector<const char *>& paths, int w, int h);

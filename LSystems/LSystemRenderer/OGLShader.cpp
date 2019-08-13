@@ -55,8 +55,8 @@ namespace lrend
 		return id;
 	}
 
-	OGLShader::OGLShader(const char *vert_path, const char *tesc_path, const char *tese_path,
-		const char *geom_path, const char *frag_path)
+	OGLShader::OGLShader(const char *vert_path, const char *frag_path, const char *geom_path,
+		const char *tesc_path, const char *tese_path)
 		:program_id(glCreateProgram())
 	{
 		if (vert_path)
@@ -64,6 +64,20 @@ namespace lrend
 			unsigned int vertex_id = createShader(vert_path, GL_VERTEX_SHADER);
 			glAttachShader(program_id, vertex_id);
 			glDeleteShader(vertex_id);
+		}
+
+		if (frag_path)
+		{
+			unsigned int fragment_id = createShader(frag_path, GL_FRAGMENT_SHADER);
+			glAttachShader(program_id, fragment_id);
+			glDeleteShader(fragment_id);
+		}
+
+		if (geom_path)
+		{
+			unsigned int geometry_id = createShader(geom_path, GL_GEOMETRY_SHADER);
+			glAttachShader(program_id, geometry_id);
+			glDeleteShader(geometry_id);
 		}
 
 		if (tesc_path)
@@ -78,20 +92,6 @@ namespace lrend
 			unsigned int tess_eval_id = createShader(tese_path, GL_TESS_EVALUATION_SHADER);
 			glAttachShader(program_id, tess_eval_id);
 			glDeleteShader(tess_eval_id);
-		}
-
-		if (geom_path)
-		{
-			unsigned int geometry_id = createShader(geom_path, GL_GEOMETRY_SHADER);
-			glAttachShader(program_id, geometry_id);
-			glDeleteShader(geometry_id);
-		}
-
-		if (frag_path)
-		{
-			unsigned int fragment_id = createShader(frag_path, GL_FRAGMENT_SHADER);
-			glAttachShader(program_id, fragment_id);
-			glDeleteShader(fragment_id);
 		}
 
 		int success;

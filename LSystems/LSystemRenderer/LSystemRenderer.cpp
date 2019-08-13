@@ -37,7 +37,7 @@ namespace lrend
 				cxt->generateModel(cxt->getCurrentLevel());
 			else
 			{
-				cxt->generateModel(cxt->getCurrentLevel() + 1ULL);
+				cxt->generateModel(cxt->getCurrentLevel() + 1ull);
 				buffer_changed = true;
 			}
 		}
@@ -54,11 +54,11 @@ namespace lrend
 
 		for (lsys::LSystemContext *cxt : contexts)
 		{
-			if (cxt->getCurrentLevel() == 0ULL)
+			if (cxt->getCurrentLevel() == 0ull)
 				cxt->generateModel(cxt->getCurrentLevel());
 			else
 			{
-				cxt->generateModel(cxt->getCurrentLevel() - 1ULL);
+				cxt->generateModel(cxt->getCurrentLevel() - 1ull);
 				buffer_changed = true;
 			}
 		}
@@ -321,10 +321,10 @@ namespace lrend
 			OGLRendererConfig config = default_ogl_renderer_config;
 
 			config.vert_path = "..\\LSystemRenderer\\default_tess.vert";
+			config.frag_path = "..\\LSystemRenderer\\default_tess.frag";
+			config.geom_path = "..\\LSystemRenderer\\wireframe.geom";
 			config.tesc_path = "..\\LSystemRenderer\\default_tess.tesc";
 			config.tese_path = "..\\LSystemRenderer\\default_tess.tese";
-			config.geom_path = "..\\LSystemRenderer\\wireframe.geom";
-			config.frag_path = "..\\LSystemRenderer\\default_tess.frag";
 
 			OGLRenderer::renderScene(&rend, lsys::GraphicsTurtle::getVertexBuffer(),
 				lsys::GraphicsTurtle::getTransformBuffer(), std::vector<const char *> { "..\\LSystemRenderer\\tree.jpg" }, config);
@@ -340,7 +340,7 @@ namespace lrend
 
 		std::size_t snowflakes = positions.size();
 		lsys::TurtleState state = lsys::default_turtle_state;
-		for (std::size_t i = 0ULL; i < snowflakes; ++i)
+		for (std::size_t i = 0ull; i < snowflakes; ++i)
 		{
 			state.position = positions[i];
 			rend.addContext(new lsys::KochSnowflakeContext(level, lengths[i], angle, state));
@@ -361,7 +361,7 @@ namespace lrend
 
 		std::size_t trees = positions.size();
 		lsys::TurtleState state = lsys::default_turtle_state;
-		for (std::size_t i = 0ULL; i < trees; ++i)
+		for (std::size_t i = 0ull; i < trees; ++i)
 		{
 			state.position = positions[i];
 			rend.addContext(new lsys::Generic3DTreeContext(level, slices, radii[i], heights[i], angle, state));

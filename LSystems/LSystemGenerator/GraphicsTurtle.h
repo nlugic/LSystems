@@ -57,7 +57,7 @@ namespace lsys
 			{ actions[key] = func; }
 
 		inline void pushState() { state_stack.push(current_state); }
-		inline void popState() { current_state = state_stack.top(); if (state_stack.size() > 1ULL) state_stack.pop(); }
+		inline void popState() { current_state = state_stack.top(); if (state_stack.size() > 1ull) state_stack.pop(); }
 		void resetState();
 		void updateTransform();
 		void translateState(const glm::vec3& offset);

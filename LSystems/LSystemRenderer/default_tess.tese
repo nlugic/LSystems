@@ -1,4 +1,4 @@
-#version 450 core
+#version 460 core
 
 #define PI 3.1415926538f
 
@@ -31,7 +31,7 @@ void main()
 
 	float r1 = length(v0 - v1) * sqrt(2.0f) / 2.0f, r2 = length(v2 - v3) * sqrt(2.0f) / 2.0f;
 	float r = mix(r1, r2, v), s = length(v2 - v0), h = v2.y - v0.y;
-	float angle = mix(face_id * PI / 2.0f, (face_id + 1U) * PI / 2.0f, u);
+	float angle = mix(face_id * PI / 2.0f, (face_id + 1u) * PI / 2.0f, u);
 	
 	vec3 vertex_position = vec3(r * cos(angle), mix(v0.y, v2.y, v), r * sin(angle));
 	vec3 vertex_normal = vec3(cos(angle) * h / s, (r1 - r2) / s, sin(angle) * h / s);

@@ -8,7 +8,7 @@
 namespace lrend
 {
 
-	const std::size_t msg_buf_size = 512;
+	const std::size_t msg_buf_size = 512ull;
 
 	class OGLShader
 	{
@@ -18,8 +18,8 @@ namespace lrend
 		unsigned int createShader(const char *path, unsigned short type) const;
 		
 	public:
-		OGLShader(const char *vert_path = nullptr, const char *tesc_path = nullptr, const char *tese_path = nullptr,
-			const char *geom_path = nullptr, const char *frag_path = nullptr);
+		OGLShader(const char *vert_path = nullptr, const char *frag_path = nullptr, const char *geom_path = nullptr,
+			const char *tesc_path = nullptr, const char *tese_path = nullptr);
 		OGLShader(const OGLShader&) = delete;
 		OGLShader(OGLShader&&) = delete;
 		OGLShader& operator=(const OGLShader&) = delete;

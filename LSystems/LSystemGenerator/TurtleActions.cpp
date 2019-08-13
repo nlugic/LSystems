@@ -111,7 +111,7 @@ namespace lsys
 
 		std::vector<Vertex> vertices;
 
-		for (unsigned short i = 0U; i < n; ++i)
+		for (unsigned short i = 0u; i < n; ++i)
 		{
 			vertices.push_back(vx[0]);
 			vertices.push_back(vx[2]);
@@ -163,7 +163,7 @@ namespace lsys
 
 		std::vector<Vertex> vertices;
 
-		for (unsigned short i = 0U; i < n; ++i)
+		for (unsigned short i = 0u; i < n; ++i)
 		{
 			vertices.push_back(vx[0]);
 			vertices.push_back(vx[2]);
@@ -267,7 +267,7 @@ namespace lsys
 
 		std::vector<Vertex> vertices;
 
-		for (unsigned char i = 0U; i < 4U; ++i)
+		for (unsigned char i = 0u; i < 4u; ++i)
 		{
 			vertices.push_back(vx[0]);
 			vertices.push_back(vx[1]);

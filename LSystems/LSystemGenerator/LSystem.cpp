@@ -64,7 +64,7 @@ namespace lsys
 	std::size_t LSystem::getCurrentLevel() const
 	{
 		std::size_t curr_level = products.size();
-		return (curr_level > 0ULL) ? curr_level - 1ULL : curr_level;
+		return (curr_level > 0ull) ? curr_level - 1ull : curr_level;
 	}
 
 	float LSystem::getParam(char param) const
@@ -81,7 +81,7 @@ namespace lsys
 			if (products.empty())
 				produceAxiom();
 
-			return products[products.size() - 1ULL];
+			return products[products.size() - 1ull];
 		}
 	}
 
@@ -90,7 +90,7 @@ namespace lsys
 		if (products.empty())
 			produceAxiom();
 
-		const std::vector<LSystemSymbol *>& current_level = products[products.size() - 1ULL];
+		const std::vector<LSystemSymbol *>& current_level = products[products.size() - 1ull];
 		std::vector<LSystemSymbol *> new_level;
 
 #if defined(_DEBUG) || defined(_VERBOSE)
@@ -115,13 +115,13 @@ namespace lsys
 #endif
 
 		products.push_back(new_level);
-		return products[products.size() - 1ULL];
+		return products[products.size() - 1ull];
 	}
 
 	const std::vector<LSystemSymbol *>& LSystem::derive(std::size_t level)
 	{
 #if defined(_DEBUG) || defined(_VERBOSE)
-		std::size_t curr_level = getCurrentLevel() + 1ULL;
+		std::size_t curr_level = getCurrentLevel() + 1ull;
 
 		while (--level)
 		{
@@ -152,31 +152,31 @@ namespace lsys
 			const std::vector<LSystemSymbol *>& left_cxt = prod->getLeftContext();
 			if (!left_cxt.empty())
 			{
-				long long left = pred_index - 1LL;
+				long long left = pred_index - 1ll;
 
-				while (left >= 0LL
+				while (left >= 0ll
 					&& *curr_level[left] == *left_cxt[left_cxt.size() - pred_index + left])
 					--left;
-				if (pred_index - left != left_cxt.size() + 1ULL)
+				if (pred_index - left != left_cxt.size() + 1ull)
 					continue;
 			}
 
 			const std::vector<LSystemSymbol *>& right_cxt = prod->getRightContext();
 			if (!right_cxt.empty())
 			{
-				long long right = pred_index + 1LL;
+				long long right = pred_index + 1ll;
 
 				while (right < static_cast<long long>(curr_level.size())
-					&& *curr_level[right] == *right_cxt[right - pred_index - 1LL])
+					&& *curr_level[right] == *right_cxt[right - pred_index - 1ll])
 					++right;
-				if (right - pred_index != right_cxt.size() + 1ULL)
+				if (right - pred_index != right_cxt.size() + 1ull)
 					continue;
 			}
 
 			candidates.push_back(prod);
 		}
 
-		if (candidates.size() == 1ULL)
+		if (candidates.size() == 1ull)
 			return candidates[0];
 		else
 		{
@@ -196,7 +196,7 @@ namespace lsys
 		for (LSystemSymbol *sym : axiom)
 			ret += sym->toString();
 		ret += '\n';
-		unsigned short no = 1U;
+		unsigned short no = 1u;
 		for (LSystemProduction *prod : productions)
 		{
 			ret += 'P';	ret += std::to_string(no++); ret += ":\t";

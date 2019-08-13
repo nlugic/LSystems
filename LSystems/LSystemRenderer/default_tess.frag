@@ -1,4 +1,4 @@
-#version 450 core
+#version 460 core
 
 struct Light
 {
@@ -13,7 +13,7 @@ in vec3 gs_frag_position;
 in vec3 gs_tex_coords;
 noperspective in vec3 edge_distance;
 
-layout (location = 0) out vec4 gl_FragColor;
+layout (location = 0) out vec4 out_color;
 
 uniform bool enable_wireframe;
 uniform vec3 view_position;
@@ -49,5 +49,5 @@ void main()
 
 	float line_width = 0.25f;
 	vec4 line_color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	gl_FragColor = mix(line_color, gl_FragColor, smoothstep(line_width - 1.0f, line_width + 1.0f, min_distance));
+	out_color = mix(line_color, gl_FragColor, smoothstep(line_width - 1.0f, line_width + 1.0f, min_distance));
 }

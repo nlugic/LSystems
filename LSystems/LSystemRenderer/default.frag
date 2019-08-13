@@ -1,4 +1,4 @@
-#version 450 core
+#version 460 core
 
 struct Light
 {
@@ -12,7 +12,7 @@ in vec3 vert_normal;
 in vec3 frag_position;
 in vec3 tex_coords;
 
-out vec4 gl_FragColor;
+layout (location = 0) out vec4 out_color;
 
 uniform vec3 view_position;
 uniform Light light;
@@ -37,5 +37,5 @@ void main()
 	float light_attenuation = 1.0f / (light.attenuation.x + light.attenuation.y * distance_to_fragment
 		+ light.attenuation.z * (distance_to_fragment * distance_to_fragment));
 
-	gl_FragColor = vec4(light_attenuation * (ambient + diffuse + specular), 1.0f);
+	out_color = vec4(light_attenuation * (ambient + diffuse + specular), 1.0f);
 }

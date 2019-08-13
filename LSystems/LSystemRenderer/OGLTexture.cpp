@@ -6,7 +6,7 @@
 namespace lrend
 {
 
-	unsigned char OGLTexture::texture_pointer = 0U;
+	unsigned char OGLTexture::texture_pointer = 0u;
 
 	void OGLTexture::initTexture()
 	{

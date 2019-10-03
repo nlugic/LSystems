@@ -9,46 +9,178 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Predefined Symbols">
+      <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems">
+      <UniqueIdentifier>{13a6940a-0b7a-4985-bd15-73392f959094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Generic Symbols">
+      <UniqueIdentifier>{532fa1ae-c51a-4d7f-b4fc-7aef060aace2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Dragon Curve">
+      <UniqueIdentifier>{5a52f797-c9fb-4421-b183-c5c156875751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\3D Hilbert Curve">
+      <UniqueIdentifier>{e2b39f9f-8017-4f2d-8e2b-5488ecb3f572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Sierpinski Gasket">
+      <UniqueIdentifier>{fd90db52-9685-42a9-bb9a-0b7136c82023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Generic 2D Trees">
+      <UniqueIdentifier>{8ac41d62-4b87-43f2-b01b-ecfb267efe03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Generic 3D Trees">
+      <UniqueIdentifier>{2a284e2e-99bf-47a8-b17c-d813fe8ba66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implemented L-Systems\Koch Curves">
+      <UniqueIdentifier>{66f78b53-dc60-4f10-982d-a6001cd80caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc &amp; Helpers">
+      <UniqueIdentifier>{ec88dbc4-e807-4bc6-8c15-01df63b6f5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc &amp; Helpers\Console Progress Bar">
+      <UniqueIdentifier>{66cec9b2-a11d-4a3a-b7a9-be47842c0094}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LSystemProdRule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LSystemSymbol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsTurtle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LSystemContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LSystemProduction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PitchDownSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="PitchUpSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="RestoreStateSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveStateSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="TurnLeftSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="TurnRightSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="RollLeftSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="RollRightSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="TurnAroundSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="RotateToVerticalSymbol.h">
+      <Filter>Predefined Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="TurtleActions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SierpinskiGasketLSystem.h">
+      <Filter>Implemented L-Systems\Sierpinski Gasket</Filter>
+    </ClInclude>
+    <ClInclude Include="SierpinskiGasketContext.h">
+      <Filter>Implemented L-Systems\Sierpinski Gasket</Filter>
+    </ClInclude>
+    <ClInclude Include="SierpinskiGasketProductions.h">
+      <Filter>Implemented L-Systems\Sierpinski Gasket</Filter>
+    </ClInclude>
+    <ClInclude Include="KochCurveProductions.h">
+      <Filter>Implemented L-Systems\Koch Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeProductions.h">
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeSymbols.h">
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DTreeContexts.h">
+      <Filter>Implemented L-Systems\Generic 2D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DTreeProductions.h">
+      <Filter>Implemented L-Systems\Generic 2D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="KochCurveContexts.h">
+      <Filter>Implemented L-Systems\Koch Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="KochCurveLSystem.h">
+      <Filter>Implemented L-Systems\Koch Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DTreeLSystems.h">
+      <Filter>Implemented L-Systems\Generic 2D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DContext.h">
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DLSystem.h">
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DProductions.h">
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="HilbertCurve3DSymbols.h">
+      <Filter>Implemented L-Systems\3D Hilbert Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonCurveLSystem.h">
+      <Filter>Implemented L-Systems\Dragon Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonCurveContext.h">
+      <Filter>Implemented L-Systems\Dragon Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="DragonCurveProductions.h">
+      <Filter>Implemented L-Systems\Dragon Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericLineSymbol.h">
+      <Filter>Implemented L-Systems\Generic Symbols</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleProgressBar.h">
+      <Filter>Misc &amp; Helpers\Console Progress Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalDefinitions.h" />
+    <ClInclude Include="Generic3DTreeContexts.h">
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic3DTreeLSystems.h">
+      <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LSystemGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LSystemProdRule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LSystemSymbol.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsTurtle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LSystemContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LSystemProduction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TurtleActions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleProgressBar.cpp">
+      <Filter>Misc &amp; Helpers\Console Progress Bar</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

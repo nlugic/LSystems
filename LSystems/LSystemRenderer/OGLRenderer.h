@@ -70,12 +70,12 @@ namespace lrend
 		static void initGLWindow(const char *caption);
 		static void destroyGLWindow();
 		static void initBuffers(const std::vector<float>& vert_data, const std::vector<glm::mat4>& transform_data);
-		static void initCamera(const OGLCameraConfig& camera_config);
+		static void initCamera(const OGLCameraConfig& config);
 		static void initShader(const char *vert_path, const char *frag_path, const char *geom_path,
 			const char *tesc_path, const char *tese_path);
 		static void initLighting(const glm::vec4& position, const glm::vec3& attenuation, const glm::vec3& ambient,
 			const glm::vec3& diffuse, const glm::vec3& specular, float shininess);
-		static void initTextures(const std::vector<const char *>& paths, int w, int h);
+		static void initTextures(const std::vector<const char *>& texture_paths, int w, int h);
 		
 #ifdef _DEBUG
 		static void APIENTRY processDebugMessage(GLenum source, GLenum type, GLenum id, GLenum severity,

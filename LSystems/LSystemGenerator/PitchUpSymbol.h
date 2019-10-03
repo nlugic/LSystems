@@ -9,7 +9,7 @@ namespace lsys
 	class PitchUpSymbol : public LSystemSymbol
 	{
 	public:
-		inline PitchUpSymbol(float pitch)
+		explicit inline PitchUpSymbol(float pitch)
 			:LSystemSymbol('^') { setParam('p', pitch); }
 
 		inline virtual LSystemSymbol *clone() const override { return new PitchUpSymbol(*this); }

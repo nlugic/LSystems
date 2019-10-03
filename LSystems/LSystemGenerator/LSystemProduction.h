@@ -5,14 +5,19 @@
 #include "..\..\include\glm\glm.hpp"
 #include <vector>
 
+namespace lhelp
+{
+
+	void clearSymbols(std::vector<lsys::LSystemSymbol *>& syms);
+	void clearSymbolsAndFreeMemory(std::vector<lsys::LSystemSymbol *>& syms);
+
+}
+
 namespace lsys
 {
 
 	class LSystemProduction
 	{
-	private:
-		void clearSymbols(std::vector<LSystemSymbol *>& syms);
-
 	protected:
 		LSystemSymbol *predecessor;
 		std::vector<LSystemSymbol *> left_context, right_context, successor;
@@ -20,9 +25,9 @@ namespace lsys
 
 	public:
 		LSystemProduction() = delete;
-		inline LSystemProduction(LSystemSymbol *pred, float prob = 1.0f)
+		explicit inline LSystemProduction(LSystemSymbol *pred, float prob = 1.0f)
 			:predecessor(pred), probability(glm::clamp(prob, 0.0f, 1.0f)) { }
-		inline LSystemProduction(char pred, float prob = 1.0f)
+		explicit inline LSystemProduction(char pred, float prob = 1.0f)
 			:predecessor(new LSystemSymbol(pred)), probability(glm::clamp(prob, 0.0f, 1.0f)) { }
 		LSystemProduction(const LSystemProduction& prod);
 		friend void swap(LSystemProduction& prod_1, LSystemProduction& prod_2);
@@ -37,13 +42,13 @@ namespace lsys
 		inline const std::vector<LSystemSymbol *>& getSuccessor() const { return successor; }
 		inline void addSymbolToLeftContext(LSystemSymbol *sym) { if (sym) left_context.push_back(sym); }
 		inline void setLeftContext(const std::vector<LSystemSymbol *>& l_cxt)
-			{ clearSymbols(left_context); left_context = l_cxt; }
+			{ lhelp::clearSymbols(left_context); left_context = l_cxt; }
 		inline void addSymbolToRightContext(LSystemSymbol *sym) { if (sym) right_context.push_back(sym); }
 		inline void setRightContext(const std::vector<LSystemSymbol *>& r_cxt)
-			{ clearSymbols(right_context); right_context = r_cxt; }
+			{ lhelp::clearSymbols(right_context); right_context = r_cxt; }
 		inline void addSymbolToSuccessor(LSystemSymbol *sym) { if (sym) successor.push_back(sym); }
 		inline void setSuccessor(const std::vector<LSystemSymbol *>& succ)
-			{ clearSymbols(successor); successor = succ; }
+			{ lhelp::clearSymbols(successor); successor = succ; }
 		inline float getProbability() const { return probability; }
 
 		inline virtual bool condition(const LSystemSymbol *pred, const std::map<char, float>& global_params) const

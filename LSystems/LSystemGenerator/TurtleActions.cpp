@@ -121,7 +121,7 @@ namespace lsys
 			vertices.push_back(vx[1]);
 
 			phi += ang; s -= ds;
-			sf = sfu; cf = cfu;
+			//sf = sfu; cf = cfu;
 			sfu = std::sin(phi + ang); cfu = std::cos(phi + ang);
 
 			vx[0] = vx[1]; vx[2] = vx[3];
@@ -169,7 +169,7 @@ namespace lsys
 			vertices.push_back(vx[2]);
 			vertices.push_back(vx[1]);
 
-			phi += ang; s -= ds; sf = sfu; cf = cfu;
+			phi += ang; s -= ds;// sf = sfu; cf = cfu;
 			sfu = std::sin(phi + ang); cfu = std::cos(phi + ang);
 			
 			vx[1] = vx[2]; nm = nmu;
@@ -275,7 +275,7 @@ namespace lsys
 			vertices.push_back(vx[3]);
 
 			phi += pi_2; s -= ds;
-			sf = sfu; cf = cfu;
+			//sf = sfu; cf = cfu;
 			sfu = std::sin(phi + pi_2); cfu = std::cos(phi + pi_2);
 
 			vx[0] = vx[1]; vx[2] = vx[3];

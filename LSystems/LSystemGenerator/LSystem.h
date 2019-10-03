@@ -3,14 +3,20 @@
 
 #include "LSystemProduction.h"
 
+namespace lhelp
+{
+
+	void clearProductions(std::vector<lsys::LSystemProduction *>& prods);
+	void clearProductionsAndFreeMemory(std::vector<lsys::LSystemProduction *>& prods);
+
+}
+
 namespace lsys
 {
 
 	class LSystem
 	{
 	private:
-		void clearAxiom();
-		void clearProductions();
 		void produceAxiom();
 
 	protected:
@@ -33,16 +39,17 @@ namespace lsys
 		inline void setParam(char param, float value) { params[param] = value; }
 		inline const std::vector<LSystemSymbol *>& getAxiom() const { return axiom; }
 		inline void addSymbolToAxiom(LSystemSymbol *sym) { if (sym) axiom.push_back(sym); }
-		inline void setAxiom(const std::vector<LSystemSymbol *>& ax) { clearAxiom(); axiom = ax; }
+		inline void setAxiom(const std::vector<LSystemSymbol *>& ax) { lhelp::clearSymbols(axiom); axiom = ax; }
 		inline const std::vector<LSystemProduction *>& getProductions() const { return productions; }
 		inline void addProduction(LSystemProduction *prod) { if (prod) productions.push_back(prod); }
-		inline void setProductions(const std::vector<LSystemProduction *>& prods) { clearProductions(); productions = prods; }
+		inline void setProductions(const std::vector<LSystemProduction *>& prods)
+			{ lhelp::clearProductions(productions); productions = prods; }
 		const std::vector<LSystemSymbol *>& operator[](std::size_t level);
 
 		virtual const std::vector<LSystemSymbol *>& derive();
 		const std::vector<LSystemSymbol *>& derive(std::size_t level);
-		LSystemProduction* matchProduction(const std::vector<LSystemSymbol *>& currLevel,
-			std::vector<LSystemSymbol *>::const_iterator& pred);
+		LSystemProduction* matchProduction(const std::vector<LSystemSymbol *>& curr_level,
+			const std::vector<LSystemSymbol *>::const_iterator& pred);
 
 		virtual std::string toString() const;
 		inline friend std::ostream& operator<<(std::ostream& out, const LSystem& sys)

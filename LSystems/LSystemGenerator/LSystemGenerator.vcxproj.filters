@@ -12,9 +12,6 @@
     <Filter Include="Predefined Symbols">
       <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Console Progress Bar">
-      <UniqueIdentifier>{66cec9b2-a11d-4a3a-b7a9-be47842c0094}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implemented L-Systems">
       <UniqueIdentifier>{13a6940a-0b7a-4985-bd15-73392f959094}</UniqueIdentifier>
     </Filter>
@@ -38,6 +35,12 @@
     </Filter>
     <Filter Include="Implemented L-Systems\Koch Curves">
       <UniqueIdentifier>{66f78b53-dc60-4f10-982d-a6001cd80caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc &amp; Helpers">
+      <UniqueIdentifier>{ec88dbc4-e807-4bc6-8c15-01df63b6f5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc &amp; Helpers\Console Progress Bar">
+      <UniqueIdentifier>{66cec9b2-a11d-4a3a-b7a9-be47842c0094}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +150,7 @@
       <Filter>Implemented L-Systems\Generic Symbols</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleProgressBar.h">
-      <Filter>Console Progress Bar</Filter>
+      <Filter>Misc &amp; Helpers\Console Progress Bar</Filter>
     </ClInclude>
     <ClInclude Include="GlobalDefinitions.h" />
     <ClInclude Include="Generic3DTreeContexts.h">
@@ -177,7 +180,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConsoleProgressBar.cpp">
-      <Filter>Console Progress Bar</Filter>
+      <Filter>Misc &amp; Helpers\Console Progress Bar</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

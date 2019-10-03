@@ -165,7 +165,7 @@ namespace lsys
 	class Generic2DTreeElongationProduction : public LSystemProduction
 	{
 	public:
-		Generic2DTreeElongationProduction(float length)
+		explicit Generic2DTreeElongationProduction(float length)
 			:LSystemProduction('F')
 		{
 			addSymbolToSuccessor(new GenericLineSymbol('F', length));

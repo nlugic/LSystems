@@ -3,6 +3,8 @@
 
 #include "LSystem.h"
 #include "..\..\include\glm\glm.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "..\..\include\glm\gtc\quaternion.hpp"
 #include <stack>
 #include <functional>
 
@@ -15,14 +17,17 @@ namespace lsys
 
 		inline bool operator==(const Vertex& v) { return !std::memcmp(this, &v, sizeof(Vertex)); }
 	};
-	
-	struct TurtleState { glm::vec3 position, heading, left, up; };
+
+	struct TurtleState { glm::vec3 position; glm::quat orientation; };
 
 	const TurtleState default_turtle_state =
 	{
-		glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f),
-		glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)
+		glm::vec3(0.0f), glm::quat(1.0f, 0.0f, 0.0f, 0.0f)
 	};
+
+	const glm::vec3 initial_heading(0.0f, 1.0f, 0.0f);
+	const glm::vec3 initial_left(-1.0f, 1.0f, 0.0f);
+	const glm::vec3 initial_up(0.0f, 0.0f, 1.0f);
 
 	class GraphicsTurtle
 	{

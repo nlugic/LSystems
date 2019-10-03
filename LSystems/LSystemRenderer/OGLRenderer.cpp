@@ -173,12 +173,12 @@ namespace lrend
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0u);
 	}
 
-	void OGLRenderer::initCamera(const OGLCameraConfig& camera_config)
+	void OGLRenderer::initCamera(const OGLCameraConfig& config)
 	{
 		if (OGLR::camera)
 			delete OGLR::camera;
 
-		OGLR::camera = new OGLCamera(camera_config);
+		OGLR::camera = new OGLCamera(config);
 	}
 
 	void OGLRenderer::initShader(const char *vert_path, const char *frag_path, const char *geom_path,
@@ -198,14 +198,14 @@ namespace lrend
 		OGLR::textures = new OGLArrayTexture(texture_paths, w, h);
 	}
 
-	void OGLRenderer::initLighting(const glm::vec4& light_position, const glm::vec3& light_attenuation, 
-		const glm::vec3& light_ambient, const glm::vec3& light_diffuse, const glm::vec3& light_specular, float shininess)
+	void OGLRenderer::initLighting(const glm::vec4& position, const glm::vec3& attenuation, 
+		const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float shininess)
 	{
-		OGLR::shader_program->setFloatVx4("light.position", light_position);
-		OGLR::shader_program->setFloatVx3("light.attenuation", light_attenuation);
-		OGLR::shader_program->setFloatVx3("light.ambient", light_ambient);
-		OGLR::shader_program->setFloatVx3("light.diffuse", light_diffuse);
-		OGLR::shader_program->setFloatVx3("light.specular", light_specular);
+		OGLR::shader_program->setFloatVx4("light.position", position);
+		OGLR::shader_program->setFloatVx3("light.attenuation", attenuation);
+		OGLR::shader_program->setFloatVx3("light.ambient", ambient);
+		OGLR::shader_program->setFloatVx3("light.diffuse", diffuse);
+		OGLR::shader_program->setFloatVx3("light.specular", specular);
 		OGLR::shader_program->setFloat("light.shininess", shininess);
 	}
 	

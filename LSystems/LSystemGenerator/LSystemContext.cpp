@@ -34,6 +34,7 @@ namespace lsys
 		if (level > curr_level)
 #if defined(_DEBUG) || defined(_VERBOSE)
 		{
+			std::clog << "The L-system to be derived:" << std::endl << *system;
 			std::clog << "Deriving the L-system to level " << level << "..." << std::endl;
 			system->derive(level - curr_level);
 			std::clog << "L-system derivation finished!" << std::endl;

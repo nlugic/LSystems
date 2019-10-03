@@ -6,12 +6,8 @@
 #include <iostream>
 #include <string>
 
-namespace lsysh
+namespace lhelp
 {
-
-	ConsoleProgressBar::ConsoleProgressBar(std::size_t units, unsigned int markers, const char *log_path)
-		:marker_count(markers), progress(0.0f), progress_increment(100.0f / units), progress_marker(0.0f),
-			start(std::chrono::steady_clock::now()), log(log_path, std::ios::app) { }
 
 	void ConsoleProgressBar::step()
 	{

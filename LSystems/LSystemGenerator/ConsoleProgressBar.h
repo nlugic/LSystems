@@ -7,7 +7,7 @@
 #include <fstream>
 #include <chrono>
 
-namespace lsysh
+namespace lhelp
 {
 
 	class ConsoleProgressBar
@@ -21,7 +21,10 @@ namespace lsysh
 
 	public:
 		ConsoleProgressBar() = delete;
-		ConsoleProgressBar(std::size_t units, unsigned int markers = 25u, const char *log_path = "./benchmark.csv");
+		explicit inline ConsoleProgressBar(std::size_t units, unsigned int markers = 25u,
+			const char *log_path = "./benchmark.csv")
+			:marker_count(markers), progress(0.0f), progress_increment(100.0f / units), progress_marker(0.0f),
+			start(std::chrono::steady_clock::now()), log(log_path, std::ios::app) { }
 		ConsoleProgressBar(const ConsoleProgressBar&) = delete;
 		ConsoleProgressBar(ConsoleProgressBar&&) = delete;
 		ConsoleProgressBar& operator=(const ConsoleProgressBar&) = delete;

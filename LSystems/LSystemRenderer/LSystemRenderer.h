@@ -15,7 +15,7 @@ namespace lrend
 		static bool test_mode;
 
 		inline LSystemRenderer() = default;
-		inline LSystemRenderer(lsys::LSystemContext *cxt) { addContext(cxt); }
+		explicit inline LSystemRenderer(lsys::LSystemContext *cxt) { addContext(cxt); }
 		LSystemRenderer(const LSystemRenderer&) = delete;
 		LSystemRenderer(LSystemRenderer&&) = delete;
 		LSystemRenderer& operator=(const LSystemRenderer&) = delete;

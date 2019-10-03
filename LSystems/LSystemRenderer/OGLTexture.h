@@ -18,7 +18,7 @@ namespace lrend
 		static unsigned char texture_pointer;
 
 		OGLTexture() = delete;
-		OGLTexture(const char *path);
+		explicit OGLTexture(const char *path);
 		OGLTexture(unsigned char *data, int w, int h);
 		OGLTexture(const OGLTexture&) = delete;
 		OGLTexture(OGLTexture&&) = delete;

@@ -27,10 +27,10 @@ namespace lsys
 			out.precision(4ll);
 			out << "(";
 
-			for (std::map<char, float>::const_iterator& it = params.begin(); it != params.end(); ++it)
+			for (std::map<char, float>::const_iterator& it = params.cbegin(); it != params.cend(); ++it)
 			{
-				out << it->second;
-				out << ((std::distance(it, params.end()) == 1ll) ? ")" : ", ");
+				out << it->first;
+				out << ((std::distance(it, params.cend()) == 1ll) ? ")" : ", ");
 			}
 			ret += out.str();
 		}

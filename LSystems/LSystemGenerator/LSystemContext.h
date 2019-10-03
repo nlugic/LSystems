@@ -15,11 +15,11 @@ namespace lsys
 		LSystem *system;
 		GraphicsTurtle turtle;
 
-		virtual void initTurtleActions();
+		void initTurtleActions();
 
 	public:
 		LSystemContext() = delete;
-		inline LSystemContext(std::size_t max_l, const TurtleState& state = default_turtle_state)
+		explicit inline LSystemContext(std::size_t max_l, const TurtleState& state = default_turtle_state)
 			:current_level(0u), max_level(max_l), system(new LSystem), turtle(system, state) { initTurtleActions(); }
 		inline LSystemContext(LSystem *sys, std::size_t max_l, const TurtleState& state = default_turtle_state)
 			:current_level(0u), max_level(max_l), system(sys), turtle(system, state) { initTurtleActions(); }

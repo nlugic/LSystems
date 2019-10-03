@@ -34,8 +34,8 @@ namespace lsys
 		{ turtle->rotateAroundUp(180.0f); }
 
 	inline void rotateTurtleToVertical(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys)
-		{ turtle->rotateToVector(turtle->getInitialState().up); }
-
+	{ //turtle->rotateToVector(turtle->getInitialState().up); }
+	}
 	void drawLine(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys);
 	void drawBox(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys);
 	void drawGenericBranchSegment(GraphicsTurtle *turtle, LSystemSymbol *sym, LSystem *sys);

@@ -7,7 +7,7 @@
 namespace lrend
 {
 
-	unsigned int OGLShader::createShader(const char *path, unsigned short type) const
+	unsigned int OGLShader::createShader(const char *path, unsigned short type)
 	{
 		std::ifstream in;
 		in.exceptions(std::ifstream::badbit | std::ifstream::failbit);
@@ -26,19 +26,17 @@ namespace lrend
 				<< e.what() << std::endl;
 		}
 
-		unsigned int id;
-		int success;
-		char error_msg[msg_buf_size];
-
 		std::string code_string = code_stream.str();
 		const char *code = code_string.c_str();
-		id = glCreateShader(type);
+		unsigned int id = glCreateShader(type);
 		glShaderSource(id, 1, &code, nullptr);
 		glCompileShader(id);
 
+		int success;
 		glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
+			char error_msg[msg_buf_size];
 			glGetShaderInfoLog(id, msg_buf_size, nullptr, error_msg);
 			std::cerr << "An error ocurred while compiling the ";
 			switch (type)
@@ -95,12 +93,11 @@ namespace lrend
 		}
 
 		int success;
-		char error_msg[msg_buf_size];
-
 		glLinkProgram(program_id);
 		glGetProgramiv(program_id, GL_LINK_STATUS, &success);
 		if (!success)
 		{
+			char error_msg[msg_buf_size];
 			glGetProgramInfoLog(program_id, msg_buf_size, nullptr, error_msg);
 			std::cerr << "An error ocurred while linking the shader program." << std::endl
 				<< error_msg << std::endl;

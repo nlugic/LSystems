@@ -17,7 +17,7 @@ namespace lsys
 
 	public:
 		LSystemSymbol() = delete;
-		inline LSystemSymbol(char k)
+		explicit inline LSystemSymbol(char k)
 			:key(k) { }
 		inline LSystemSymbol(const LSystemSymbol&) = default;
 		inline virtual LSystemSymbol *clone() const { return new LSystemSymbol(*this); }

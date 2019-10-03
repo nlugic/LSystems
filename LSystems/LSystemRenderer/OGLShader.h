@@ -15,7 +15,7 @@ namespace lrend
 	private:
 		unsigned int program_id;
 
-		unsigned int createShader(const char *path, unsigned short type) const;
+		static unsigned int createShader(const char *path, unsigned short type);
 		
 	public:
 		OGLShader(const char *vert_path = nullptr, const char *frag_path = nullptr, const char *geom_path = nullptr,

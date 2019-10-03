@@ -1,46 +1,55 @@
 
 #include "LSystem.h"
 #include "ConsoleProgressBar.h"
+#include <iterator>
+#include <numeric>
+#include <algorithm>
+
+namespace lhelp
+{
+
+	void clearProductions(std::vector<lsys::LSystemProduction *>& prods)
+	{
+		for (lsys::LSystemProduction *prod : prods)
+			delete prod;
+		prods.clear();
+	}
+
+	void clearProductionsAndFreeMemory(std::vector<lsys::LSystemProduction *>& prods)
+	{
+		for (lsys::LSystemProduction *prod : prods)
+			delete prod;
+		std::swap(prods, std::vector<lsys::LSystemProduction *> { });
+	}
+
+}
 
 namespace lsys
 {
 
-	void LSystem::clearAxiom()
-	{
-		for (LSystemSymbol *sym : axiom)
-			delete sym;
-		axiom.clear();
-	}
-
-	void LSystem::clearProductions()
-	{
-		for (LSystemProduction *prod : productions)
-			delete prod;
-		productions.clear();
-	}
-
 	void LSystem::produceAxiom()
 	{
 		std::vector<LSystemSymbol *> prod;
-		for (LSystemSymbol *sym : axiom)
-			prod.push_back(sym->clone());
+		std::transform(axiom.cbegin(), axiom.cend(), std::back_inserter(prod),
+			[](LSystemSymbol *sym) { return sym->clone(); });
 		products.push_back(prod);
 	}
 
 	LSystem::LSystem(const LSystem& sys)
 		:params(sys.params)
 	{
-		for (const LSystemSymbol *sym : sys.axiom)
-			axiom.push_back(sym->clone());
-		for (const LSystemProduction *prod : sys.productions)
-			productions.push_back(prod->clone());
-		for (const std::vector<LSystemSymbol *>& product : sys.products)
+		std::transform(sys.axiom.cbegin(), sys.axiom.cend(), std::back_inserter(axiom),
+			[](LSystemSymbol *sym) { return sym->clone(); });
+		std::transform(sys.productions.cbegin(), sys.productions.cend(), std::back_inserter(productions),
+			[](LSystemProduction *prod) { return prod->clone(); });
+		std::transform(sys.products.cbegin(), sys.products.cend(), std::back_inserter(products),
+			[](const std::vector<LSystemSymbol *>& product)
 		{
 			std::vector<LSystemSymbol *> prod;
-			for (LSystemSymbol *sym : product)
-				prod.push_back(sym->clone());
-			products.push_back(prod);
-		}
+			std::transform(product.cbegin(), product.cend(), std::back_inserter(prod),
+				[](LSystemSymbol *sym) { return sym->clone(); });
+			return prod;
+		});
 	}
 
 	void swap(LSystem& sys_1, LSystem& sys_2)
@@ -53,11 +62,10 @@ namespace lsys
 
 	LSystem::~LSystem()
 	{
-		clearAxiom();
-		clearProductions();
+		lhelp::clearSymbolsAndFreeMemory(axiom);
+		lhelp::clearProductionsAndFreeMemory(productions);
 		for (std::vector<LSystemSymbol *>& product : products)
-			for (LSystemSymbol *sym : product)
-				delete sym;
+			lhelp::clearSymbolsAndFreeMemory(product);
 		products.clear();
 	}
 
@@ -94,10 +102,10 @@ namespace lsys
 		std::vector<LSystemSymbol *> new_level;
 
 #if defined(_DEBUG) || defined(_VERBOSE)
-		lsysh::ConsoleProgressBar symbol_derivation(current_level.size());
+		lhelp::ConsoleProgressBar symbol_derivation(current_level.size());
 #endif
 
-		for (std::vector<LSystemSymbol *>::const_iterator& it = current_level.begin(); it != current_level.end(); ++it)
+		for (std::vector<LSystemSymbol *>::const_iterator& it = current_level.cbegin(); it != current_level.cend(); ++it)
 		{
 			LSystemProduction *matched_prod = matchProduction(current_level, it);
 
@@ -139,7 +147,7 @@ namespace lsys
 	}
 
 	LSystemProduction* LSystem::matchProduction(const std::vector<LSystemSymbol *>& curr_level,
-		std::vector<LSystemSymbol *>::const_iterator& pred)
+		const std::vector<LSystemSymbol *>::const_iterator& pred)
 	{
 		std::vector<LSystemProduction *> candidates;
 
@@ -148,43 +156,30 @@ namespace lsys
 			if (*prod->getPredecessor() != **pred || !prod->condition(*pred, params))
 				continue;
 
-			long long pred_index = pred - curr_level.begin();
+			std::size_t pred_index = static_cast<std::size_t>(pred - curr_level.cbegin());
 			const std::vector<LSystemSymbol *>& left_cxt = prod->getLeftContext();
-			if (!left_cxt.empty())
-			{
-				long long left = pred_index - 1ll;
-
-				while (left >= 0ll
-					&& *curr_level[left] == *left_cxt[left_cxt.size() - pred_index + left])
-					--left;
-				if (pred_index - left != left_cxt.size() + 1ull)
-					continue;
-			}
+			if (!left_cxt.empty() && left_cxt.size() <= pred_index
+				&& !std::equal(std::make_reverse_iterator(pred - 1), curr_level.rend(), left_cxt.rbegin(), left_cxt.rend()))
+				continue;
 
 			const std::vector<LSystemSymbol *>& right_cxt = prod->getRightContext();
-			if (!right_cxt.empty())
-			{
-				long long right = pred_index + 1ll;
-
-				while (right < static_cast<long long>(curr_level.size())
-					&& *curr_level[right] == *right_cxt[right - pred_index - 1ll])
-					++right;
-				if (right - pred_index != right_cxt.size() + 1ull)
-					continue;
-			}
+			if (!right_cxt.empty() && right_cxt.size() <= curr_level.size() - pred_index - 1ull
+				&& std::equal(pred + 1, curr_level.end(), right_cxt.cbegin(), right_cxt.cend()))
+				continue;
 
 			candidates.push_back(prod);
 		}
 
 		if (candidates.size() == 1ull)
-			return candidates[0];
+			return candidates.front();
 		else
 		{
 			float prob = static_cast<float>(std::rand()) / RAND_MAX, total_prob = 0.0f;
+			const std::vector<LSystemProduction *>::const_iterator& matched_rule = std::find_if(candidates.cbegin(), candidates.cend(),
+				[&prob, &total_prob](LSystemProduction *prod) { return prob <= (total_prob += prod->getProbability()); });
 
-			for (LSystemProduction *prod : candidates)
-				if (prob <= (total_prob += prod->getProbability()))
-					return prod;
+			if (matched_rule != candidates.cend())
+				return *matched_rule;
 		}
 
 		return nullptr;
@@ -192,14 +187,15 @@ namespace lsys
 
 	std::string LSystem::toString() const
 	{
-		std::string ret("A:\t");
-		for (LSystemSymbol *sym : axiom)
-			ret += sym->toString();
+		std::string ret("A: \t");
+		ret += std::accumulate(axiom.cbegin(), axiom.cend(), std::string(),
+			[](const std::string& res, LSystemSymbol *sym) { return res + sym->getKey(); });
 		ret += '\n';
+
 		unsigned short no = 1u;
 		for (LSystemProduction *prod : productions)
 		{
-			ret += 'P';	ret += std::to_string(no++); ret += ":\t";
+			ret += 'P';	ret += std::to_string(no++); ret += ": \t";
 			ret += prod->toString();
 		}
 

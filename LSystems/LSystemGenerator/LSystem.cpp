@@ -1,6 +1,7 @@
 
 #include "LSystem.h"
 #include "ConsoleProgressBar.h"
+#include <sstream>
 #include <iterator>
 #include <numeric>
 #include <algorithm>
@@ -187,19 +188,17 @@ namespace lsys
 
 	std::string LSystem::toString() const
 	{
-		std::string ret("A: \t");
-		ret += std::accumulate(axiom.cbegin(), axiom.cend(), std::string(),
+		std::ostringstream out;
+		out << "A: \t";
+		out << std::accumulate(axiom.cbegin(), axiom.cend(), std::string(),
 			[](const std::string& res, LSystemSymbol *sym) { return res + sym->getKey(); });
-		ret += '\n';
+		out << std::endl;
 
 		unsigned short no = 1u;
 		for (LSystemProduction *prod : productions)
-		{
-			ret += 'P';	ret += std::to_string(no++); ret += ": \t";
-			ret += prod->toString();
-		}
+			out << 'P' << no++ << ": \t" << *prod;
 
-		return ret;
+		return out.str();
 	}
 
 }

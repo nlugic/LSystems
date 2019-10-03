@@ -234,8 +234,22 @@ namespace lsys
 	class Generic2DTreeProductionSD : public LSystemProduction
 	{
 	public:
-		inline Generic2DTreeProductionSD()
-			:LSystemProduction('A') { }
+		Generic2DTreeProductionSD(float angle)
+			:LSystemProduction('A')
+		{
+			LSystemSymbol *apex = new LSystemSymbol('A');
+			apex->defineParam('s');
+
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN, NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(apex);
+			addSymbolToSuccessor(new RestoreStateSymbol());
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(apex->clone());
+			addSymbolToSuccessor(new RestoreStateSymbol());
+		}
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
@@ -253,7 +267,7 @@ namespace lsys
 			word.push_back(new RestoreStateSymbol());
 			word.push_back(new SaveStateSymbol());
 			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new LSystemSymbol(*apex));
+			word.push_back(apex->clone());
 			word.push_back(new RestoreStateSymbol());
 		}
 

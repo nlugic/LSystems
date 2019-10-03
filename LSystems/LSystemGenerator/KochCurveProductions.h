@@ -12,8 +12,18 @@ namespace lsys
 	class KochSnowflakeProduction : public LSystemProduction
 	{
 	public:
-		inline KochSnowflakeProduction()
-			:LSystemProduction('F') { }
+		KochSnowflakeProduction(float angle)
+			:LSystemProduction('F')
+		{
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+		}
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
@@ -37,8 +47,24 @@ namespace lsys
 	class KochIslandProductionA : public LSystemProduction
 	{
 	public:
-		inline KochIslandProductionA()
-			:LSystemProduction('F') { }
+		KochIslandProductionA(float angle)
+			:LSystemProduction('F')
+		{
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
+		}
 		
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override

@@ -33,7 +33,7 @@ namespace lsys
 			addSymbolToAxiom(new LSystemSymbol('A'));
 			axiom.at(0)->setParam('s', length);
 
-			addProduction(new Generic2DTreeProductionSD());
+			addProduction(new Generic2DTreeProductionSD(angle));
 		}
 
 		inline virtual LSystem *clone() const override { return new Generic2DTreeLSystemSD(*this); }

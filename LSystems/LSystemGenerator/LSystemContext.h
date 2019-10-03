@@ -38,7 +38,7 @@ namespace lsys
 
 		virtual std::string toString() const;
 		inline friend std::ostream& operator<<(std::ostream& out, const LSystemContext& cxt)
-			{ out << cxt.toString(); return out; }
+			{ return out << cxt.toString(); }
 	};
 
 }

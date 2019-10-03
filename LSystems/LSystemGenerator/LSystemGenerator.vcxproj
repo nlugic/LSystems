@@ -26,32 +26,30 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -98,12 +96,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;LSYSTEMGENERATOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,14 +127,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>Full</Optimization>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;LSYSTEMGENERATOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,54 +142,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ConsoleProgressBar.h" />
-    <ClInclude Include="DragonCurveContext.h" />
-    <ClInclude Include="DragonCurveLSystem.h" />
-    <ClInclude Include="DragonCurveProductions.h" />
-    <ClInclude Include="GlobalDefinitions.h" />
-    <ClInclude Include="HilbertCurve3DContext.h" />
-    <ClInclude Include="HilbertCurve3DLSystem.h" />
-    <ClInclude Include="HilbertCurve3DProductions.h" />
-    <ClInclude Include="HilbertCurve3DSymbols.h" />
-    <ClInclude Include="Generic2DTreeContexts.h" />
-    <ClInclude Include="Generic2DTreeLSystems.h" />
-    <ClInclude Include="Generic2DTreeProductions.h" />
-    <ClInclude Include="Generic3DTreeContexts.h" />
-    <ClInclude Include="Generic3DTreeLSystems.h" />
-    <ClInclude Include="Generic3DTreeProductions.h" />
-    <ClInclude Include="Generic3DTreeSymbols.h" />
-    <ClInclude Include="GraphicsTurtle.h" />
-    <ClInclude Include="KochCurveContexts.h" />
-    <ClInclude Include="KochCurveLSystem.h" />
-    <ClInclude Include="KochCurveProductions.h" />
-    <ClInclude Include="GenericLineSymbol.h" />
     <ClInclude Include="LSystem.h" />
-    <ClInclude Include="LSystemContext.h" />
-    <ClInclude Include="LSystemProduction.h" />
+    <ClInclude Include="LSystemProdRule.h" />
     <ClInclude Include="LSystemSymbol.h" />
-    <ClInclude Include="PitchDownSymbol.h" />
-    <ClInclude Include="PitchUpSymbol.h" />
-    <ClInclude Include="RestoreStateSymbol.h" />
-    <ClInclude Include="RollLeftSymbol.h" />
-    <ClInclude Include="RollRightSymbol.h" />
-    <ClInclude Include="RotateToVerticalSymbol.h" />
-    <ClInclude Include="SaveStateSymbol.h" />
-    <ClInclude Include="SierpinskiGasketContext.h" />
-    <ClInclude Include="SierpinskiGasketLSystem.h" />
-    <ClInclude Include="SierpinskiGasketProductions.h" />
-    <ClInclude Include="TurnAroundSymbol.h" />
-    <ClInclude Include="TurnLeftSymbol.h" />
-    <ClInclude Include="TurnRightSymbol.h" />
-    <ClInclude Include="TurtleActions.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConsoleProgressBar.cpp" />
-    <ClCompile Include="GraphicsTurtle.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="LSystem.cpp" />
-    <ClCompile Include="LSystemContext.cpp" />
-    <ClCompile Include="LSystemProduction.cpp" />
+    <ClCompile Include="LSystemGenerator.cpp" />
+    <ClCompile Include="LSystemProdRule.cpp" />
     <ClCompile Include="LSystemSymbol.cpp" />
-    <ClCompile Include="TurtleActions.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

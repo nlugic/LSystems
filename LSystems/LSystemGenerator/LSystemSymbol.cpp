@@ -1,41 +1,39 @@
 
 #include "LSystemSymbol.h"
-#include <sstream>
 
-namespace lsys
+LSystemSymbol::LSystemSymbol(char k) :key(k) { }
+
+LSystemSymbol::~LSystemSymbol() { }
+
+float LSystemSymbol::getParam(char param)
 {
+	return params[param];
+}
 
-	void swap(LSystemSymbol& sym_1, LSystemSymbol& sym_2)
-	{
-		std::swap(sym_1.key, sym_2.key);
-		std::swap(sym_1.params, sym_2.params);
-	}
+void LSystemSymbol::setParam(char param, float value)
+{
+	params[param] = value;
+}
 
-	float LSystemSymbol::getParam(char param) const
-	{
-		std::map<char, float>::const_iterator value = params.find(param);
-		return (value != params.end()) ? value->second : NAN;
-	}
+bool LSystemSymbol::operator==(const LSystemSymbol& lSym)
+{
+	return key == lSym.key;
+}
 
-	std::string LSystemSymbol::toString() const
-	{
-		std::string ret;
-		ret += key;
-		if (!params.empty())
-		{
-			std::ostringstream out;
-			out.precision(4ll);
-			out << "(";
+bool LSystemSymbol::operator!=(const LSystemSymbol& lSym)
+{
+	return !(*this == lSym);
+}
 
-			for (std::map<char, float>::const_iterator& it = params.cbegin(); it != params.cend(); ++it)
-			{
-				out << it->first;
-				out << ((std::distance(it, params.cend()) == 1ll) ? ")" : ", ");
-			}
-			ret += out.str();
-		}
+std::string LSystemSymbol::toString() const
+{
+	std::string ret;
+	ret += key;
+	return ret;
+}
 
-		return ret;
-	}
-
+std::ostream& operator<<(std::ostream& out, const LSystemSymbol& lSym)
+{
+	out << lSym.key;
+	return out;
 }

@@ -12,20 +12,14 @@ namespace lsys
 	class SierpinskiGasketProductionL : public LSystemProduction
 	{
 	public:
-		inline SierpinskiGasketProductionL()
-			:LSystemProduction('L') { }
-
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
-			std::vector<LSystemSymbol *>& word) const override
+		SierpinskiGasketProductionL(float length, float angle)
+			:LSystemProduction('L')
 		{
-			float length = pred->getParam('h');
-			float angle = global_params.at('a');
-
-			word.push_back(new GenericLineSymbol('R', length));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new GenericLineSymbol('L', length));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new GenericLineSymbol('R', length));
+			addSymbolToSuccessor(new GenericLineSymbol('R', length));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('L', length));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('R', length));
 		}
 
 		inline virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionL(*this); }
@@ -34,20 +28,14 @@ namespace lsys
 	class SierpinskiGasketProductionR : public LSystemProduction
 	{
 	public:
-		inline SierpinskiGasketProductionR()
-			:LSystemProduction('R') { }
-
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
-			std::vector<LSystemSymbol *>& word) const override
+		SierpinskiGasketProductionR(float length, float angle)
+			:LSystemProduction('R')
 		{
-			float length = pred->getParam('h');
-			float angle = global_params.at('a');
-
-			word.push_back(new GenericLineSymbol('L', length));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new GenericLineSymbol('R', length));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new GenericLineSymbol('L', length));
+			addSymbolToSuccessor(new GenericLineSymbol('L', length));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('R', length));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new GenericLineSymbol('L', length));
 		}
 
 		inline virtual LSystemProduction *clone() const override { return new SierpinskiGasketProductionR(*this); }

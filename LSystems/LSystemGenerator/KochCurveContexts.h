@@ -13,7 +13,7 @@ namespace lsys
 	public:
 		inline KochSnowflakeContext(std::size_t max_l, float length, float angle,
 			const TurtleState& state = default_turtle_state)
-			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(), length, angle, 3.0f),
+			:LSystemContext(new KochCurveLSystem(new KochSnowflakeProduction(angle), length, angle, 3.0f),
 				max_l, state) { turtle.setAction('F', drawLine); }
 
 		inline virtual LSystemContext *clone() const override { return new KochSnowflakeContext(*this); }
@@ -24,7 +24,7 @@ namespace lsys
 	public:
 		inline KochIslandContextA(std::size_t max_l, float length, float angle,
 			const TurtleState& state = default_turtle_state)
-			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(), length, angle),
+			:LSystemContext(new KochCurveLSystem(new KochIslandProductionA(angle), length, angle),
 				max_l, state) { turtle.setAction('F', drawLine); }
 
 		inline virtual LSystemContext *clone() const override { return new KochIslandContextA(*this); }

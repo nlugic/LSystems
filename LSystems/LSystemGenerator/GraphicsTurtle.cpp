@@ -3,6 +3,7 @@
 #include "ConsoleProgressBar.h"
 #include "..\..\include\glm\gtx\quaternion.hpp"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
+#include <sstream>
 
 namespace lsys
 {
@@ -120,12 +121,13 @@ namespace lsys
 
 	std::string GraphicsTurtle::toString() const
 	{
-		std::string ret("Turtle's symbols = { ");
+		std::ostringstream out;
+		out << "Turtle's symbols = { ";
 		for (std::map<char, TurtleAction>::const_iterator& it = actions.cbegin(); it != actions.cend(); ++it)
-			ret += it->first + ((std::distance(it, actions.cend()) > 1ll) ? ", " : " ");
-		ret += '}';
+			out << it->first + ((std::distance(it, actions.cend()) > 1ll) ? ", " : " ");
+		out << '}';
 		
-		return ret;
+		return out.str();
 	}
 	
 	void GraphicsTurtle::resetBuffers()

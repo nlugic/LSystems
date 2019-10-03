@@ -53,7 +53,7 @@ namespace lsys
 
 		virtual std::string toString() const;
 		inline friend std::ostream& operator<<(std::ostream& out, const LSystem& sys)
-			{ out << sys.toString(); return out; }
+			{ return out << sys.toString(); }
 	};
 
 }

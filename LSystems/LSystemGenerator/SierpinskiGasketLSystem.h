@@ -12,12 +12,10 @@ namespace lsys
 	public:
 		SierpinskiGasketLSystem(float length, float angle)
 		{
-			setParam('a', angle);
-
 			addSymbolToAxiom(new GenericLineSymbol('R', length));
 
-			addProduction(new SierpinskiGasketProductionL());
-			addProduction(new SierpinskiGasketProductionR());
+			addProduction(new SierpinskiGasketProductionL(length, angle));
+			addProduction(new SierpinskiGasketProductionR(length, angle));
 		}
 
 		inline virtual LSystem *clone() const override { return new SierpinskiGasketLSystem(*this); }

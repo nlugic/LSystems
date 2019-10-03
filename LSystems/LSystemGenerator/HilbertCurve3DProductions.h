@@ -15,195 +15,167 @@ namespace lsys
 
 	class HilbertCurve3DProductionA : public LSystemProduction
 	{
-	private:
-		float width, length, angle;
-		glm::vec3 color;
-
 	public:
-		inline HilbertCurve3DProductionA(float wid, float len, float ang, const glm::vec3& col)
-			:LSystemProduction('A'), width(wid), length(len), angle(ang), color(col) { }
+		HilbertCurve3DProductionA(float width, float length, float angle, const glm::vec3& color)
+			:LSystemProduction('A')
+		{
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('D'));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('D'));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+		}
 
 		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionA(*this); }
-
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
-			std::vector<LSystemSymbol *>& word) const override
-		{
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new LSystemSymbol('D'));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('D'));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new RollRightSymbol(angle));
-			word.push_back(new RollRightSymbol(angle));
-		}
 	};
 
 	class HilbertCurve3DProductionB : public LSystemProduction
 	{
-	private:
-		float width, length, angle;
-		glm::vec3 color;
-
 	public:
-		inline HilbertCurve3DProductionB(float wid, float len, float ang, const glm::vec3& col)
-			:LSystemProduction('B'), width(wid), length(len), angle(ang), color(col) { }
+		HilbertCurve3DProductionB(float width, float length, float angle, const glm::vec3& color)
+			:LSystemProduction('B')
+		{
+			addSymbolToSuccessor(new LSystemSymbol('A'));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('D'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('D'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('A'));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+		}
 
 		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionB(*this); }
-
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
-			std::vector<LSystemSymbol *>& word) const override
-		{
-			word.push_back(new LSystemSymbol('A'));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('D'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new LSystemSymbol('D'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('A'));
-			word.push_back(new RollRightSymbol(angle));
-			word.push_back(new RollRightSymbol(angle));
-		}
 	};
 
 	class HilbertCurve3DProductionC : public LSystemProduction
 	{
-	private:
-		float width, length, angle;
-		glm::vec3 color;
-
 	public:
-		inline HilbertCurve3DProductionC(float wid, float len, float ang, const glm::vec3& col)
-			:LSystemProduction('C'), width(wid), length(len), angle(ang), color(col) { }
+		HilbertCurve3DProductionC(float width, float length, float angle, const glm::vec3& color)
+			:LSystemProduction('C')
+		{
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new LSystemSymbol('D'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('A'));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('A'));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('D'));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+		}
 
 		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionC(*this); }
-
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
-			std::vector<LSystemSymbol *>& word) const override
-		{
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new LSystemSymbol('D'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('A'));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('A'));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('D'));
-			word.push_back(new RollRightSymbol(angle));
-			word.push_back(new RollRightSymbol(angle));
-		}
 	};
 
 	class HilbertCurve3DProductionD : public LSystemProduction
 	{
-	private:
-		float width, length, angle;
-		glm::vec3 color;
-
 	public:
-		inline HilbertCurve3DProductionD(float wid, float len, float ang, const glm::vec3& col)
-			:LSystemProduction('D'), width(wid), length(len), angle(ang), color(col) { }
+		HilbertCurve3DProductionD(float width, float length, float angle, const glm::vec3& color)
+			:LSystemProduction('D')
+		{
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('A'));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new PitchUpSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('A'));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new PitchDownSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnRightSymbol(angle));
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new TurnLeftSymbol(angle));
+			addSymbolToSuccessor(new LSystemSymbol('B'));
+			addSymbolToSuccessor(new TurnAroundSymbol());
+			addSymbolToSuccessor(new HilbertCurve3DPipeSymbol(width, length, color));
+			addSymbolToSuccessor(new LSystemSymbol('C'));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+			addSymbolToSuccessor(new RollRightSymbol(angle));
+		}
 
 		inline virtual LSystemProduction *clone() const override { return new HilbertCurve3DProductionD(*this); }
-
-		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
-			std::vector<LSystemSymbol *>& word) const override
-		{
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('A'));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new PitchUpSymbol(angle));
-			word.push_back(new LSystemSymbol('A'));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new PitchDownSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnRightSymbol(angle));
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new TurnLeftSymbol(angle));
-			word.push_back(new LSystemSymbol('B'));
-			word.push_back(new TurnAroundSymbol());
-			word.push_back(new HilbertCurve3DPipeSymbol(width, length, color));
-			word.push_back(new LSystemSymbol('C'));
-			word.push_back(new RollRightSymbol(angle));
-			word.push_back(new RollRightSymbol(angle));
-		}
 	};
 }
 

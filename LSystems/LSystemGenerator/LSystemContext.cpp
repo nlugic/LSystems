@@ -1,6 +1,7 @@
 
 #include "LSystemContext.h"
 #include "TurtleActions.h"
+#include <sstream>
 
 namespace lsys
 {
@@ -51,13 +52,11 @@ namespace lsys
 
 	std::string LSystemContext::toString() const
 	{
-		std::string ret(system->toString());
-		ret += "Maximum derivation level: ";
-		ret += std::to_string(max_level);
-		ret += '\n';
-		ret += turtle.toString();
+		std::ostringstream out;
+		out << *system << "Maximum derivation level: " << max_level
+			<< std::endl << turtle;
 
-		return ret;
+		return out.str();
 	}
 
 }

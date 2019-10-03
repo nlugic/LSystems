@@ -16,8 +16,39 @@ namespace lsys
 	class Generic3DTreeProductionP1 : public LSystemProduction
 	{
 	public:
-		inline Generic3DTreeProductionP1()
-			:LSystemProduction('A') { }
+		Generic3DTreeProductionP1()
+			:LSystemProduction('A')
+		{
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchDownSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeBranchSegmentSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchUpSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeLeafSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+			addSymbolToSuccessor(new Generic3DTreeBranchApexSymbol(NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+			addSymbolToSuccessor(new RollRightSymbol(NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchDownSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeBranchSegmentSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchUpSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeLeafSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+			addSymbolToSuccessor(new Generic3DTreeBranchApexSymbol(NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+			addSymbolToSuccessor(new RollRightSymbol(NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchDownSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeBranchSegmentSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchUpSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeLeafSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+			addSymbolToSuccessor(new Generic3DTreeBranchApexSymbol(NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+		}
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
@@ -82,8 +113,16 @@ namespace lsys
 	class Generic3DTreeProductionP2 : public LSystemProduction
 	{
 	public:
-		inline Generic3DTreeProductionP2()
-			:LSystemProduction('F') { }
+		Generic3DTreeProductionP2()
+			:LSystemProduction('F')
+		{
+			LSystemSymbol *expansionSymbol = new LSystemSymbol('S');
+			expansionSymbol->defineParams("nRrhtw");
+
+			addSymbolToSuccessor(expansionSymbol);
+			addSymbolToSuccessor(new RollRightSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeBranchSegmentSymbol(NAN, NAN, NAN, NAN, NAN));
+		}
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override
@@ -103,8 +142,15 @@ namespace lsys
 	class Generic3DTreeProductionP3 : public LSystemProduction
 	{
 	public:
-		inline Generic3DTreeProductionP3()
-			:LSystemProduction('S') { }
+		Generic3DTreeProductionP3()
+			:LSystemProduction('S')
+		{
+			addSymbolToSuccessor(new Generic3DTreeBranchSegmentSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new SaveStateSymbol());
+			addSymbolToSuccessor(new PitchUpSymbol(NAN));
+			addSymbolToSuccessor(new Generic3DTreeLeafSymbol(NAN, NAN, NAN, NAN, NAN));
+			addSymbolToSuccessor(new RestoreStateSymbol());
+		}
 
 		virtual void generateSuccessor(const LSystemSymbol *pred, const std::map<char, float>& global_params,
 			std::vector<LSystemSymbol *>& word) const override

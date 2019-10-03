@@ -17,25 +17,31 @@ namespace lsys
 		return (value != params.end()) ? value->second : NAN;
 	}
 
+	void LSystemSymbol::defineParams(const char *param)
+	{
+		while (*param)
+			params[*param++] = NAN;
+	}
+
 	std::string LSystemSymbol::toString() const
 	{
-		std::string ret;
-		ret += key;
+		std::ostringstream out;
+		out << key;
+
 		if (!params.empty())
 		{
-			std::ostringstream out;
-			out.precision(4ll);
 			out << "(";
 
 			for (std::map<char, float>::const_iterator& it = params.cbegin(); it != params.cend(); ++it)
 			{
 				out << it->first;
+				if (!std::isnan(it->second))
+					out << " = " << it->second;
 				out << ((std::distance(it, params.cend()) == 1ll) ? ")" : ", ");
 			}
-			ret += out.str();
 		}
 
-		return ret;
+		return out.str();
 	}
 
 }

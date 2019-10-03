@@ -75,7 +75,7 @@ namespace lsys
 
 		std::string toString() const;
 		inline friend std::ostream& operator<<(std::ostream& out, const GraphicsTurtle& trt)
-			{ out << trt.toString(); return out; }
+			{ return out << trt.toString(); }
 
 		inline static std::vector<float>& getVertexBuffer() { return GraphicsTurtle::vertex_buffer; }
 		inline static std::vector<glm::mat4>& getTransformBuffer() { return GraphicsTurtle::transform_buffer; }

@@ -1,5 +1,6 @@
 
 #include "LSystemProduction.h"
+#include <sstream>
 #include <iterator>
 #include <numeric>
 #include <algorithm>
@@ -62,41 +63,41 @@ namespace lsys
 
 	std::string LSystemProduction::toString() const
 	{
-		std::string ret;
+		std::ostringstream out;
 
 		if (!left_context.empty())
 		{
-			ret += std::accumulate(left_context.cbegin(), left_context.cend(), std::string(),
+			out << std::accumulate(left_context.cbegin(), left_context.cend(), std::string(),
 				[](const std::string& res, LSystemSymbol *sym) { return res + sym->toString(); });
-			ret += " < ";
+			out << " < ";
 		}
 
-		ret += predecessor->toString();
+		out << *predecessor;
 
 		if (!right_context.empty())
 		{
-			ret += " > ";
-			ret += std::accumulate(right_context.cbegin(), right_context.cend(), std::string(),
+			out << " > ";
+			out << std::accumulate(right_context.cbegin(), right_context.cend(), std::string(),
 				[](const std::string& res, LSystemSymbol *sym) { return res + sym->toString(); });
 		}
 
-		ret += " -";
+		out << " -";
 		if (probability < 1.0f)
 		{
-			ret += '{';
-			ret += std::to_string(probability * 100.0f);
-			ret += "%}";
+			out << '[';
+			out << probability * 100.0f;
+			out << "%]";
 		}
-		ret += "-> ";
+		out << "-> ";
 		
 		if (!successor.empty())
-			ret += std::accumulate(successor.cbegin(), successor.cend(), std::string(),
+			out << std::accumulate(successor.cbegin(), successor.cend(), std::string(),
 				[](const std::string& res, LSystemSymbol *sym) { return res + sym->toString(); });
 		else
-			ret += "{dynamically_derived_successor}";
-		ret += '\n';
+			out << "[dynamically_derived_successor]";
+		out << std::endl;
 
-		return ret;
+		return out.str();
 	}
 
 }

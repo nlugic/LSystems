@@ -30,12 +30,14 @@ namespace lsys
 		float getParam(char param) const;
 		inline void setParam(char param, float value) { params[param] = value; }
 		inline void setParams(const LSystemSymbol *sym) { params = sym->params; }
+		inline void defineParam(char param) { params[param] = NAN; }
+		void defineParams(const char *param);
 		inline virtual bool operator==(const LSystemSymbol& sym) const { return key == sym.key; }
 		inline virtual bool operator!=(const LSystemSymbol& sym) const { return !(*this == sym); }
 
 		virtual std::string toString() const;
 		inline friend std::ostream& operator<<(std::ostream& out, const LSystemSymbol& sym)
-			{ out << sym.toString(); return out; }
+			{ return out << sym.toString(); }
 	};
 
 }

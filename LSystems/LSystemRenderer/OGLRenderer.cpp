@@ -45,6 +45,7 @@ namespace lrend
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+		glfwWindowHint(GLFW_SAMPLES, 4);
 
 #ifdef _DEBUG
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
@@ -351,6 +352,7 @@ namespace lrend
 			OGLR::initTextures(tex_paths, config.texture_width, config.texture_height);
 
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_MULTISAMPLE);
 		glFrontFace(GL_CCW);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);

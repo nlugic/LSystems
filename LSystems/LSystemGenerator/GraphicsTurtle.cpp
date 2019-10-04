@@ -53,33 +53,31 @@ namespace lsys
 
 	void GraphicsTurtle::rotateAroundUp(float angle)
 	{
-		glm::vec3 current_up = glm::normalize(glm::rotate(current_state.orientation, glm::vec3(0.0f, 0.0f, 1.0f)));
+		glm::vec3 current_up = glm::normalize(glm::rotate(current_state.orientation, initial_up));
 
 		current_state.orientation = glm::angleAxis(glm::radians(angle), current_up) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
-		glm::vec3 current_left = glm::normalize(glm::rotate(current_state.orientation, glm::vec3(-1.0f, 0.0f, 0.0f)));
+		glm::vec3 current_left = glm::normalize(glm::rotate(current_state.orientation, initial_left));
 
 		current_state.orientation = glm::angleAxis(glm::radians(angle), current_left) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::rotateAroundHeading(float angle)
 	{
-		glm::vec3 current_heading = glm::normalize(glm::rotate(current_state.orientation, glm::vec3(0.0f, 1.0f, 0.0f)));
+		glm::vec3 current_heading = glm::normalize(glm::rotate(current_state.orientation, initial_heading));
 
 		current_state.orientation = glm::angleAxis(glm::radians(angle), current_heading) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
-		glm::vec3 current_heading = glm::normalize(glm::rotate(current_state.orientation, glm::vec3(0.0f, 1.0f, 0.0f)));
-
-		glm::vec3 axis = glm::cross(current_heading, target);
+		glm::vec3 current_heading = glm::normalize(glm::rotate(current_state.orientation, initial_heading));
 		float angle = glm::radians(glm::acos(glm::clamp(glm::dot(current_heading, target), -1.0f, 1.0f)));
 
-		current_state.orientation = glm::angleAxis(angle, axis) * current_state.orientation;
+		current_state.orientation = glm::angleAxis(angle, glm::cross(current_heading, target)) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::addVertices(const std::vector<Vertex>& vertices)

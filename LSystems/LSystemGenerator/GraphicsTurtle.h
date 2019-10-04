@@ -26,7 +26,7 @@ namespace lsys
 	};
 
 	const glm::vec3 initial_heading(0.0f, 1.0f, 0.0f);
-	const glm::vec3 initial_left(-1.0f, 1.0f, 0.0f);
+	const glm::vec3 initial_left(-1.0f, 0.0f, 0.0f);
 	const glm::vec3 initial_up(0.0f, 0.0f, 1.0f);
 
 	class GraphicsTurtle

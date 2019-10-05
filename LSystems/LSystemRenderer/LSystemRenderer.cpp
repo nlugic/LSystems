@@ -297,7 +297,7 @@ namespace lrend
 				lsys::GraphicsTurtle::getTransformBuffer(), std::vector<const char *> { });
 	}
 
-	void LSystemRenderer::drawGeneric3DTree(std::size_t level, int slices, float radius, float height, float angle)
+	void LSystemRenderer::drawGeneric3DTree(std::size_t level, unsigned short slices, float radius, float height, float angle)
 	{
 		lsys::GraphicsTurtle::resetBuffers();
 
@@ -352,7 +352,7 @@ namespace lrend
 				lsys::GraphicsTurtle::getTransformBuffer(), std::vector<const char *> { });
 	}
 
-	void LSystemRenderer::drawGeneric3DForest(std::size_t level, int slices, const std::vector<glm::vec3>& positions,
+	void LSystemRenderer::drawGeneric3DForest(std::size_t level, unsigned short slices, const std::vector<glm::vec3>& positions,
 		const std::vector<float>& radii, const std::vector<float>& heights, float angle)
 	{
 		lsys::GraphicsTurtle::resetBuffers();

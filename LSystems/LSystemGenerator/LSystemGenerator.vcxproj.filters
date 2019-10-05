@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Predefined Symbols">
-      <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Implemented L-Systems">
       <UniqueIdentifier>{13a6940a-0b7a-4985-bd15-73392f959094}</UniqueIdentifier>
     </Filter>
@@ -41,6 +38,9 @@
     </Filter>
     <Filter Include="Misc &amp; Helpers\Console Progress Bar">
       <UniqueIdentifier>{66cec9b2-a11d-4a3a-b7a9-be47842c0094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Predefined Symbols">
+      <UniqueIdentifier>{570de071-0df1-44df-b2d4-a278889acd3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,12 +152,14 @@
     <ClInclude Include="ConsoleProgressBar.h">
       <Filter>Misc &amp; Helpers\Console Progress Bar</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalDefinitions.h" />
     <ClInclude Include="Generic3DTreeContexts.h">
       <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
     </ClInclude>
     <ClInclude Include="Generic3DTreeLSystems.h">
       <Filter>Implemented L-Systems\Generic 3D Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalDefinitions.h">
+      <Filter>Misc &amp; Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

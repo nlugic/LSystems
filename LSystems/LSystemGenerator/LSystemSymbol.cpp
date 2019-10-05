@@ -32,13 +32,19 @@ namespace lsys
 		{
 			out << "(";
 
-			for (std::map<char, float>::const_iterator& it = params.cbegin(); it != params.cend(); ++it)
+			std::map<char, float>::const_iterator& par = params.cbegin();
+			for (; par != std::prev(params.cend()); ++par)
 			{
-				out << it->first;
-				if (!std::isnan(it->second))
-					out << " = " << it->second;
-				out << ((std::distance(it, params.cend()) == 1ll) ? ")" : ", ");
+				out << par->first;
+				if (!std::isnan(par->second))
+					out << " = " << par->second;
+				out << ", ";
 			}
+
+			out << par->first;
+			if (!std::isnan(par->second))
+				out << " = " << par->second;
+			out << ")";
 		}
 
 		return out.str();

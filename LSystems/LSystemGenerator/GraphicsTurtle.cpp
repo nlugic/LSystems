@@ -54,30 +54,39 @@ namespace lsys
 	void GraphicsTurtle::rotateAroundUp(float angle)
 	{
 		glm::vec3 current_up = glm::normalize(glm::rotate(current_state.orientation, initial_up));
-
 		current_state.orientation = glm::angleAxis(glm::radians(angle), current_up) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::rotateAroundLeft(float angle)
 	{
 		glm::vec3 current_left = glm::normalize(glm::rotate(current_state.orientation, initial_left));
-
 		current_state.orientation = glm::angleAxis(glm::radians(angle), current_left) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::rotateAroundHeading(float angle)
 	{
 		glm::vec3 current_heading = glm::normalize(glm::rotate(current_state.orientation, initial_heading));
-
 		current_state.orientation = glm::angleAxis(glm::radians(angle), current_heading) * current_state.orientation;
 	}
 
 	void GraphicsTurtle::rotateToVector(const glm::vec3& target)
 	{
 		glm::vec3 current_heading = glm::normalize(glm::rotate(current_state.orientation, initial_heading));
-		float angle = glm::radians(glm::acos(glm::clamp(glm::dot(current_heading, target), -1.0f, 1.0f)));
+		float angle_cosine = glm::clamp(glm::dot(current_heading, target), -1.0f, 1.0f);
 
-		current_state.orientation = glm::angleAxis(angle, glm::cross(current_heading, target)) * current_state.orientation;
+		if (std::fabsf(angle_cosine - 1.0f) < eps)
+			return;
+		else if (std::fabsf(angle_cosine + 1.0f) < eps)
+		{
+			glm::vec3 current_left = glm::normalize(glm::rotate(current_state.orientation, initial_left));
+			current_state.orientation = glm::angleAxis(glm::radians(180.0f), current_left) * current_state.orientation;
+		}
+		else
+		{
+			glm::vec3 axis = glm::normalize(glm::cross(current_heading, target));
+			current_state.orientation = glm::angleAxis(glm::radians(glm::acos(angle_cosine)), axis) * current_state.orientation;
+		}
+			
 	}
 
 	void GraphicsTurtle::addVertices(const std::vector<Vertex>& vertices)
@@ -121,9 +130,11 @@ namespace lsys
 	{
 		std::ostringstream out;
 		out << "Turtle's symbols = { ";
-		for (std::map<char, TurtleAction>::const_iterator& it = actions.cbegin(); it != actions.cend(); ++it)
-			out << it->first + ((std::distance(it, actions.cend()) > 1ll) ? ", " : " ");
-		out << '}';
+
+		std::map<char, TurtleAction>::const_iterator& act = actions.cbegin();
+		for (; act != std::prev(actions.cend()); ++act)
+			out << act->first << ", ";
+		out  << act->first << " }" << std::endl;
 		
 		return out.str();
 	}

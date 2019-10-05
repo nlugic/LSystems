@@ -49,14 +49,14 @@ namespace lrend
 			float reduction = 1.456f, float angle = 85.0f);
 		static void drawHilbertCurve3D(std::size_t level, float width, float length,
 			float red = 0.0f, float green = 0.0f, float blue = 0.0f, float angle = 90.0f);
-		static void drawGeneric3DTree(std::size_t level, int slices, float radius,
+		static void drawGeneric3DTree(std::size_t level, unsigned short slices, float radius,
 			float height, float angle = 22.5f);
 
 		static void drawTesselatedGeneric3DTree(std::size_t level, float radius, float height, float angle = 22.5f);
 
 		static void drawMultipleKochSnowflakes(std::size_t level, const std::vector<glm::vec3>& positions,
 			const std::vector<float>& lengths, float angle = 60.0f);
-		static void drawGeneric3DForest(std::size_t level, int slices, const std::vector<glm::vec3>& positions,
+		static void drawGeneric3DForest(std::size_t level, unsigned short slices, const std::vector<glm::vec3>& positions,
 			const std::vector<float>& radii, const std::vector<float>& heights, float angle = 22.5f);
 	};
 

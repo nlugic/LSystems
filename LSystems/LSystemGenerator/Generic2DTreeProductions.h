@@ -234,7 +234,7 @@ namespace lsys
 	class Generic2DTreeProductionSD : public LSystemProduction
 	{
 	public:
-		Generic2DTreeProductionSD(float angle)
+		explicit Generic2DTreeProductionSD(float angle)
 			:LSystemProduction('A')
 		{
 			LSystemSymbol *apex = new LSystemSymbol('A');

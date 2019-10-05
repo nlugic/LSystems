@@ -12,7 +12,7 @@ namespace lsys
 	class KochSnowflakeProduction : public LSystemProduction
 	{
 	public:
-		KochSnowflakeProduction(float angle)
+		explicit KochSnowflakeProduction(float angle)
 			:LSystemProduction('F')
 		{
 			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
@@ -47,7 +47,7 @@ namespace lsys
 	class KochIslandProductionA : public LSystemProduction
 	{
 	public:
-		KochIslandProductionA(float angle)
+		explicit KochIslandProductionA(float angle)
 			:LSystemProduction('F')
 		{
 			addSymbolToSuccessor(new GenericLineSymbol('F', NAN));
